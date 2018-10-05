@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-order-list-heading">Create or edit a Order List</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!orderList.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="orderList.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastUpdated">Last Updated</label>
+                    <div class="d-flex">
+                        <input id="field_lastUpdated" type="datetime-local" class="form-control" name="lastUpdated" [(ngModel)]="lastUpdated"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_orderStatus">Order Status</label>
+                    <select class="form-control" id="field_orderStatus" name="orderStatus" [(ngModel)]="orderList.orderStatus" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="orderStatusOption.id === orderList.orderStatus?.id ? orderList.orderStatus : orderStatusOption" *ngFor="let orderStatusOption of orderstatuses; trackBy: trackOrderStatusById">{{orderStatusOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_userProfile">User Profile</label>
+                    <select class="form-control" id="field_userProfile" name="userProfile" [(ngModel)]="orderList.userProfile" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userProfileOption.id === orderList.userProfile?.id ? orderList.userProfile : userProfileOption" *ngFor="let userProfileOption of userprofiles; trackBy: trackUserProfileById">{{userProfileOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

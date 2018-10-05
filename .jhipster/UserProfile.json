@@ -1,0 +1,53 @@
+{
+    "name": "UserProfile",
+    "fields": [
+        {
+            "fieldName": "customer",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "userProfile"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orderList",
+            "otherEntityName": "orderList",
+            "otherEntityRelationshipName": "userProfile"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "inventoryLog",
+            "otherEntityName": "inventoryLog",
+            "otherEntityRelationshipName": "userProfile"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orderTracker",
+            "otherEntityName": "orderTracker",
+            "otherEntityRelationshipName": "userProfile"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "cart",
+            "otherEntityName": "cart",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "userProfile"
+        }
+    ],
+    "changelogDate": "20181005151811",
+    "entityTableName": "user_profile",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

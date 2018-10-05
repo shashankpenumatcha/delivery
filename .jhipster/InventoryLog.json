@@ -1,0 +1,44 @@
+{
+    "name": "InventoryLog",
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "added",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "removed",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "quantity",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "userProfile",
+            "otherEntityName": "userProfile",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20181005151815",
+    "entityTableName": "inventory_log",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

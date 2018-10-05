@@ -1,0 +1,34 @@
+{
+    "name": "Cart",
+    "fields": [
+        {
+            "fieldName": "lastUpdated",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "userProfile",
+            "otherEntityName": "userProfile",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "cart"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "cartItems",
+            "otherEntityName": "cartItems",
+            "otherEntityRelationshipName": "cart"
+        }
+    ],
+    "changelogDate": "20181005151816",
+    "entityTableName": "cart",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

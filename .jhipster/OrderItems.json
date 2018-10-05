@@ -1,0 +1,27 @@
+{
+    "name": "OrderItems",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "orderList",
+            "otherEntityName": "orderList",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20181005151819",
+    "entityTableName": "order_items",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
