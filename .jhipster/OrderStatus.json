@@ -1,0 +1,32 @@
+{
+    "name": "OrderStatus",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orderTracker",
+            "otherEntityName": "orderTracker",
+            "otherEntityRelationshipName": "orderStatus"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orderList",
+            "otherEntityName": "orderList",
+            "otherEntityRelationshipName": "orderStatus"
+        }
+    ],
+    "changelogDate": "20181005151814",
+    "entityTableName": "order_status",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

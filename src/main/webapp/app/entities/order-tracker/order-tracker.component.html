@@ -1,0 +1,72 @@
+<div>
+    <h2 id="page-heading">
+        <span>Order Trackers</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-order-tracker" [routerLink]="['/order-tracker/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Order Tracker
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="orderTrackers">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Date Time</span></th>
+            <th><span>Order List</span></th>
+            <th><span>Order Status</span></th>
+            <th><span>User Profile</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let orderTracker of orderTrackers ;trackBy: trackId">
+                <td><a [routerLink]="['/order-tracker', orderTracker.id, 'view' ]">{{orderTracker.id}}</a></td>
+                <td>{{orderTracker.dateTime | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="orderTracker.orderList">
+                        <a [routerLink]="['../order-list', orderTracker.orderList?.id, 'view' ]" >{{orderTracker.orderList?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orderTracker.orderStatus">
+                        <a [routerLink]="['../order-status', orderTracker.orderStatus?.id, 'view' ]" >{{orderTracker.orderStatus?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orderTracker.userProfile">
+                        <a [routerLink]="['../user-profile', orderTracker.userProfile?.id, 'view' ]" >{{orderTracker.userProfile?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/order-tracker', orderTracker.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/order-tracker', orderTracker.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'order-tracker/'+ orderTracker.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

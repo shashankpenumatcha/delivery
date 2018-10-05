@@ -1,0 +1,44 @@
+{
+    "name": "OrderList",
+    "fields": [
+        {
+            "fieldName": "lastUpdated",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orderItems",
+            "otherEntityName": "orderItems",
+            "otherEntityRelationshipName": "orderList"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orderTracker",
+            "otherEntityName": "orderTracker",
+            "otherEntityRelationshipName": "orderList"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "orderStatus",
+            "otherEntityName": "orderStatus",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "userProfile",
+            "otherEntityName": "userProfile",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20181005151818",
+    "entityTableName": "order_list",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,60 @@
+{
+    "name": "Product",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "minimumQuantity",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "pricePerUnit",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "quantity",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "unit",
+            "otherEntityName": "unit",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "inventoryLog",
+            "otherEntityName": "inventoryLog",
+            "otherEntityRelationshipName": "product"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "cartItems",
+            "otherEntityName": "cartItems",
+            "otherEntityRelationshipName": "product"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orderItems",
+            "otherEntityName": "orderItems",
+            "otherEntityRelationshipName": "product"
+        }
+    ],
+    "changelogDate": "20181005151812",
+    "entityTableName": "product",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

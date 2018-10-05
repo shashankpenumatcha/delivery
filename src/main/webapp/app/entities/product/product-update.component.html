@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-product-heading">Create or edit a Product</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!product.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="product.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                        [(ngModel)]="product.name" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_minimumQuantity">Minimum Quantity</label>
+                    <input type="number" class="form-control" name="minimumQuantity" id="field_minimumQuantity"
+                        [(ngModel)]="product.minimumQuantity" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_pricePerUnit">Price Per Unit</label>
+                    <input type="number" class="form-control" name="pricePerUnit" id="field_pricePerUnit"
+                        [(ngModel)]="product.pricePerUnit" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_active">Active</label>
+                    <input type="checkbox" class="form-control" name="active" id="field_active"
+                        [(ngModel)]="product.active" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_quantity">Quantity</label>
+                    <input type="number" class="form-control" name="quantity" id="field_quantity"
+                        [(ngModel)]="product.quantity" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_unit">Unit</label>
+                    <select class="form-control" id="field_unit" name="unit" [(ngModel)]="product.unit" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="unitOption.id === product.unit?.id ? product.unit : unitOption" *ngFor="let unitOption of units; trackBy: trackUnitById">{{unitOption.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

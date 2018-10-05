@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-inventory-log-heading">Create or edit a Inventory Log</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!inventoryLog.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="inventoryLog.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date">Date</label>
+                    <div class="d-flex">
+                        <input id="field_date" type="datetime-local" class="form-control" name="date" [(ngModel)]="date"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_added">Added</label>
+                    <input type="checkbox" class="form-control" name="added" id="field_added"
+                        [(ngModel)]="inventoryLog.added" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_removed">Removed</label>
+                    <input type="checkbox" class="form-control" name="removed" id="field_removed"
+                        [(ngModel)]="inventoryLog.removed" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_quantity">Quantity</label>
+                    <input type="number" class="form-control" name="quantity" id="field_quantity"
+                        [(ngModel)]="inventoryLog.quantity" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_product">Product</label>
+                    <select class="form-control" id="field_product" name="product" [(ngModel)]="inventoryLog.product" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="productOption.id === inventoryLog.product?.id ? inventoryLog.product : productOption" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_userProfile">User Profile</label>
+                    <select class="form-control" id="field_userProfile" name="userProfile" [(ngModel)]="inventoryLog.userProfile" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userProfileOption.id === inventoryLog.userProfile?.id ? inventoryLog.userProfile : userProfileOption" *ngFor="let userProfileOption of userprofiles; trackBy: trackUserProfileById">{{userProfileOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="orderList">
+            <h2><span>Order List</span> {{orderList.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Last Updated</span></dt>
+                <dd>
+                    <span>{{orderList.lastUpdated}}</span>
+                </dd>
+                <dt><span>Order Status</span></dt>
+                <dd>
+                    <div *ngIf="orderList.orderStatus">
+                        <a [routerLink]="['/order-status', orderList.orderStatus?.id, 'view']">{{orderList.orderStatus?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span>User Profile</span></dt>
+                <dd>
+                    <div *ngIf="orderList.userProfile">
+                        <a [routerLink]="['/user-profile', orderList.userProfile?.id, 'view']">{{orderList.userProfile?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/order-list', orderList.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

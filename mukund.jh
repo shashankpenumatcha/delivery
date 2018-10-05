@@ -1,0 +1,70 @@
+entity OrderTracker{
+	dateTime ZonedDateTime
+}
+
+entity UserProfile{
+	customer Boolean    
+}
+
+entity Product{
+	name String
+  	minimumQuantity Float
+    pricePerUnit Float  
+    active Boolean
+    quantity Float
+}
+
+entity Unit{
+	name String
+}
+
+entity OrderStatus{
+	name String
+}
+
+entity InventoryLog{
+	date ZonedDateTime
+    added Boolean
+    removed Boolean
+    quantity Float
+}
+
+entity Cart{
+	lastUpdated ZonedDateTime
+}
+
+entity CartItems{
+
+}
+
+entity OrderList{
+	lastUpdated ZonedDateTime
+}
+
+entity OrderItems{
+
+}
+
+relationship OneToMany{
+	Cart to CartItems
+    OrderList to OrderItems
+    UserProfile to OrderList
+    UserProfile to InventoryLog
+    OrderList to OrderTracker
+	OrderStatus to OrderTracker
+    UserProfile to OrderTracker
+}
+
+relationship ManyToOne{
+	Product{Unit(name)} to Unit
+    InventoryLog to Product
+    CartItems to Product
+    OrderItems to Product
+    OrderList to OrderStatus
+      
+}
+
+relationship OneToOne{
+	Cart to UserProfile
+    UserProfile{User(login)} to User
+}

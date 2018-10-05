@@ -1,0 +1,38 @@
+{
+    "name": "OrderTracker",
+    "fields": [
+        {
+            "fieldName": "dateTime",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "orderList",
+            "otherEntityName": "orderList",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "orderStatus",
+            "otherEntityName": "orderStatus",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "userProfile",
+            "otherEntityName": "userProfile",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20181005151810",
+    "entityTableName": "order_tracker",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
