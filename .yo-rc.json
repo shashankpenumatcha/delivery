@@ -1,0 +1,38 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "gitCompany": "",
+    "baseName": "delivery",
+    "packageName": "io.shashank.penumatcha.delivery",
+    "packageFolder": "io/shashank/penumatcha/delivery",
+    "serverPort": 8080,
+    "serviceDiscoveryType": false,
+    "authenticationType": "jwt",
+    "uaaBaseName": "../uaa",
+    "cacheProvider": "no",
+    "enableHibernateCache": false,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "enableSwaggerCodegen": false,
+    "messageBroker": false,
+    "buildTool": "maven",
+    "useSass": false,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "enableTranslation": false,
+    "nativeLanguage": "en",
+    "languages": [
+      "en"
+    ],
+    "clientFramework": "angularX",
+    "jhiPrefix": "jhi",
+    "jhipsterVersion": "5.4.1",
+    "jwtSecretKey": "NmJiZjZmYjJiMGUxNzg2ZWMxZjYyOWQ3MmEwNDZjYzgzNjdjMjA5NjBiNjUxZTZkYzczMzQxNTczZGI3ODQ0MDE3YmE4ZDljNmRjZjA3MGY3YmZmYTIzMWNmZmQ5MzNlMDIyMmFhZTEwMTQ2MjVlNzhlMjI0Y2VjMDVmOTlhNGE="
+  },
+  "git-provider": "GitHub",
+  "git-company": "shashankpenumatcha",
+  "repository-name": "delivery"
+}
