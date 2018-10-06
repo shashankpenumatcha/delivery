@@ -17,6 +17,8 @@
             <th><span>ID</span></th>
             <th><span>Product</span></th>
             <th><span>Cart</span></th>
+            <th><span>Quantity</span></th>
+
             <th></th>
             </tr>
             </thead>
@@ -25,12 +27,17 @@
                 <td><a [routerLink]="['/cart-items', cartItems.id, 'view' ]">{{cartItems.id}}</a></td>
                 <td>
                     <div *ngIf="cartItems.product">
-                        <a [routerLink]="['../product', cartItems.product?.id, 'view' ]" >{{cartItems.product?.id}}</a>
+                        <a [routerLink]="['../product', cartItems.product?.id, 'view' ]" >{{cartItems.product?.name}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="cartItems.cart">
-                        <a [routerLink]="['../cart', cartItems.cart?.id, 'view' ]" >{{cartItems.cart?.id}}</a>
+                        <a [routerLink]="['../cart', cartItems.cart?.id, 'view' ]" >{{cartItems.cart?.userProfile?.user?.login}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="cartItems.quantity">
+                      {{cartItems.quantity}}
                     </div>
                 </td>
                 <td class="text-right">

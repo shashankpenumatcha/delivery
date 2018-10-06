@@ -1,6 +1,7 @@
 package io.shashank.penumatcha.delivery.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -8,6 +9,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+
+import static javax.persistence.FetchType.LAZY;
 
 /**
  * A UserProfile.
@@ -28,14 +31,14 @@ public class UserProfile implements Serializable {
     @OneToOne    @JoinColumn(unique = true)
     private User user;
 
-    @OneToMany(mappedBy = "userProfile")
+
+    @OneToMany(mappedBy = "userProfile",fetch= LAZY) @JsonIgnoreProperties("userProfile")
     private Set<OrderList> orderLists = new HashSet<>();
-    @OneToMany(mappedBy = "userProfile")
+    @OneToMany(mappedBy = "userProfile",fetch= LAZY) @JsonIgnoreProperties("userProfile")
     private Set<InventoryLog> inventoryLogs = new HashSet<>();
-    @OneToMany(mappedBy = "userProfile")
+    @OneToMany(mappedBy = "userProfile",fetch= LAZY) @JsonIgnoreProperties("userProfile")
     private Set<OrderTracker> orderTrackers = new HashSet<>();
-    @OneToOne(mappedBy = "userProfile")
-    @JsonIgnore
+    @OneToOne(mappedBy = "userProfile",fetch= LAZY)   @JsonIgnoreProperties("userProfile")
     private Cart cart;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

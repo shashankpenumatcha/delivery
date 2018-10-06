@@ -29,7 +29,7 @@ public class Cart implements Serializable {
     @OneToOne    @JoinColumn(unique = true)
     private UserProfile userProfile;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart",cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
     private Set<CartItems> cartItems = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

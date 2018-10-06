@@ -2,19 +2,25 @@ package io.shashank.penumatcha.delivery.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.shashank.penumatcha.delivery.domain.CartItems;
+import io.shashank.penumatcha.delivery.domain.UserProfile;
 import io.shashank.penumatcha.delivery.repository.CartItemsRepository;
+import io.shashank.penumatcha.delivery.repository.UserProfileRepository;
+import io.shashank.penumatcha.delivery.service.UserService;
 import io.shashank.penumatcha.delivery.web.rest.errors.BadRequestAlertException;
 import io.shashank.penumatcha.delivery.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -30,8 +36,14 @@ public class CartItemsResource {
 
     private final CartItemsRepository cartItemsRepository;
 
-    public CartItemsResource(CartItemsRepository cartItemsRepository) {
+    private final UserService userService;
+
+    private final UserProfileRepository userProfileRepository;
+
+    public CartItemsResource(CartItemsRepository cartItemsRepository,UserService userService,UserProfileRepository userProfileRepository) {
         this.cartItemsRepository = cartItemsRepository;
+        this.userService = userService;
+        this.userProfileRepository = userProfileRepository;
     }
 
     /**
@@ -47,6 +59,13 @@ public class CartItemsResource {
         log.debug("REST request to save CartItems : {}", cartItems);
         if (cartItems.getId() != null) {
             throw new BadRequestAlertException("A new cartItems cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        String login = userService.getCurrentUserLogin();
+        UserProfile userProfile = userProfileRepository.findUserProfileByLogin(login);
+        if(userProfile==null){
+            Map error = new HashMap<String,String>();
+            error.put("error","User Profile needs to be created before adding to cart");
+            return new ResponseEntity<CartItems>(cartItems,HttpStatus.ACCEPTED);
         }
         CartItems result = cartItemsRepository.save(cartItems);
         return ResponseEntity.created(new URI("/api/cart-items/" + result.getId()))

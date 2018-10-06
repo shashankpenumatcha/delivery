@@ -28,6 +28,17 @@ public class OrderItems implements Serializable {
     @JsonIgnoreProperties("orderItems")
     private OrderList orderList;
 
+    private Long quantity;
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;

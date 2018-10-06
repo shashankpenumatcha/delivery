@@ -5,8 +5,9 @@ export interface ICartItems {
     id?: number;
     product?: IProduct;
     cart?: ICart;
+    quantity?: number;
 }
 
 export class CartItems implements ICartItems {
-    constructor(public id?: number, public product?: IProduct, public cart?: ICart) {}
+    constructor(public id?: number, public product?: IProduct, public cart?: ICart, quantity?: number) {}
 }

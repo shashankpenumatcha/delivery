@@ -25,9 +25,9 @@ public class OrderStatus implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "orderStatus")
+    @OneToMany(mappedBy = "orderStatus",fetch=FetchType.LAZY)
     private Set<OrderTracker> orderTrackers = new HashSet<>();
-    @OneToMany(mappedBy = "orderStatus")
+    @OneToMany(mappedBy = "orderStatus",fetch=FetchType.LAZY)
     private Set<OrderList> orderLists = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

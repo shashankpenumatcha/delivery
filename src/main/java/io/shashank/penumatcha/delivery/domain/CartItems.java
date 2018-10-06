@@ -28,6 +28,16 @@ public class CartItems implements Serializable {
     @JsonIgnoreProperties("cartItems")
     private Cart cart;
 
+    private Float quantity;
+
+    public Float getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Float quantity) {
+        this.quantity = quantity;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;

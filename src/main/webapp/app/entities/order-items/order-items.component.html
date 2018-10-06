@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span>Order Items</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-order-items" [routerLink]="['/order-items/new']">
+        <button *ngIf="1!=1" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-order-items" [routerLink]="['/order-items/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Order Items
@@ -17,6 +17,8 @@
             <th><span>ID</span></th>
             <th><span>Product</span></th>
             <th><span>Order List</span></th>
+            <th><span>Quantity</span></th>
+
             <th></th>
             </tr>
             </thead>
@@ -25,12 +27,17 @@
                 <td><a [routerLink]="['/order-items', orderItems.id, 'view' ]">{{orderItems.id}}</a></td>
                 <td>
                     <div *ngIf="orderItems.product">
-                        <a [routerLink]="['../product', orderItems.product?.id, 'view' ]" >{{orderItems.product?.id}}</a>
+                        <a [routerLink]="['../product', orderItems.product?.id, 'view' ]" >{{orderItems.product?.name}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="orderItems.orderList">
-                        <a [routerLink]="['../order-list', orderItems.orderList?.id, 'view' ]" >{{orderItems.orderList?.id}}</a>
+                        <a [routerLink]="['../order-list', orderItems.orderList?.id, 'view' ]" >{{orderItems.orderList?.userProfile?.user?.login}}</a>
+                    </div>
+                </td>
+                <td>
+                <div *ngIf="orderItems.quantity">
+                         {{orderItems.quantity}}
                     </div>
                 </td>
                 <td class="text-right">

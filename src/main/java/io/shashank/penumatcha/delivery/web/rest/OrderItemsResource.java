@@ -49,6 +49,10 @@ public class OrderItemsResource {
             throw new BadRequestAlertException("A new orderItems cannot already have an ID", ENTITY_NAME, "idexists");
         }
         OrderItems result = orderItemsRepository.save(orderItems);
+
+        //remove quantity
+
+
         return ResponseEntity.created(new URI("/api/order-items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

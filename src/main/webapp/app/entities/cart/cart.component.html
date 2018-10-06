@@ -26,7 +26,7 @@
                 <td>{{cart.lastUpdated | date:'medium'}}</td>
                 <td>
                     <div *ngIf="cart.userProfile">
-                        <a [routerLink]="['../user-profile', cart.userProfile?.id, 'view' ]" >{{cart.userProfile?.id}}</a>
+                        <a [routerLink]="['../user-profile', cart.userProfile?.id, 'view' ]" >{{cart.userProfile?.user?.login}}</a>
                     </div>
                 </td>
                 <td class="text-right">

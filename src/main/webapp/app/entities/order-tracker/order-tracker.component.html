@@ -33,12 +33,12 @@
                 </td>
                 <td>
                     <div *ngIf="orderTracker.orderStatus">
-                        <a [routerLink]="['../order-status', orderTracker.orderStatus?.id, 'view' ]" >{{orderTracker.orderStatus?.id}}</a>
+                        <a [routerLink]="['../order-status', orderTracker.orderStatus?.id, 'view' ]" >{{orderTracker.orderStatus?.name}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="orderTracker.userProfile">
-                        <a [routerLink]="['../user-profile', orderTracker.userProfile?.id, 'view' ]" >{{orderTracker.userProfile?.id}}</a>
+                        <a [routerLink]="['../user-profile', orderTracker.userProfile?.id, 'view' ]" >{{orderTracker.userProfile?.user?.login}}</a>
                     </div>
                 </td>
                 <td class="text-right">

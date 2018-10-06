@@ -33,12 +33,12 @@
                 <td>{{inventoryLog.quantity}}</td>
                 <td>
                     <div *ngIf="inventoryLog.product">
-                        <a [routerLink]="['../product', inventoryLog.product?.id, 'view' ]" >{{inventoryLog.product?.id}}</a>
+                        <a [routerLink]="['../product', inventoryLog.product?.id, 'view' ]" >{{inventoryLog.product?.name}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="inventoryLog.userProfile">
-                        <a [routerLink]="['../user-profile', inventoryLog.userProfile?.id, 'view' ]" >{{inventoryLog.userProfile?.id}}</a>
+                        <a [routerLink]="['../user-profile', inventoryLog.userProfile?.id, 'view' ]" >{{inventoryLog.userProfile?.user?.login}}</a>
                     </div>
                 </td>
                 <td class="text-right">
