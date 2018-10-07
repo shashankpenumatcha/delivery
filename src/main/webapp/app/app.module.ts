@@ -20,6 +20,7 @@ import { DeliveryEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
+import { DeliveryListingModule } from 'app/pages/listing';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         DeliveryCoreModule,
         DeliveryHomeModule,
         DeliveryAccountModule,
-        DeliveryEntityModule
+        DeliveryEntityModule,
+        DeliveryListingModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],

@@ -54,7 +54,7 @@ export class JhiLoginModalComponent implements AfterViewInit {
                 this.authenticationError = false;
                 this.activeModal.dismiss('login success');
                 if (this.router.url === '/register' || /^\/activate\//.test(this.router.url) || /^\/reset\//.test(this.router.url)) {
-                    this.router.navigate(['']);
+                    this.router.navigate(['listing']);
                 }
 
                 this.eventManager.broadcast({
@@ -68,6 +68,8 @@ export class JhiLoginModalComponent implements AfterViewInit {
                 if (redirect) {
                     this.stateStorageService.storeUrl(null);
                     this.router.navigate([redirect]);
+                } else {
+                    this.router.navigate(['listing']);
                 }
             })
             .catch(() => {

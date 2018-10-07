@@ -1,5 +1,4 @@
 <div class="modal-header">
-    <h4 class="modal-title">Sign in</h4>
     <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')"><span aria-hidden="true">x</span>
     </button>
 </div>
@@ -28,16 +27,13 @@
                         <span>Remember me</span>
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button style="background:#198C19;width:100%;margin-top:15px;" type="submit" class="btn btn-primary">Sign in</button>
             </form>
             <p></p>
-            <div class="alert alert-warning">
-                <a class="alert-link" (click)="requestResetPassword()">Did you forget your password?</a>
+            <div style="text-align:center;display:block;font-size:12px;margin-bottom:30px;font-weight:normal">
+                <a style="font-weight:normal" (click)="requestResetPassword()">Did you forget your password?</a>
             </div>
-            <div class="alert alert-warning">
-                <span>You don't have an account yet?</span>
-                <a class="alert-link" (click)="register()">Register a new account</a>
-            </div>
+
         </div>
     </div>
 </div>
