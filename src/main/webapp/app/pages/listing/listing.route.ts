@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import {UserRouteAccessService} from 'app/core';
+import { UserRouteAccessService } from 'app/core';
 import { ListingComponent } from './';
 
 export const LISTING_ROUTE: Route = {
@@ -7,8 +7,7 @@ export const LISTING_ROUTE: Route = {
     component: ListingComponent,
     data: {
         authorities: ['ROLE_USER'],
-        pageTitle: 'Listings'
+        pageTitle: 'Products'
     },
     canActivate: [UserRouteAccessService]
-
 };

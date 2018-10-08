@@ -3,14 +3,13 @@ Navbar
 ========================================================================== */
 .navbar-version {
     font-size: 10px;
-    color: #198C19;
+    color: #198c19;
 }
 
 .jh-navbar {
     background-color: transparent;
     padding: 0.2em 1em;
     box-shadow: 5px 1px 19px -2px #8888886e;
-
 }
 
 .jh-navbar .profile-image {
@@ -23,7 +22,7 @@ Navbar
 .jh-navbar .dropdown-item.active,
 .jh-navbar .dropdown-item.active:focus,
 .jh-navbar .dropdown-item.active:hover {
-    background-color: #198C19;
+    background-color: #198c19;
 }
 
 .jh-navbar .dropdown-toggle::after {
@@ -36,7 +35,7 @@ Navbar
 
 .jh-navbar .navbar-nav .nav-item {
     margin-left: 1.5rem;
-    color:#198C19!important;
+    color: #198c19 !important;
 }
 
 .jh-navbar a.nav-link {
@@ -44,13 +43,13 @@ Navbar
 }
 
 .jh-navbar .jh-navbar-toggler {
-    color: #198C19;
+    color: #198c19;
     font-size: 1.5em;
     padding: 10px;
 }
 
 .jh-navbar .jh-navbar-toggler:hover {
-    color: #fff;
+    color: #198c19ff;
 }
 
 @media screen and (min-width: 768px) {
@@ -73,8 +72,8 @@ Navbar
 /* ==========================================================================
 Logo styles
 ========================================================================== */
-.navbar-brand{
-    color:#198C19;
+.navbar-brand {
+    color: #198c19;
 }
 .navbar-brand.logo {
     padding: 5px 15px;
@@ -94,6 +93,6 @@ Logo styles
     width: 70px;
 }
 
-li a  span{
-    color:#198C19!important;
+li a span {
+    color: #198c19 !important;
 }

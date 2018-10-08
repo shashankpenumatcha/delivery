@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { errorRoute, navbarRoute } from './layouts';
+import { errorRoute, navbarRoute, menuRoute } from './layouts';
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
+import { HomeComponent } from 'app/home';
+import { ListingComponent } from 'app/pages/listing';
 
-const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
+const LAYOUT_ROUTES = [navbarRoute, ...errorRoute, menuRoute];
 
 @NgModule({
     imports: [
