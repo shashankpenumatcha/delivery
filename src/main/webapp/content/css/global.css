@@ -9,6 +9,10 @@ h3,
 h4 {
     font-weight: 300;
 }
+html {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
 
 body {
     background: #e4e5e6;

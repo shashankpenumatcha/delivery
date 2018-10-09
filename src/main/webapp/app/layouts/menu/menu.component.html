@@ -1,7 +1,9 @@
 <div style="width:100%;position:fixed;height: 50px;bottom:0px;border:1px solid #00000026;background:#fff">
-    <div style="width:24%;display: inline-block;text-align: center;padding:4px">
-    <div>
-            <img src="../../../content/images/png/p.png"/>
+    <div routerLink="/listing" style="outline:none;width:24%;display: inline-block;text-align: center;padding:4px">
+    <div >
+            <img *ngIf="router.url==='/listing'" src="../../../content/images/png/p.png"/>
+            <img *ngIf="router.url!=='/listing'" src="../../../content/images/png/pb.png"/>
+
 
     </div>
     <div style="font-size: 12px;">
@@ -26,9 +28,10 @@
                 Cart
             </div>
     </div>
-    <div style="width:24%;display: inline-block;text-align: center">
+    <div routerLink="/my-account" style="width:24%;display: inline-block;text-align: center;outline:none;">
             <div>
-                    <img src="../../../content/images/png/ab.png"/>
+                    <img *ngIf="router.url!=='/my-account'" src="../../../content/images/png/ab.png"/>
+                    <img *ngIf="router.url==='/my-account'" src="../../../content/images/png/a.png"/>
 
                 </div>
                 <div style="font-size: 12px;">
