@@ -1,6 +1,9 @@
 package io.shashank.penumatcha.delivery.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 
@@ -19,6 +22,7 @@ public class Cart implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +30,13 @@ public class Cart implements Serializable {
     @Column(name = "last_updated")
     private ZonedDateTime lastUpdated;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @JsonIgnore
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(unique = true)
     private UserProfile userProfile;
 
-    @OneToMany(mappedBy = "cart",cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "cart",cascade=CascadeType.REMOVE, fetch=FetchType.EAGER)
+    @JsonIgnoreProperties("cart")
     private Set<CartItems> cartItems = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

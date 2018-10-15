@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { IProduct } from 'app/shared/model//product.model';
 
 @Component({
     selector: 'jhi-listing',
@@ -9,7 +10,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
     styleUrls: ['listing.css']
 })
 export class ListingComponent implements OnInit {
-    products: any[];
+    products?: IProduct[];
     loading = true;
     constructor(private http: HttpClient) {}
     ngOnInit() {

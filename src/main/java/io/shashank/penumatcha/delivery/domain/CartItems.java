@@ -24,7 +24,7 @@ public class CartItems implements Serializable {
     @JsonIgnoreProperties("cartItems")
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JsonIgnoreProperties("cartItems")
     private Cart cart;
 
