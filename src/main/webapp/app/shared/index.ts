@@ -11,3 +11,4 @@ export * from './shared-common.module';
 export * from './shared.module';
 export * from './util/datepicker-adapter';
 export * from './add-to-cart/add-to-cart.component';
+export * from './service/userCart.service';

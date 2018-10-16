@@ -25,30 +25,11 @@
                     <p style="margin:0px;font-size:12px;"><span>&#8377;</span>{{product.pricePerUnit}}/{{product.unit.name}}</p>
                     <div style="width: 675px;max-width: 71%;border-top: 1px solid #82838261;margin-top: 10px">
                         <p style="font-weight:bold;margin-top:15px;font-size:10px;display: inline-block;width:45%;color:#4b4b4b75">Mininum {{product.minimumQuantity}} {{product.unit.name}}s</p>
-                        <jhi-add-to-cart [product]='product'></jhi-add-to-cart>
+                        <jhi-add-to-cart (updateList)="updateList($event)" [product]='product'></jhi-add-to-cart>
                     </div>
                 </div>
             </div>
         </ng-container>
-
-<!--         saved for added to cart
- -->          <!--   <div style="max-height:100px" class="timeline-item">
-                <div style="height:100px;width:100px;display:inline-block;" class="animated-background">
-                </div>
-                <div style="padding:5px 15px;position:absolute;display:inline-block;width:100%">
-                    <p style="font-weight:bold;margin: 0px;font-size: 16px">Iceberg Lettuce</p>
-                    <p style="margin:0px;font-size:12px;">&#8377;30/Kg</p>
-                    <div style="border-top: 1px solid #82838261;width: 70%;margin-top: 10px">
-                        <p style="font-weight:bold;margin-top:15px;font-size:10px;display: inline-block;width:45%;color:#4b4b4b75">Mininum 2 Kgs</p>
-                        <div style=" width:135px!important;   font-size: 14px;display: inline-block;float: right;margin-top: 7px;border: 2px solid #318c19;
-                        padding: 3px 0px;text-align: center;width: auto;color: #318c19;
-                        font-weight: bold;"><span style="float:left;display: inline-block;width:33%">-</span>
-                        <span style="float:left;display: inline-block;width:33%">2</span>
-                        <span style="float:right;display: inline-block;width:33%">+</span></div>
-
-                    </div>
-                </div>
-            </div> -->
     </div>
 </div>
 

@@ -35,7 +35,6 @@ public class Product implements Serializable {
     @Column(name = "active")
     private Boolean active;
 
-    @JsonIgnore
     @Column(name = "quantity")
     private Float quantity;
 

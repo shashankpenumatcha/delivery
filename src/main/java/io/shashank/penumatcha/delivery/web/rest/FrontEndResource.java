@@ -73,7 +73,7 @@ public class FrontEndResource {
     @Transactional
     public ResponseEntity<Cart> createCartItems(@RequestBody CartItemDTO cartItems) throws URISyntaxException {
         log.debug("REST request to add to cart : {}", cartItems);
-        Cart cartItemsList = null;
+        Cart cart = null;
         final MultiValueMap<String, String> error = new HttpHeaders();
         if (cartItems.getId() != null) {
             throw new BadRequestAlertException("A new cartItems cannot already have an ID", "cart items", "idexists");
@@ -83,26 +83,27 @@ public class FrontEndResource {
         if (userProfile == null) {
             log.debug("UserProfile not found: {}");
             error.put("error", Collections.singletonList("User Profile needs to be created before adding to cart"));
-            return new ResponseEntity(cartItemsList, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (cartItems.getProductId() == null) {
             log.debug("please select a product to add to cart: {}");
             error.put("error", Collections.singletonList("please select a product to add to cart"));
-            return new ResponseEntity(cartItemsList, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         CartItems cartItem = new CartItems();
         log.debug("Fetching product from repository by id: {}", cartItems.getProductId());
         Product product = productRepository.getOne(cartItems.getProductId());
+        log.debug(product.getQuantity().toString());
         log.debug("Checking product to add to cart : {}", cartItems.getProductId());
         if (null == product || null == product.getId()) {
             log.debug("product not found: {}", product.getId());
             error.put("error", Collections.singletonList("product not found"));
-            return new ResponseEntity(cartItemsList, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (cartItems.getQuantity() == null || cartItems.getQuantity() <= 0) {
             log.debug("Please try increasing quantity : {}");
             error.put("error", Collections.singletonList("please send quantity"));
-            return new ResponseEntity(cartItemsList, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         CartItems existingCartItem = cartItemsRepository.getProductInCart(product.getId());
         Map<String, Object> productValid = null;
@@ -116,7 +117,7 @@ public class FrontEndResource {
             if (productValid.containsKey("error")) {
                 log.debug((String) productValid.get("error"));
                 error.put("error", Collections.singletonList((String) productValid.get("error")));
-                return new ResponseEntity(cartItemsList, error, HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
             }
             if (productValid.containsKey("quantity")) {
                 log.debug("setting quantity to the product to add to cart");
@@ -125,38 +126,42 @@ public class FrontEndResource {
         }
         cartItem.setProduct(product);
         log.debug("getting cart for login: {}", userProfile.getId());
-        Cart cart = cartRepository.findByLogin(userProfile.getId());
+        cart = cartRepository.findByLogin(userProfile.getId());
         if (cart != null) {
             log.debug("found cart for login: {}", userProfile.getId());
             cartItem.setCart(cart);
         } else {
             log.debug("creating a cart for login: {}", userProfile.getId());
             cart = new Cart();
-            cart.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
             cart.setUserProfile(userProfile);
+            cart.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+            log.debug("saving cart for login: {}", userProfile.getId());
+            cart = cartRepository.save(cart);
         }
-        log.debug("saving cart for login: {}", userProfile.getId());
-        cart = cartRepository.save(cart);
+
         if (cart != null) {
             log.debug("cart created for login: {}", userProfile.getId());
-
             cartItem.setCart(cart);
         } else {
             log.debug("couldn't create cart: {}", userProfile.getId());
             error.put("error", Collections.singletonList("error while creating cart{}"));
-            return new ResponseEntity(cartItemsList, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
         CartItems result = cartItemsRepository.save(cartItem);
 
-        if (result != null) {
-            cartItemsList=cartItemsRepository.getCartItemsForUser(userProfile.getId());
+        if (result != null && cart!=null) {
+            Set<CartItems> returnCartItems = cartItemsRepository.getCartItemsForUser(userProfile.getId());
+            cart.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+            cart.setCartItems(returnCartItems);
+            cart = cartRepository.save(cart);
             log.debug("item added to card : {}", userProfile.getId());
         } else {
             log.debug("couldn't add product to cart: {}", userProfile.getId());
             error.put("error", Collections.singletonList("error while adding to cart"));
-            return new ResponseEntity(cartItemsList, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(cartItemsList, HttpStatus.CREATED);
+        return new ResponseEntity(cart, HttpStatus.CREATED);
     }
 
     /**
@@ -170,29 +175,30 @@ public class FrontEndResource {
     @PutMapping("/updateCart")
     @Timed
     @Transactional
-    public ResponseEntity<CartItemDTO> updateCart(@RequestBody CartItemDTO cartItemDTO) throws URISyntaxException {
+    public ResponseEntity<Cart> updateCart(@RequestBody CartItemDTO cartItemDTO) throws URISyntaxException {
         log.debug("REST request to update cart : {}", cartItemDTO);
         final MultiValueMap<String, String> error = new HttpHeaders();
+        Cart cart = null;
         if (cartItemDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", "cart-items", "idnull");
         }
         if (cartItemDTO.getProductId() != null || cartItemDTO.getCartId() != null) {
             error.put("error", Collections.singletonList("only quantity can be changed"));
-            return new ResponseEntity<CartItemDTO>(cartItemDTO, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (cartItemDTO.getQuantity() == null || cartItemDTO.getQuantity() <= 0) {
             error.put("error", Collections.singletonList("please pass quantity"));
-            return new ResponseEntity<CartItemDTO>(cartItemDTO, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         CartItems oldCartItem = cartItemsRepository.getOne(cartItemDTO.getId());
         if (null == oldCartItem) {
             error.put("error", Collections.singletonList("product isnt in your cart anymore"));
-            return new ResponseEntity<CartItemDTO>(cartItemDTO, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         Product product = oldCartItem.getProduct();
         if (product == null) {
             error.put("error", Collections.singletonList("product is null"));
-            return new ResponseEntity<CartItemDTO>(cartItemDTO, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         log.debug("Checking if product is available in inventory  for: {}");
         Map<String, Object> productValid = frontEndService.checkProductAvailability(cartItemDTO.getQuantity(), product);
@@ -200,7 +206,7 @@ public class FrontEndResource {
             if (productValid.containsKey("error")) {
                 log.debug((String) productValid.get("error"));
                 error.put("error", Collections.singletonList((String) productValid.get("error")));
-                return new ResponseEntity<CartItemDTO>(cartItemDTO, error, HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
             }
             if (productValid.containsKey("quantity")) {
                 log.debug("setting quantity to the product to add to cart");
@@ -209,10 +215,21 @@ public class FrontEndResource {
         }
         CartItems result = cartItemsRepository.save(oldCartItem);
         if (result != null) {
-            return new ResponseEntity<CartItemDTO>(cartItemDTO, HttpStatus.OK);
+            Set<CartItems> returnCartItems = cartItemsRepository.getCartItemsByCart(result.getCart().getId());
+            cart=result.getCart();
+            cart.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+            cart.setCartItems(returnCartItems);
+            try{
+                cart = cartRepository.save(cart);
+            }catch(Exception e){
+                error.put("error", Collections.singletonList("error while updating the cart, exception is ::"+e.getMessage()));
+                return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return new ResponseEntity(cart, HttpStatus.OK);
         }
         error.put("error", Collections.singletonList("error while updating the cart"));
-        return new ResponseEntity<CartItemDTO>(cartItemDTO, error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -250,12 +267,41 @@ public class FrontEndResource {
      */
     @DeleteMapping("/removeFromCart/{ids}")
     @Timed
-    public ResponseEntity<Void> removeFromCart(@PathVariable List<Long> ids) {
+    public ResponseEntity<Cart> removeFromCart(@PathVariable List<Long> ids) {
         log.debug("REST request to delete CartItems : {}", ids);
+        Cart cart = null;
         for(Long id:ids){
-            cartItemsRepository.deleteById(id);
+            Optional<CartItems> cartItem = cartItemsRepository.findById(id);
+            if(cartItem.isPresent()){
+                cartItemsRepository.deleteById(id);
+                Set<CartItems> returnCartItems = cartItemsRepository.getCartItemsByCart(cartItem.get().getId());
+                cart=cartItem.get().getCart();
+                cart.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+                cart.setCartItems(returnCartItems);
+            }
         }
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cartitem", ids.toString())).build();
+        return new ResponseEntity(cart, HttpStatus.OK);
+    }
+
+
+    /**
+     * GET  /getCartForUser : delete the "id" cartItems.
+     *
+
+     */
+    @GetMapping("/getCartForUser")
+    @Timed
+    public ResponseEntity<Cart> getCartForUser() {
+        log.debug("REST request to get  CArt for User");
+        UserProfile userProfile = frontEndService.getCurrentUserProfile();
+        Cart cart = null;
+        cart = cartItemsRepository.getCartForUser(userProfile.getId());
+        if(cart==null){
+            final MultiValueMap<String, String> error = new HttpHeaders();
+            error.put("error", Collections.singletonList("error while updating the cart, exception is ::"));
+            return new ResponseEntity(null, HttpStatus.OK);
+        }
+        return new ResponseEntity(cart, HttpStatus.OK);
     }
 
 }

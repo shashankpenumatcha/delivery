@@ -59,6 +59,12 @@ public class FrontEndService {
         log.debug("fetching products minimum quantity : {}");
         if (product.getMinimumQuantity() != null) {
             log.debug("Checking if minim quantity requirement is met: {}");
+            log.debug(quantity.toString());
+            log.debug(product.getMinimumQuantity().toString());
+            log.debug(product.getQuantity().toString());
+
+
+
             if (quantity >= product.getMinimumQuantity()
                 && quantity <= product.getQuantity()) {
                 log.debug("Minimum quantity requirement met: {}");

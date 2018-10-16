@@ -27,7 +27,8 @@ export class Product implements IProduct {
         public unit?: IUnit,
         public inventoryLogs?: IInventoryLog[],
         public cartItems?: ICartItems[],
-        public orderItems?: IOrderItems[]
+        public orderItems?: IOrderItems[],
+        public inCart?: number
     ) {
         this.active = this.active || false;
     }
