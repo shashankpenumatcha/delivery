@@ -201,36 +201,38 @@ public class FrontEndResource {
             return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         log.debug("Checking if product is available in inventory  for: {}");
-        Map<String, Object> productValid = frontEndService.checkProductAvailability(cartItemDTO.getQuantity(), product);
-        if (productValid != null) {
-            if (productValid.containsKey("error")) {
-                log.debug((String) productValid.get("error"));
-                error.put("error", Collections.singletonList((String) productValid.get("error")));
-                return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            if (productValid.containsKey("quantity")) {
-                log.debug("setting quantity to the product to add to cart");
-                oldCartItem.setQuantity((Float) productValid.get("quantity"));
+        if(cartItemDTO.getQuantity()<product.getMinimumQuantity()){
+            cartItemsRepository.deleteById(cartItemDTO.getId());
+        }else {
+            Map<String, Object> productValid = frontEndService.checkProductAvailability(cartItemDTO.getQuantity(), product);
+            if (productValid != null) {
+                if (productValid.containsKey("error")) {
+                    log.debug((String) productValid.get("error"));
+                    error.put("error", Collections.singletonList((String) productValid.get("error")));
+                    return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                if (productValid.containsKey("quantity")) {
+                    log.debug("setting quantity to the product to add to cart");
+                    oldCartItem.setQuantity((Float) productValid.get("quantity"));
+                }
+                CartItems result = cartItemsRepository.save(oldCartItem);
             }
         }
-        CartItems result = cartItemsRepository.save(oldCartItem);
-        if (result != null) {
-            Set<CartItems> returnCartItems = cartItemsRepository.getCartItemsByCart(result.getCart().getId());
-            cart=result.getCart();
-            cart.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
-            cart.setCartItems(returnCartItems);
-            try{
-                cart = cartRepository.save(cart);
-            }catch(Exception e){
-                error.put("error", Collections.singletonList("error while updating the cart, exception is ::"+e.getMessage()));
-                return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
-            return new ResponseEntity(cart, HttpStatus.OK);
+        Set<CartItems> returnCartItems = cartItemsRepository.getCartItemsByCart(oldCartItem.getCart().getId());
+        cart=oldCartItem.getCart();
+        cart.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+        cart.setCartItems(returnCartItems);
+        try{
+            cart = cartRepository.save(cart);
+        }catch(Exception e){
+            error.put("error", Collections.singletonList("error while updating the cart, exception is ::"+e.getMessage()));
+            return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        error.put("error", Collections.singletonList("error while updating the cart"));
-        return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(cart, HttpStatus.OK);
     }
+
+
+
 
     /**
      * GET  /products : get all the products.

@@ -63,8 +63,6 @@ public class FrontEndService {
             log.debug(product.getMinimumQuantity().toString());
             log.debug(product.getQuantity().toString());
 
-
-
             if (quantity >= product.getMinimumQuantity()
                 && quantity <= product.getQuantity()) {
                 log.debug("Minimum quantity requirement met: {}");

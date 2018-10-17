@@ -10,12 +10,12 @@ import { Observable } from 'rxjs';
 @Component({
     selector: 'jhi-listing',
     templateUrl: './listing.component.html',
-    styleUrls: ['listing.css'],
-    providers: [UserCartService]
+    styleUrls: ['listing.css']
 })
 export class ListingComponent implements OnInit {
     _products?: IProduct[];
     products?: Product[];
+    subscribed?: boolean;
 
     loading = true;
     constructor(private http: HttpClient, private cartService: UserCartService) {}
@@ -28,7 +28,12 @@ export class ListingComponent implements OnInit {
                         if (response.body !== undefined && response.body.length > 0) {
                             this.setProducts(response.body);
                             this.loading = false;
-                            this.setInCartFromCart(this.cartService.getCart(), this.products);
+                            if (!this.subscribed) {
+                                this.cartService.data.subscribe(c => {
+                                    this.subscribed = true;
+                                    this.setInCartFromCart(this.cartService.getCart(), this.products);
+                                });
+                            }
                         }
                     },
                     (error: any) => {
@@ -51,6 +56,17 @@ export class ListingComponent implements OnInit {
         });
     }
 
+    passCart($event) {
+        if (!this.subscribed) {
+            this.cartService.setCart($event);
+            this.setInCartFromCart(this.cartService.getCart(), this.products);
+            this.cartService.data.subscribe(c => {
+                this.subscribed = true;
+                this.setInCartFromCart(this.cartService.getCart(), this.products);
+            });
+        }
+    }
+
     setProducts(products: IProduct[]) {
         this.products = products;
     }
@@ -68,9 +84,5 @@ export class ListingComponent implements OnInit {
             });
             return product;
         });
-    }
-
-    updateList($event: any) {
-        this.setInCartFromCart($event, this.products);
     }
 }

@@ -5,6 +5,8 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { VERSION } from 'app/app.constants';
 import { Principal, LoginModalService, LoginService } from 'app/core';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
+import { UserCartService } from 'app/shared/service/userCart.service';
+import { ICart } from 'app/shared/model/cart.model';
 
 @Component({
     selector: 'jhi-menu',
@@ -18,13 +20,14 @@ export class MenuComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
-
+    cartCount: number;
     constructor(
         private loginService: LoginService,
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
-        public router: Router
+        public router: Router,
+        private cartService: UserCartService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -34,6 +37,13 @@ export class MenuComponent implements OnInit {
         this.profileService.getProfileInfo().then(profileInfo => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
+        });
+
+        this.cartService.data.subscribe(c => {
+            console.log(c);
+            if (c !== undefined && c.cartItems !== undefined) {
+                this.cartCount = c.cartItems.length;
+            }
         });
     }
 
