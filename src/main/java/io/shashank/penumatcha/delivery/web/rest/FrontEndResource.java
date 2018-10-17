@@ -186,7 +186,7 @@ public class FrontEndResource {
             error.put("error", Collections.singletonList("only quantity can be changed"));
             return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if (cartItemDTO.getQuantity() == null || cartItemDTO.getQuantity() <= 0) {
+        if (cartItemDTO.getQuantity() == null || cartItemDTO.getQuantity() < 0) {
             error.put("error", Collections.singletonList("please pass quantity"));
             return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }

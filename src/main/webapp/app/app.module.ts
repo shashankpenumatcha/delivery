@@ -11,7 +11,7 @@ import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
 import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
-import { DeliverySharedModule, UserCartService } from 'app/shared';
+import { DeliverySharedModule } from 'app/shared';
 import { DeliveryCoreModule } from 'app/core';
 import { DeliveryAppRoutingModule } from './app-routing.module';
 import { DeliveryHomeModule } from './home/home.module';
@@ -22,6 +22,7 @@ import * as moment from 'moment';
 import { JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, MenuComponent } from './layouts';
 import { DeliveryListingModule } from 'app/pages/listing';
 import { MyAccountModule } from './pages/my-account/my-account.module';
+import { UserCartService } from './shared/service/userCart.service';
 
 @NgModule({
     imports: [
@@ -63,8 +64,7 @@ import { MyAccountModule } from './pages/my-account/my-account.module';
             useClass: NotificationInterceptor,
             multi: true,
             deps: [Injector]
-        },
-        UserCartService
+        }
     ],
     bootstrap: [JhiMainComponent]
 })

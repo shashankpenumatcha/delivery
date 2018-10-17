@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IProduct, Product } from 'app/shared/model//product.model';
 import { UserCartService } from 'app/shared/service/userCart.service';
 import { ICart, Cart } from 'app/shared/model/cart.model';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'jhi-listing',
