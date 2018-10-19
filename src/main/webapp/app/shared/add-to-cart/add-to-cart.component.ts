@@ -11,6 +11,7 @@ import { ICartItems, CartItems } from '../model/cart-items.model';
 })
 export class AddToCartComponent implements AfterViewInit {
     @Input() product: Product;
+    @Input() cartLoading: boolean;
     @Output() passCart = new EventEmitter();
     quantity = 0;
     cartItems: ICartItems[];
@@ -18,44 +19,49 @@ export class AddToCartComponent implements AfterViewInit {
     constructor(private http: HttpClient, private userCartService: UserCartService) {}
 
     add() {
-        this.http
-            .post<any>(
-                '/api/addToCart',
-                { productId: this.product.id, quantity: this.product.inCart > 0 ? 1 : this.product.minimumQuantity },
-                { observe: 'response' }
-            )
-            .subscribe(
-                (res: HttpResponse<ICart>) => {
-                    if (res.body !== undefined) {
-                        this.userCartService.setCart(res.body);
-                        this.passCart.emit(this.userCartService.getCart());
+        if (this.cartLoading === false) {
+            this.userCartService.setLoading(true);
+            this.http
+                .post<any>(
+                    '/api/addToCart',
+                    { productId: this.product.id, quantity: this.product.inCart > 0 ? 1 : this.product.minimumQuantity },
+                    { observe: 'response' }
+                )
+                .subscribe(
+                    (res: HttpResponse<ICart>) => {
+                        if (res.body !== undefined) {
+                            this.userCartService.setCart(res.body);
+                            this.passCart.emit(this.userCartService.getCart());
+                        }
+                        this.userCartService.setLoading(false);
+                    },
+                    () => {
+                        this.userCartService.setLoading(false);
                     }
-                },
-                () => {
-                    // handle error
-                }
-            );
+                );
+        }
     }
 
     subtract() {
-        this.cartItems = this.userCartService.getCart().cartItems.filter(ci => {
-            return ci.product.id === this.product.id;
-        });
-        this.http
-            .put<any>('/api/updateCart', { id: this.cartItems[0].id, quantity: this.product.inCart - 1 }, { observe: 'response' })
-            .subscribe(
-                (res: HttpResponse<ICart>) => {
-                    if (res.body !== undefined) {
-                        if (this.product.inCart === this.product.minimumQuantity) {
-                            this.product.inCart = 0;
+        if (this.cartLoading === false) {
+            this.userCartService.setLoading(true);
+            this.cartItems = this.userCartService.getCart().cartItems.filter(ci => {
+                return ci.product.id === this.product.id;
+            });
+            this.http
+                .put<any>('/api/updateCart', { id: this.cartItems[0].id, quantity: this.product.inCart - 1 }, { observe: 'response' })
+                .subscribe(
+                    (res: HttpResponse<ICart>) => {
+                        if (res.body !== undefined) {
+                            this.userCartService.setCart(res.body);
                         }
-                        this.userCartService.setCart(res.body);
+                        this.userCartService.setLoading(false);
+                    },
+                    () => {
+                        this.userCartService.setLoading(false);
                     }
-                },
-                () => {
-                    // handle error
-                }
-            );
+                );
+        }
     }
 
     ngAfterViewInit() {

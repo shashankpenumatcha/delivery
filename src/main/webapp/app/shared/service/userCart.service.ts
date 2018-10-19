@@ -8,8 +8,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class UserCartService {
     private _cart: ICart;
-    public cart = new BehaviorSubject(new Cart());
-
+    public cart = new BehaviorSubject(this._cart);
+    public loading = new BehaviorSubject(false);
     data = this.cart.asObservable();
 
     constructor(private http: HttpClient) {}
@@ -25,5 +25,9 @@ export class UserCartService {
     setCart(cart: ICart) {
         this._cart = cart;
         this.cart.next(this._cart);
+    }
+
+    setLoading(loading: boolean) {
+        this.loading.next(loading);
     }
 }

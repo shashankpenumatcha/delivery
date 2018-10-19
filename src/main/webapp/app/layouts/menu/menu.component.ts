@@ -40,7 +40,6 @@ export class MenuComponent implements OnInit {
         });
 
         this.cartService.data.subscribe(c => {
-            console.log(c);
             if (c !== undefined && c.cartItems !== undefined) {
                 this.cartCount = c.cartItems.length;
             }

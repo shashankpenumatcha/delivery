@@ -14,42 +14,50 @@ export class ListingComponent implements OnInit {
     _products?: IProduct[];
     products?: Product[];
     subscribed?: boolean;
-
     loading = true;
+    cartLoading = false;
     constructor(private http: HttpClient, private cartService: UserCartService) {}
+
     ngOnInit() {
-        this.cartService.loadCart().subscribe((res: ICart) => {
-            if (res !== undefined && res !== null) {
-                this.cartService.setCart(res);
-                this.getProducts().subscribe(
-                    (response: HttpResponse<IProduct[]>) => {
-                        if (response.body !== undefined && response.body.length > 0) {
-                            this.setProducts(response.body);
-                            this.loading = false;
-                            if (!this.subscribed) {
-                                this.cartService.data.subscribe(c => {
-                                    this.subscribed = true;
-                                    this.setInCartFromCart(this.cartService.getCart(), this.products);
-                                });
+        this.cartService.loading.subscribe(l => {
+            this.cartLoading = l;
+        });
+
+        this.cartService.data.subscribe(cart => {
+            if (cart === undefined || cart === null) {
+                this.cartService.loadCart().subscribe(res => {
+                    this.getProducts().subscribe(
+                        (response: HttpResponse<IProduct[]>) => {
+                            if (response.body !== undefined && response.body.length > 0) {
+                                this.setProducts(response.body);
+                                this.loading = false;
+                                if (res !== null && res !== undefined) {
+                                    this.cartService.setCart(res);
+                                }
+                                this.setInCartFromCart(res, this.products);
                             }
-                        }
-                    },
-                    (error: any) => {
-                        this.loading = false;
-                    }
-                );
-            } else {
-                this.getProducts().subscribe(
-                    (response: HttpResponse<IProduct[]>) => {
-                        if (response.body !== undefined && response.body.length > 0) {
-                            this.setProducts(response.body);
+                        },
+                        (error: any) => {
                             this.loading = false;
                         }
-                    },
-                    (error: any) => {
-                        this.loading = false;
-                    }
-                );
+                    );
+                });
+            } else {
+                if (this.products === undefined) {
+                    this.getProducts().subscribe(
+                        (response: HttpResponse<IProduct[]>) => {
+                            if (response.body !== undefined && response.body.length > 0) {
+                                this.setProducts(response.body);
+                                this.loading = false;
+                            }
+                        },
+                        (error: any) => {
+                            this.loading = false;
+                        }
+                    );
+                } else {
+                    this.setInCartFromCart(this.cartService.getCart(), this.products);
+                }
             }
         });
     }
@@ -74,13 +82,25 @@ export class ListingComponent implements OnInit {
     }
 
     setInCartFromCart(cart: Cart, products: Product[]) {
-        this.products = products.map(product => {
-            cart.cartItems.forEach(cartItem => {
-                if (product.id === cartItem.product.id) {
-                    product.inCart = cartItem.quantity;
+        if (cart !== undefined && cart !== null) {
+            this.products = products.map(product => {
+                let found = false;
+                cart.cartItems.forEach(cartItem => {
+                    if (product.id === cartItem.product.id) {
+                        product.inCart = cartItem.quantity;
+                        found = true;
+                    }
+                });
+                if (!found) {
+                    product.inCart = 0;
                 }
+                return product;
             });
-            return product;
-        });
+        } else {
+            this.products = products.map(product => {
+                product.inCart = 0;
+                return product;
+            });
+        }
     }
 }

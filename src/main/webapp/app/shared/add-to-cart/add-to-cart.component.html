@@ -1,4 +1,6 @@
-<ng-container *ngIf='product.inCart==undefined || product.inCart<product.minimumQuantity'>
+
+
+<ng-container *ngIf='product!=undefined && (product.inCart==undefined || product.inCart<product.minimumQuantity)'>
     <div (click)="add()" style="cursor:pointer;font-size: 14px;display: inline-block;float: right;margin-top: 7px;border: 1px solid #c7c7ca;
     padding: 3px 26px;text-align: center;width: auto;color: #318c19;
     font-weight: bold;">
@@ -7,7 +9,7 @@
     </div>
 </ng-container>
 
-<ng-container *ngIf='product.inCart!=undefined && product.inCart>=product.minimumQuantity'>
+<ng-container *ngIf='product!=undefined && product.inCart!=undefined && product.inCart>=product.minimumQuantity'>
     <div style=" width:135px!important;   font-size: 14px;display: inline-block;float: right;margin-top: 7px;border: 1px solid #c7c7ca;
         padding: 3px 0px;text-align: center;width: auto;color: #318c19;
         font-weight: bold;"><span (click)='subtract()' style=" cursor:pointer;float:left;display: inline-block;width:33%">-</span>

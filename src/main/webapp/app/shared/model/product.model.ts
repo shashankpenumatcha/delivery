@@ -14,6 +14,7 @@ export interface IProduct {
     inventoryLogs?: IInventoryLog[];
     cartItems?: ICartItems[];
     orderItems?: IOrderItems[];
+    inCart?: number;
 }
 
 export class Product implements IProduct {

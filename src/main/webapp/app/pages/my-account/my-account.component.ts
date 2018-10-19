@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
@@ -11,7 +11,7 @@ import { LoginService } from 'app/core/login/login.service';
     templateUrl: './my-account.html',
     styleUrls: ['myAccount.css']
 })
-export class MyAccountComponent implements OnInit {
+export class MyAccountComponent implements AfterViewInit {
     account: any;
     constructor(
         private http: HttpClient,
@@ -19,11 +19,11 @@ export class MyAccountComponent implements OnInit {
         private loginService: LoginService,
         private router: Router
     ) {}
-    ngOnInit() {
+
+    ngAfterViewInit() {
         this.accountService.get().subscribe((res: any) => {
             if (res.body !== null) {
                 this.account = res.body;
-                console.log(this.account);
             }
         });
     }

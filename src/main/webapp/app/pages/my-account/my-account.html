@@ -1,4 +1,5 @@
 <div style="padding-top:50px">
-<h2>{{account.firstName}}</h2>
+<div *ngIf="account==undefined" style="width:40%;height:39px;display: block" class="animated-background"></div>
+<h2 *ngIf="account!=undefined">{{account.firstName}}</h2>
 <p style="color:#7c7c7cc4;font-weight: bold;text-decoration: underline;font-size: 14px" (click)="logout()">Log Out</p>
 </div>

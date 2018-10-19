@@ -19,16 +19,17 @@
                 Orders
             </div>
     </div>
-    <div style="cursor:pointer;width:24%;display: inline-block;text-align: center">
+    <div [routerLink]="['/user-cart']" style="outline:none;cursor:pointer;width:24%;display: inline-block;text-align: center">
            <div>
-                <img src="../../../content/images/png/cb.png"/>
+                <img *ngIf="router.url==='/user-cart'" routerLinkActive="router-link-active"  src="../../../content/images/png/c.png"/>
+                <img  *ngIf="router.url!=='/user-cart'"  src="../../../content/images/png/cb.png"/>
 
             </div>
             <div style="font-size: 12px;">
                 Cart <span *ngIf="cartCount>0" style="display: inline-block;
                     width: 15px;
                     height: 15px;
-                    background: #318c19;
+                    background: #757973;
                     font-size: 62%;
                     padding: 1px;
                     border-radius: 100%;
