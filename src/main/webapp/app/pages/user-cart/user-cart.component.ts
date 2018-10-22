@@ -12,16 +12,23 @@ import { CartItems } from 'app/shared/model/cart-items.model';
 })
 export class UserCartComponent implements AfterViewInit {
     cart: ICart;
-    constructor(private http: HttpClient, private router: Router, private cartService: UserCartService) {}
+    total: number;
+    cartLoading = false;
 
+    constructor(private http: HttpClient, private router: Router, private cartService: UserCartService) {}
     ngAfterViewInit() {
+        this.cartService.loading.subscribe(l => {
+            this.cartLoading = l;
+        });
         this.http.get('api/getCartForUser').subscribe(res => {
             if (res !== null) {
                 this.cartService.setCart(res);
                 this.cartService.data.subscribe(cart => {
-                    if (cart !== undefined && cart !== null) {
+                    if (cart !== undefined) {
                         this.cart = cart;
-                        this.setInCartFromCart(this.cart);
+                        if (this.cart !== null) {
+                            this.setInCartFromCart(this.cart);
+                        }
                     }
                 });
             }
@@ -30,10 +37,26 @@ export class UserCartComponent implements AfterViewInit {
 
     setInCartFromCart(cart: ICart) {
         if (cart !== undefined && cart !== null && cart.cartItems !== undefined && cart.cartItems.length > 0) {
+            this.total = 0;
             this.cart.cartItems = this.cart.cartItems.map(ci => {
+                this.total += ci.product.pricePerUnit * ci.quantity;
                 ci.product.inCart = ci.quantity;
                 return ci;
             });
         }
+    }
+
+    placeOrder() {
+        this.cartService.setLoading(true);
+        this.http.post('api/placeOrder', {}).subscribe(
+            res => {
+                alert('order placed');
+                this.cartService.setCart(null);
+                this.cartService.setLoading(false);
+            },
+            err => {
+                this.cartService.setLoading(false);
+            }
+        );
     }
 }

@@ -1,0 +1,54 @@
+
+<div style="padding-top:50px;padding-bottom:100px;">
+
+
+    <div *ngIf="activeOrders==null || activeOrders.length==0 " style="padding-top:50px">
+                <p style="color:#198c19;text-align: center;font-size:18px;font-weight: bold;margin-top: 40vh">No orders found</p>
+    </div>
+
+
+
+    <div style="padding:0px;" *ngIf="activeOrders!==undefined && activeOrders!==null && activeOrders.length>0" class="container">
+        <div class="row" style="
+        background: #2d9438;
+        padding: 15px 0px 5px 0px;
+        font-size: 12px!important;
+        color:#fff;
+    ">
+            <div class="col-12">
+                <h5 style="font-size: 14px;font-weight:bold;">ACTIVE ORDERS</h5>
+            </div>
+        </div>
+        <div *ngFor="let order of activeOrders" style="margin: 25px 0px;border-bottom: 1px solid #cbcbcb;"  class="row">
+                <div class="col-12">
+                    <table style="font-size:14px;">
+                        <tr>
+                            <td style="text-align:right;font-weight: bold">
+                                <p style="margin-bottom: 0px;">Order Id</p>
+                            </td>
+                            <td>
+                                <p style="margin-bottom: 0px; font-size:12px; margin-left:10px;">{{order.id}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;font-weight: bold">
+                                <p style="margin-bottom:0px">Status</p>
+                            </td>
+                            <td>
+                                <p style=" font-size:12px; margin-left:10px;margin-bottom:0px;">{{order.orderStatus.name}}</p>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                    <div style="text-align: right">
+                            <span *ngFor="let item of order.orderItems" style=" display:inline-block;font-size:12px; margin-left:10px;">{{item.quantity}}{{item.product.unit.name}} x {{item.product.name}}</span>
+
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+

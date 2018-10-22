@@ -1,18 +1,38 @@
 
 
 <ng-container *ngIf='product!=undefined && (product.inCart==undefined || product.inCart<product.minimumQuantity)'>
-    <div (click)="add()" style="cursor:pointer;font-size: 14px;display: inline-block;float: right;margin-top: 7px;border: 1px solid #c7c7ca;
-    padding: 3px 26px;text-align: center;width: auto;color: #318c19;
-    font-weight: bold;">
-        Add To Cart
+    <div (click)="add()" style="cursor: pointer;
+    font-size: 80%;
+    display: inline-block;
+    float: right;
+    margin-top: 3px;
+    border: 1px solid #c7c7ca;
+    padding: 5px 24px;
+    text-align: center;
+    width: 25vw;
+    color: #318c19;
+    font-weight: bold;
+    height: 30px;
+    max-width:80px">
+        Add
 
     </div>
 </ng-container>
 
 <ng-container *ngIf='product!=undefined && product.inCart!=undefined && product.inCart>=product.minimumQuantity'>
-    <div style=" width:135px!important;   font-size: 14px;display: inline-block;float: right;margin-top: 7px;border: 1px solid #c7c7ca;
-        padding: 3px 0px;text-align: center;width: auto;color: #318c19;
-        font-weight: bold;"><span (click)='subtract()' style=" cursor:pointer;float:left;display: inline-block;width:33%">-</span>
+    <div style=" cursor: pointer;
+    font-size: 80%;
+    display: inline-block;
+    float: right;
+    margin-top: 3px;
+    border: 1px solid #c7c7ca;
+    padding: 5px 0px;
+    text-align: center;
+    width: 25vw;
+    color: #318c19;
+    font-weight: bold;
+    height: 30px;
+    max-width:80px"><span (click)='subtract()' style=" cursor:pointer;float:left;display: inline-block;width:33%">-</span>
         <span style="float:left;display: inline-block;width:33%">{{product.inCart}}</span>
         <span  (click)='add()' style="cursor:pointer;float:right;display: inline-block;width:33%">+</span>
     </div>

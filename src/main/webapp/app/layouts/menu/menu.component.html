@@ -1,3 +1,6 @@
+
+
+
 <div style="width:100%;position:fixed;height: 50px;bottom:0px;border:1px solid #00000026;background:#fff">
     <div  routerLink="/listing" style="cursor:pointer;outline:none;width:24%;display: inline-block;text-align: center;padding:4px">
     <div >
@@ -11,9 +14,11 @@
     </div>
 
     </div>
-    <div style="cursor:pointer;width:24%;display: inline-block;text-align: center">
+    <div [routerLink]="['/user-orders']" style="outline:none;cursor:pointer;width:24%;display: inline-block;text-align: center">
         <div>
-            <img src="../../../content/images/png/ob.png"/>
+            <img *ngIf="router.url==='/user-orders'" src="../../../content/images/png/o.png"/>
+            <img *ngIf="router.url!=='/user-orders'" src="../../../content/images/png/ob.png"/>
+
         </div>
             <div style="font-size: 12px;">
                 Orders
@@ -29,7 +34,7 @@
                 Cart <span *ngIf="cartCount>0" style="display: inline-block;
                     width: 15px;
                     height: 15px;
-                    background: #757973;
+                    background: #198c19;
                     font-size: 62%;
                     padding: 1px;
                     border-radius: 100%;
@@ -40,7 +45,7 @@
                     padding-top:2px"> {{cartCount}}</span>
             </div>
     </div>
-    <div routerLink="/my-account" style="cursor:pointer;width:24%;display: inline-block;text-align: center;outline:none;">
+    <div routerLink="/my-account" style="cursor:pointer;width:22%;display: inline-block;text-align: center;outline:none;">
             <div>
                     <img *ngIf="router.url!=='/my-account'" src="../../../content/images/png/ab.png"/>
                     <img *ngIf="router.url==='/my-account'" src="../../../content/images/png/a.png"/>

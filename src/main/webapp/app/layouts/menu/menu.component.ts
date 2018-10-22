@@ -21,6 +21,7 @@ export class MenuComponent implements OnInit {
     modalRef: NgbModalRef;
     version: string;
     cartCount: number;
+
     constructor(
         private loginService: LoginService,
         private principal: Principal,
@@ -40,7 +41,10 @@ export class MenuComponent implements OnInit {
         });
 
         this.cartService.data.subscribe(c => {
-            if (c !== undefined && c.cartItems !== undefined) {
+            if (c === null) {
+                this.cartCount = 0;
+            }
+            if (c !== undefined && c !== null && c.cartItems !== undefined) {
                 this.cartCount = c.cartItems.length;
             }
         });

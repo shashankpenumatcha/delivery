@@ -49,6 +49,7 @@ export class ListingComponent implements OnInit {
                             if (response.body !== undefined && response.body.length > 0) {
                                 this.setProducts(response.body);
                                 this.loading = false;
+                                this.setInCartFromCart(this.cartService.getCart(), this.products);
                             }
                         },
                         (error: any) => {

@@ -1,11 +1,14 @@
 package io.shashank.penumatcha.delivery.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import static javax.persistence.FetchType.LAZY;
 
 /**
  * A OrderItems.
@@ -24,8 +27,9 @@ public class OrderItems implements Serializable {
     @JsonIgnoreProperties("orderItems")
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JsonIgnoreProperties("orderItems")
+    @JsonIgnore
     private OrderList orderList;
 
     private Long quantity;

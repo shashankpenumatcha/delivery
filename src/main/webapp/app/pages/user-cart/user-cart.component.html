@@ -1,29 +1,46 @@
-<div *ngIf="cart != undefined && cart.cartItems.length>0" style="padding-top:50px">
-    <div class="container">
-        <div class="row" *ngFor="let ci of cart.cartItems; let i = index">
-            <div class="col-2">
-                {{i+1}}
+
+<div *ngIf="cartLoading" style="display:block;background:#ffffff52;height:calc(100vh - 95px);position: absolute;z-index: 1;width:100%;">
+</div>
+
+<div *ngIf="cart != undefined && cart !== null && cart.cartItems.length>0" style="padding-top:50px">
+    <div class="container" style="font-size: 14px">
+        <div style="margin-top: 15px" class="row" *ngFor="let ci of cart.cartItems; let i = index">
+            <div style="text-align: center" class="col-2">
+              <p> {{i+1}} </p>
             </div>
             <div class="col-4">
-                {{ci.product.name}}
+               <p> {{ci.product.name}} </p>
             </div>
             <div class="col-4">
                 <div style="margin-top:-7px">
                         <jhi-add-to-cart  [product]='ci.product' [cartLoading]='false'></jhi-add-to-cart>
                 </div>
             </div>
-            <div class="col-2">
-                {{ci.product.pricePerUnit * ci.quantity}}
+            <div style="text-align: left" class="col-2">
+              <p>  &#8377;{{ci.product.pricePerUnit * ci.quantity}} </p>
             </div>
 
         </div>
 
+        <div style="font-size:16px;margin-top: 25px;border-top: 1px solid #c7c7ca;padding-top: 15px;" *ngIf="cart.cartItems.length>0" class="row">
+            <div class="col-10">
+                <p style="text-align: right;font-weight: bold">Total:</p>
+            </div>
+            <div class="col-2">
+                <p>&#8377;{{total}}</p>
+            </div>
+        </div>
+    </div>
 
-
+    <div class="row">
+        <div style="padding-top:50px" class="col-12">
+            <button (click)="placeOrder()" style="outline:none;background: #198c19;width: 90%;max-width: 400px;border: none;height: 45px;font-size: 16px;margin: 0 auto;display: block;border-radius: 0px!important" class="btn btn-primary"> Place Order </button>
+        </div>
     </div>
 </div>
 
 
-<div *ngIf="cart==undefined || (cart != undefined && cart.cartItems.length===0)" style="padding-top:50px">
-    <p style="text-align: center;font-size:18px;font-weight: bold;margin-top: 40vh">Your cart is empty</p>
+
+<div *ngIf="cart==undefined || (cart != undefined && cart.cartItems.length===0) || cart === null" style="padding-top:50px">
+    <p style="color:#198c19;text-align: center;font-size:18px;font-weight: bold;margin-top: 40vh">Your cart is empty</p>
 </div>

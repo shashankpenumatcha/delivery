@@ -27,15 +27,18 @@ public class OrderList implements Serializable {
     @Column(name = "last_updated")
     private ZonedDateTime lastUpdated;
 
-    @OneToMany(mappedBy = "orderList")
+    @OneToMany(mappedBy = "orderList",fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("orderLists")
     private Set<OrderItems> orderItems = new HashSet<>();
-    @OneToMany(mappedBy = "orderList")
+    @OneToMany(mappedBy = "orderList", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("orderLists")
     private Set<OrderTracker> orderTrackers = new HashSet<>();
     @ManyToOne
     @JsonIgnoreProperties("orderLists")
     private OrderStatus orderStatus;
 
     @ManyToOne
+    @JsonIgnore
     @JsonIgnoreProperties("orderLists")
     private UserProfile userProfile;
 

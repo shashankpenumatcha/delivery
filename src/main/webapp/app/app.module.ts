@@ -23,6 +23,7 @@ import { JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent,
 import { DeliveryListingModule } from 'app/pages/listing';
 import { MyAccountModule } from './pages/my-account/my-account.module';
 import { UserCartModule } from './pages/user-cart/user-cart.module';
+import { UserOrdersModule } from './pages/user-orders/user-orders.module';
 
 @NgModule({
     imports: [
@@ -37,6 +38,7 @@ import { UserCartModule } from './pages/user-cart/user-cart.module';
         DeliveryListingModule,
         MyAccountModule,
         UserCartModule,
+        UserOrdersModule,
         NgbModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],

@@ -14,7 +14,9 @@ button {
     background: #198c19 !important;
     color: #fff;
 }
-
+.noPadding {
+    padding: 0px !important;
+}
 .timeline-item {
     background: #fff;
     border-radius: 3px;

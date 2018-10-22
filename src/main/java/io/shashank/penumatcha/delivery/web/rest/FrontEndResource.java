@@ -2,16 +2,14 @@ package io.shashank.penumatcha.delivery.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.shashank.penumatcha.delivery.domain.*;
-import io.shashank.penumatcha.delivery.repository.CartItemsRepository;
-import io.shashank.penumatcha.delivery.repository.CartRepository;
-import io.shashank.penumatcha.delivery.repository.ProductRepository;
-import io.shashank.penumatcha.delivery.repository.UserProfileRepository;
+import io.shashank.penumatcha.delivery.repository.*;
 import io.shashank.penumatcha.delivery.service.FrontEndService;
 import io.shashank.penumatcha.delivery.service.UserService;
 import io.shashank.penumatcha.delivery.web.rest.dto.CartItemDTO;
 import io.shashank.penumatcha.delivery.web.rest.errors.BadRequestAlertException;
 import io.shashank.penumatcha.delivery.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +20,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -50,15 +50,36 @@ public class FrontEndResource {
 
     private final FrontEndService frontEndService;
 
+    private final InventoryLogRepository inventoryLogRepository;
+
+    private final OrderStatusRepository orderStatusRepository;
+
+    private final OrderListRepository orderRepository;
+
+    private final OrderItemsRepository orderItemsRepository;
+
+    private final OrderTrackerRepository orderTrackerRepository;
+
+
+
+
+
     public FrontEndResource(CartItemsRepository cartItemsRepository,
                             UserService userService, UserProfileRepository userProfileRepository,
-                            CartRepository cartRepository, ProductRepository productRepository, FrontEndService frontEndService) {
+                            CartRepository cartRepository, ProductRepository productRepository, FrontEndService frontEndService,
+                            InventoryLogRepository inventoryLogRepository, OrderStatusRepository orderStatusRepository, OrderListRepository orderRepository,
+                            OrderItemsRepository orderItemsRepository, OrderTrackerRepository orderTrackerRepository) {
         this.cartItemsRepository = cartItemsRepository;
         this.userService = userService;
         this.userProfileRepository = userProfileRepository;
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.frontEndService = frontEndService;
+        this.inventoryLogRepository = inventoryLogRepository;
+        this.orderStatusRepository = orderStatusRepository;
+        this.orderRepository = orderRepository;
+        this.orderItemsRepository = orderItemsRepository;
+        this.orderTrackerRepository = orderTrackerRepository;
     }
 
     /**
@@ -287,14 +308,14 @@ public class FrontEndResource {
 
 
     /**
-     * GET  /getCartForUser : delete the "id" cartItems.
+     * GET  /getCartForUser : get cart for user
      *
 
      */
     @GetMapping("/getCartForUser")
     @Timed
     public ResponseEntity<Cart> getCartForUser() {
-        log.debug("REST request to get  CArt for User");
+        log.debug("REST request to get  Cart for User");
         UserProfile userProfile = frontEndService.getCurrentUserProfile();
         Cart cart = null;
         cart = cartItemsRepository.getCartForUser(userProfile.getId());
@@ -305,5 +326,140 @@ public class FrontEndResource {
         }
         return new ResponseEntity(cart, HttpStatus.OK);
     }
+
+
+    /**
+     * POST  /placeOrder : place order for existing user from cart.
+     *
+
+     */
+    @Transactional
+    @PostMapping("/placeOrder")
+    @Timed
+    public ResponseEntity<String> placeOrder() {
+        final MultiValueMap<String, String> error = new HttpHeaders();
+        log.debug("REST request to get  Cart for User");
+        UserProfile userProfile = frontEndService.getCurrentUserProfile();
+        Cart cart = null;
+        cart = cartItemsRepository.getCartForUser(userProfile.getId());
+        if(cart==null){
+            error.put("error", Collections.singletonList("error while updating the cart, exception is ::"));
+            return new ResponseEntity(null, HttpStatus.OK);
+        }
+        if(cart.getCartItems()==null){
+            error.put("error", Collections.singletonList("couldn't place order as cart is empty"));
+            return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        List<InventoryLog> inventoryLogs = new ArrayList<InventoryLog>();
+        Set<OrderItems> orderItems = new HashSet<OrderItems>();
+        OrderList order = new OrderList();
+        for(CartItems cartItem : cart.getCartItems()){
+            if(cartItem == null || cartItem.getProduct() ==null){
+                error.put("error", Collections.singletonList("something wrong with the cart"));
+                return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            if(cartItem.getProduct().getQuantity()==null){
+                error.put("error", Collections.singletonList("quantity not set for product: " + cartItem.getProduct().getId()));
+                return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            Map<String, Object> productValid = null;
+            productValid = frontEndService.checkProductAvailability(cartItem.getQuantity(), cartItem.getProduct());
+            if (productValid.containsKey("error")) {
+                log.debug((String) productValid.get("error"));
+                error.put("error", Collections.singletonList((String) productValid.get("error")));
+                return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            InventoryLog inventoryLog = new InventoryLog();
+            inventoryLog.setDate(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+            inventoryLog.setProduct(cartItem.getProduct());
+            inventoryLog.setUserProfile(userProfile);
+            inventoryLog.setRemoved(true);
+            inventoryLog.setQuantity(cartItem.getQuantity());
+            inventoryLogs.add(inventoryLog);
+
+            OrderItems orderItem = new OrderItems();
+            orderItem.setProduct(cartItem.getProduct());
+            orderItem.setQuantity(cartItem.getQuantity().longValue());
+            orderItem.setOrderList(order);
+            orderItems.add(orderItem);
+            }
+            if(cart.getCartItems().size() == orderItems.size()) {
+                order.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+                order.setOrderItems(orderItems);
+                order.setOrderStatus(orderStatusRepository.findOneByName("Received"));
+                order.setUserProfile(userProfile);
+                order = orderRepository.save(order);
+
+                if (order == null) {
+                    error.put("error", Collections.singletonList("error while placing the order"));
+                    return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                for (OrderItems orderItem : orderItems) {
+                    orderItem.setOrderList(order);
+                    orderItem = orderItemsRepository.save(orderItem);
+                    if (orderItem == null) {
+                        error.put("error", Collections.singletonList("error while saving order item"));
+                        return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+
+                    MathContext mc = new MathContext(2);
+                    BigDecimal oldQuantity = BigDecimal.valueOf(orderItem.getProduct().getQuantity());
+                    BigDecimal orderQuantity = BigDecimal.valueOf(orderItem.getQuantity());
+                    orderItem.getProduct().setQuantity(oldQuantity.subtract(orderQuantity,mc).floatValue());
+                    Product product = productRepository.save(orderItem.getProduct());
+                    if (product == null) {
+                        error.put("error", Collections.singletonList("error while saving product quantity"));
+                        return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+
+                }
+                inventoryLogs = inventoryLogRepository.saveAll(inventoryLogs);
+
+                if (inventoryLogs == null) {
+                    error.put("error", Collections.singletonList("error while saving inventory logs"));
+                    return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+
+                OrderTracker orderTracker = new OrderTracker();
+                orderTracker.setDateTime(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+                orderTracker.setOrderList(order);
+                orderTracker.setOrderStatus(order.getOrderStatus());
+                orderTracker.setUserProfile(userProfile);
+                orderTracker = orderTrackerRepository.save(orderTracker);
+
+                if (orderTracker == null) {
+                    error.put("error", Collections.singletonList("error while saving order tracker"));
+                    return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                cartRepository.delete(cart);
+            }
+        error.put("message", Collections.singletonList("order Placed succesfully"));
+        return new ResponseEntity(error, HttpStatus.OK);
+    }
+
+
+
+
+    /**
+     * GET  /orders/active : get all the products.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("/user/orders/active")
+    @Timed
+    public List<OrderList> getActiveOrdersForUser() {
+        log.debug("REST request to get active orders");
+        UserProfile userProfile = frontEndService.getCurrentUserProfile();
+        List<Long> orderStatuses = new ArrayList<Long>();
+        OrderStatus received = orderStatusRepository.findOneByName("Received");
+        OrderStatus confirmed = orderStatusRepository.findOneByName("Confirmed");
+        OrderStatus dispatched = orderStatusRepository.findOneByName("Dispatched");
+        orderStatuses.add(received.getId());
+        orderStatuses.add(confirmed.getId());
+        orderStatuses.add(dispatched.getId());
+        return orderRepository.getActiveOrdersForUser(userProfile.getId(),orderStatuses);
+
+    }
+
 
 }
