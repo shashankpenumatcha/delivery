@@ -32,15 +32,26 @@ public class OrderList implements Serializable {
     private Set<OrderItems> orderItems = new HashSet<>();
     @OneToMany(mappedBy = "orderList", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("orderLists")
+    @JsonIgnore
     private Set<OrderTracker> orderTrackers = new HashSet<>();
     @ManyToOne
     @JsonIgnoreProperties("orderLists")
     private OrderStatus orderStatus;
 
     @ManyToOne
-    @JsonIgnore
-    @JsonIgnoreProperties("orderLists")
+    @JsonIgnoreProperties({"orderLists","inventoryLogs","orderTrackers","cart"})
     private UserProfile userProfile;
+
+    @Column(name="created_date")
+    private ZonedDateTime createdDate;
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

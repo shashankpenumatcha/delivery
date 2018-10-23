@@ -11,6 +11,7 @@ export interface IOrderList {
     orderTrackers?: IOrderTracker[];
     orderStatus?: IOrderStatus;
     userProfile?: IUserProfile;
+    createdDate?: Moment;
 }
 
 export class OrderList implements IOrderList {
@@ -20,6 +21,7 @@ export class OrderList implements IOrderList {
         public orderItems?: IOrderItems[],
         public orderTrackers?: IOrderTracker[],
         public orderStatus?: IOrderStatus,
-        public userProfile?: IUserProfile
+        public userProfile?: IUserProfile,
+        public createdDate?: Moment
     ) {}
 }

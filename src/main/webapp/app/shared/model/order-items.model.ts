@@ -6,8 +6,9 @@ export interface IOrderItems {
     product?: IProduct;
     orderList?: IOrderList;
     quantity?: number;
+    price?: number;
 }
 
 export class OrderItems implements IOrderItems {
-    constructor(public id?: number, public product?: IProduct, public orderList?: IOrderList, public quantity?: number) {}
+    constructor(public id?: number, public product?: IProduct, public orderList?: IOrderList, public quantity?: number, price?: number) {}
 }

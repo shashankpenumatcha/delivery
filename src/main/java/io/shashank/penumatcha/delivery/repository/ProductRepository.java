@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("select p from Product p where p.active = true")
+    @Query("select p from Product p where p.active = true and p.quantity >= p.minimumQuantity")
     List<Product> getActiveProducts();
 
 }

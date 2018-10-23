@@ -1,7 +1,7 @@
 <div *ngIf="cartLoading" style="display:block;background:#ffffff52;height:calc(100vh - 95px);position: absolute;z-index: 1;width:100%;">
 </div>
 
-<div  class="row " style="z-index:1;padding-top: 50px;margin-bottom:100px;">
+<div  class="row " style="z-index:1;margin-bottom:100px;">
     <div  class="col-lg-12 ">
         <ng-container *ngFor="let x of [1,2,3]">
         <div *ngIf="loading" style="max-height:100px;" class="timeline-item">
@@ -19,19 +19,19 @@
         </ng-container>
         <ng-container *ngIf="!loading&&products.length>0">
             <div class="noPadding container">
-                <p *ngIf="products.length>0" style="font-weight:b;margin-top:1em;">{{products.length}} items</p>
+                <p *ngIf="products.length>0" style="font-weight:b;margin-top:1em;margin-bottom:-10px;">{{products.length}} items</p>
                 <div *ngFor="let product of products" style="max-height:100px;" class="timeline-item  noPadding">
                     <div class="row ">
                         <div class="col-12 ">
-                        <div *ngIf="product.name==='Tomatoes'" style="background: url(content/images/tomatoes.jpg);height: 25vw;
-                        width: 25vw;max-height:100px;max-width:100px;display: inline-block;background-position: center;background-size: cover;background-repeat: no-repeat;vertical-align: top"></div>
-                        <div *ngIf="product.name!='Tomatoes'" style="height: 25vw;width: 25vw;max-height:100px;max-width:100px;display:inline-block;vertical-align: top" class="animated-background"></div>
+                        <div *ngIf="product.name==='Tomatoes'" style="background: url(content/images/tomatoes.jpg);height: 30vw;
+                        width: 30vw;max-height:100px;max-width:100px;display: inline-block;background-position: center;background-size: cover;background-repeat: no-repeat;vertical-align: top"></div>
+                        <div *ngIf="product.name!='Tomatoes'" style="height: 30vw;width: 30vw;max-height:100px;max-width:100px;display:inline-block;vertical-align: top" class="animated-background"></div>
 
                         <div style="padding:5px 0px 5px 15px;display:inline-block;width: calc(100% - 108px);vertical-align: top">
-                            <p style="font-weight:bold;margin: 0px;font-size: 16px">{{product.name}}</p>
+                            <p style="font-weight:bold;margin: 0px;font-size: 14px">{{product.name}}</p>
                             <p style="margin:0px;font-size:12px;"><span>&#8377;</span>{{product.pricePerUnit}}/{{product.unit.name}}</p>
                             <div style="border-top: 1px solid #82838261;margin-top: 10px">
-                                <p style="font-weight:bold;margin-top:0px;font-size:60%;display: inline-block;width:45%;color:#4b4b4b75">Mininum {{product.minimumQuantity}} {{product.unit.name}}s</p>
+                                <p style="font-weight:bold;margin-top:15px;font-size:60%;display: inline-block;width:45%;color:#4b4b4b75">Mininum {{product.minimumQuantity}} {{product.unit.name}}s</p>
                                 <jhi-add-to-cart (passCart)="passCart($event)" [product]='product' [cartLoading]='cartLoading'></jhi-add-to-cart>
                             </div>
                         </div>

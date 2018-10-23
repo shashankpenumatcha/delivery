@@ -29,6 +29,7 @@ public class UserProfile implements Serializable {
     private Boolean customer;
 
     @OneToOne    @JoinColumn(unique = true)
+    @JsonIgnoreProperties({"id","password","langKey","activated","resetDate"})
     private User user;
 
 

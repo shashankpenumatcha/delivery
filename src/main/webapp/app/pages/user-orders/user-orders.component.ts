@@ -10,10 +10,28 @@ import { IOrderList, OrderList } from 'app/shared/model/order-list.model';
 })
 export class UserOrdersComponent implements AfterViewInit {
     activeOrders: IOrderList[];
+    loading = true;
     constructor(private http: HttpClient, private router: Router) {}
     ngAfterViewInit() {
-        this.http.get<IOrderList[]>('api/user/orders/active?sort=id,desc').subscribe(res => {
-            this.activeOrders = res;
-        });
+        this.loading = true;
+        this.http.get<any>('api/user/orders/active?sort=createdDate,desc').subscribe(
+            res => {
+                this.loading = false;
+                this.activeOrders = res.content;
+            },
+            res => {
+                this.loading = false;
+            }
+        );
+    }
+
+    getTotal(order: IOrderList): number {
+        let price = 0;
+        if (order.orderItems.length > 0) {
+            order.orderItems.forEach(i => {
+                price = price + i.price * i.quantity;
+            });
+        }
+        return price;
     }
 }

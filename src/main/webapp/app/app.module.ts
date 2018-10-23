@@ -24,6 +24,7 @@ import { DeliveryListingModule } from 'app/pages/listing';
 import { MyAccountModule } from './pages/my-account/my-account.module';
 import { UserCartModule } from './pages/user-cart/user-cart.module';
 import { UserOrdersModule } from './pages/user-orders/user-orders.module';
+import { DashboardModule } from './pages/admin/dashboard/dashboard.module';
 
 @NgModule({
     imports: [
@@ -39,6 +40,7 @@ import { UserOrdersModule } from './pages/user-orders/user-orders.module';
         MyAccountModule,
         UserCartModule,
         UserOrdersModule,
+        DashboardModule,
         NgbModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],

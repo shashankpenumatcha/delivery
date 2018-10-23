@@ -24,15 +24,24 @@ public class OrderItems implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JsonIgnoreProperties("orderItems")
+    @JsonIgnoreProperties({"orderItems","quantity"})
     private Product product;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnoreProperties("orderItems")
-    @JsonIgnore
+    @ManyToOne()
+    @JsonIgnoreProperties({"orderItems","lastUpdated","orderTrackers","orderStatus","userProfile"})
     private OrderList orderList;
 
     private Long quantity;
+
+    private Long price;
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 
     public Long getQuantity() {
         return quantity;

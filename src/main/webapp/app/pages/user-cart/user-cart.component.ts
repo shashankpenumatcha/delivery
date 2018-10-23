@@ -14,25 +14,34 @@ export class UserCartComponent implements AfterViewInit {
     cart: ICart;
     total: number;
     cartLoading = false;
+    loading = true;
 
     constructor(private http: HttpClient, private router: Router, private cartService: UserCartService) {}
     ngAfterViewInit() {
         this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
         });
-        this.http.get('api/getCartForUser').subscribe(res => {
-            if (res !== null) {
-                this.cartService.setCart(res);
-                this.cartService.data.subscribe(cart => {
-                    if (cart !== undefined) {
-                        this.cart = cart;
-                        if (this.cart !== null) {
-                            this.setInCartFromCart(this.cart);
+        this.loading = true;
+        this.http.get('api/getCartForUser').subscribe(
+            res => {
+                this.loading = false;
+
+                if (res !== null) {
+                    this.cartService.setCart(res);
+                    this.cartService.data.subscribe(cart => {
+                        if (cart !== undefined) {
+                            this.cart = cart;
+                            if (this.cart !== null) {
+                                this.setInCartFromCart(this.cart);
+                            }
                         }
-                    }
-                });
+                    });
+                }
+            },
+            err => {
+                this.loading = false;
             }
-        });
+        );
     }
 
     setInCartFromCart(cart: ICart) {

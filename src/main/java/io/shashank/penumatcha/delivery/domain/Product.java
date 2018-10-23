@@ -42,11 +42,14 @@ public class Product implements Serializable {
     @JsonIgnoreProperties("")
     private Unit unit;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product",fetch=FetchType.LAZY)
     private Set<InventoryLog> inventoryLogs = new HashSet<>();
+    @JsonIgnore
     @OneToMany(mappedBy = "product",fetch=FetchType.LAZY)
     private Set<CartItems> cartItems = new HashSet<>();
     @OneToMany(mappedBy = "product",fetch=FetchType.LAZY)
+    @JsonIgnore
     private Set<OrderItems> orderItems = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

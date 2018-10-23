@@ -25,6 +25,7 @@ public class OrderStatus implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "orderStatus",fetch=FetchType.LAZY)
     private Set<OrderTracker> orderTrackers = new HashSet<>();
     @OneToMany(mappedBy = "orderStatus",fetch=FetchType.LAZY)

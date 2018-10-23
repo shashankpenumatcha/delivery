@@ -12,6 +12,8 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -381,6 +383,7 @@ public class FrontEndResource {
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity().longValue());
             orderItem.setOrderList(order);
+            orderItem.setPrice(cartItem.getProduct().getPricePerUnit().longValue());
             orderItems.add(orderItem);
             }
             if(cart.getCartItems().size() == orderItems.size()) {
@@ -388,6 +391,7 @@ public class FrontEndResource {
                 order.setOrderItems(orderItems);
                 order.setOrderStatus(orderStatusRepository.findOneByName("Received"));
                 order.setUserProfile(userProfile);
+                order.setCreatedDate(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
                 order = orderRepository.save(order);
 
                 if (order == null) {
@@ -447,7 +451,7 @@ public class FrontEndResource {
      */
     @GetMapping("/user/orders/active")
     @Timed
-    public List<OrderList> getActiveOrdersForUser() {
+    public Page<OrderList> getActiveOrdersForUser(Pageable pageRequest) {
         log.debug("REST request to get active orders");
         UserProfile userProfile = frontEndService.getCurrentUserProfile();
         List<Long> orderStatuses = new ArrayList<Long>();
@@ -457,9 +461,59 @@ public class FrontEndResource {
         orderStatuses.add(received.getId());
         orderStatuses.add(confirmed.getId());
         orderStatuses.add(dispatched.getId());
-        return orderRepository.getActiveOrdersForUser(userProfile.getId(),orderStatuses);
+        return orderRepository.getActiveOrdersForUser(pageRequest,userProfile.getId(),orderStatuses);
 
     }
+
+
+    /**
+     * GET  /orders/active : get all the products.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("/dashboard/orders/filter")
+    @Timed
+    public ResponseEntity getOrdersByStatus(@RequestParam(value="status") String status, Pageable pageRequest) {
+        log.debug("REST request to get active orders");
+        final MultiValueMap<String, String> error = new HttpHeaders();
+        if(status == null){
+            error.put("error", Collections.singletonList("please send order status"));
+            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        OrderStatus orderStatus = orderStatusRepository.findOneByName(status);
+        if (orderStatus == null) {
+            error.put("error", Collections.singletonList("please send a valid order status"));
+            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(orderRepository.getOrdersByType(pageRequest,orderStatus.getId()), HttpStatus.OK);
+
+    }
+
+
+
+    /**
+     * GET  /dashboard/orders/active/count : get all the products.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("/dashboard/orders/active/count")
+    @Timed
+    public Long getActiveOrdersCount() {
+        log.debug("REST request to get active orders count");
+        List<Long> orderStatuses = new ArrayList<Long>();
+        OrderStatus received = orderStatusRepository.findOneByName("Received");
+        OrderStatus confirmed = orderStatusRepository.findOneByName("Confirmed");
+        OrderStatus dispatched = orderStatusRepository.findOneByName("Dispatched");
+        orderStatuses.add(received.getId());
+        orderStatuses.add(confirmed.getId());
+        orderStatuses.add(dispatched.getId());
+        return orderRepository.getActiveOrdersCount(orderStatuses);
+
+    }
+
+
+
+
 
 
 }
