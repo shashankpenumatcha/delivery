@@ -10,7 +10,11 @@
     <meta name="theme-color" content="#000000">
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webapp" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+    <link rel="manifest" href="manifest.json" />
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Krub" rel="stylesheet">
+
+
 
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
 </head>
@@ -43,6 +47,20 @@
         r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
         ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>-->
+
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDwesaV0Z7pUnqQqVSVOwN3pzpPPB2ZMlM",
+    authDomain: "drgreens-6888a.firebaseapp.com",
+    databaseURL: "https://drgreens-6888a.firebaseio.com",
+    projectId: "drgreens-6888a",
+    storageBucket: "drgreens-6888a.appspot.com",
+    messagingSenderId: "433559353324"
+  };
+  firebase.initializeApp(config);
+</script>
 
 
 </body>

@@ -4,6 +4,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IProduct, Product } from 'app/shared/model//product.model';
 import { UserCartService } from 'app/shared/service/userCart.service';
 import { ICart, Cart } from 'app/shared/model/cart.model';
+import { MessagingService } from 'app/shared/service/messaging.service';
 
 @Component({
     selector: 'jhi-listing',
@@ -16,9 +17,19 @@ export class ListingComponent implements OnInit {
     subscribed?: boolean;
     loading = true;
     cartLoading = false;
-    constructor(private http: HttpClient, private cartService: UserCartService) {}
+    constructor(private http: HttpClient, private cartService: UserCartService, private messagingService: MessagingService) {}
 
     ngOnInit() {
+
+        this.messagingService.requestPermission();
+        this.messagingService.receiveMessage();
+        this.messagingService.currentMessage.subscribe(
+            r => {
+                console.log('rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+                                console.log(r);
+            }
+        );
+
         this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
         });

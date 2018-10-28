@@ -1,3 +1,29 @@
+
+
+
+
+
+
+@media (max-width: 575px) {
+    .hidden-mobile{
+        display:none!important;
+    }
+ }
+
+@media (max-width: 767px) {
+    .hidden-mobile{
+        display:none!important;
+    }
+}
+
+
+@media (max-width: 991px) {  }
+
+
+@media (max-width: 1199px) {  }
+
+
+
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/

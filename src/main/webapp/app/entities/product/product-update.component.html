@@ -1,7 +1,7 @@
-<div class="row justify-content-center">
+<div style="padding-bottom:300px;" class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 id="jhi-product-heading">Create or edit a Product</h2>
+            <h2 id="jhi-product-heading">Add or edit a Product</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!product.id">
@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
-                        [(ngModel)]="product.name" />
+                        [(ngModel)]="product.name" required />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_minimumQuantity">Minimum Quantity</label>
@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_pricePerUnit">Price Per Unit</label>
                     <input type="number" class="form-control" name="pricePerUnit" id="field_pricePerUnit"
-                        [(ngModel)]="product.pricePerUnit" />
+                        [(ngModel)]="product.pricePerUnit" required />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_active">Active</label>
@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_quantity">Quantity</label>
                     <input type="number" class="form-control" name="quantity" id="field_quantity"
-                        [(ngModel)]="product.quantity" />
+                        [(ngModel)]="product.quantity" required/>
                 </div>
 
                 <div class="form-group">

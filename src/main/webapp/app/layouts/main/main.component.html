@@ -1,10 +1,10 @@
 
-<div>
-    <router-outlet name="navbar"></router-outlet>
+<div  >
+    <router-outlet  name="navbar"></router-outlet>
 </div>
-<div class="container-fluid">
+<div [@routerAnimation]="getRouteAnimation(o)" class="container-fluid" style="padding:0px">
     <div>
-        <router-outlet></router-outlet>
+        <router-outlet #o="outlet"></router-outlet>
         <router-outlet name="popup"></router-outlet>
     </div>
 </div>

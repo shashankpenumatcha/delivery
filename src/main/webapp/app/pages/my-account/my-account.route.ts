@@ -7,7 +7,8 @@ export const MY_ACCCOUNT_ROUTE: Route = {
     component: MyAccountComponent,
     data: {
         authorities: ['ROLE_USER'],
-        pageTitle: 'Account'
+        pageTitle: 'Account',
+        animation: 'my-account'
     },
     canActivate: [UserRouteAccessService]
 };

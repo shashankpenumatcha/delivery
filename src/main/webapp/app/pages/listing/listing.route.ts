@@ -7,7 +7,8 @@ export const LISTING_ROUTE: Route = {
     component: ListingComponent,
     data: {
         authorities: ['ROLE_USER'],
-        pageTitle: 'Products'
+        pageTitle: 'Products',
+        animation: 'listing'
     },
     canActivate: [UserRouteAccessService]
 };

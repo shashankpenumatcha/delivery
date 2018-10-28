@@ -7,7 +7,8 @@ export const USER_CART_ROUTE: Route = {
     component: UserCartComponent,
     data: {
         authorities: ['ROLE_USER'],
-        pageTitle: 'Cart'
+        pageTitle: 'Cart',
+        animation: 'user-cart'
     },
     canActivate: [UserRouteAccessService]
 };

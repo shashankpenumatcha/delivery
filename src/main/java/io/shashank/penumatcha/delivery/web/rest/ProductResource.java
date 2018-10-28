@@ -171,12 +171,12 @@ public class ProductResource {
      * @param id the id of the product to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/products/{id}")
+/*    @DeleteMapping("/products/{id}")
     @Timed
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         log.debug("REST request to delete Product : {}", id);
 
         productRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
+    }*/
 }

@@ -32,7 +32,9 @@ import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
- * REST controller for managing CartItems.
+ * REST controller for managing front end api's.
+ * use ProductResource for admin product screens
+ * user OrderListResource for admin order(get by id and post) screens
  */
 @RestController
 @RequestMapping("/api")
@@ -510,6 +512,9 @@ public class FrontEndResource {
         return orderRepository.getActiveOrdersCount(orderStatuses);
 
     }
+
+
+
 
 
 

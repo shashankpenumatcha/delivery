@@ -4,6 +4,7 @@ import io.shashank.penumatcha.delivery.security.*;
 import io.shashank.penumatcha.delivery.security.jwt.*;
 
 import org.springframework.beans.factory.BeanInitializationException;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -30,6 +31,8 @@ import javax.annotation.PostConstruct;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -114,7 +117,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .apply(securityConfigurerAdapter());
 
+
     }
+
+
+
+
+
 
     private JWTConfigurer securityConfigurerAdapter() {
         return new JWTConfigurer(tokenProvider);

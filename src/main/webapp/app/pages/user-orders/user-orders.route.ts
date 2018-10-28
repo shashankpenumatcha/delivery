@@ -7,7 +7,8 @@ export const USER_ORDERS_ROUTE: Route = {
     component: UserOrdersComponent,
     data: {
         authorities: ['ROLE_USER'],
-        pageTitle: 'Orders'
+        pageTitle: 'Orders',
+        animation: 'user-orders'
     },
     canActivate: [UserRouteAccessService]
 };

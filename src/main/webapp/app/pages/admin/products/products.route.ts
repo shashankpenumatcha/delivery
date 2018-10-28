@@ -1,14 +1,14 @@
 import { Route } from '@angular/router';
 import { UserRouteAccessService } from 'app/core';
-import { DashboardComponent } from './dashboard.component';
+import { ProductsComponent } from './products.component';
 
-export const DASHBOARD_ROUTE: Route = {
-    path: 'dashboard',
-    component: DashboardComponent,
+export const PRODUCTS_ROUTE: Route = {
+    path: 'dashboard/products',
+    component: ProductsComponent,
     data: {
         authorities: ['ROLE_ADMIN'],
         pageTitle: 'Dashboard',
-        animation: 'dashboard'
+        animation: 'dashboard-products'
     },
     canActivate: [UserRouteAccessService]
 };

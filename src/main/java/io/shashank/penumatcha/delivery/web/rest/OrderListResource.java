@@ -108,14 +108,14 @@ public class OrderListResource {
      * @param id the id of the orderList to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/order-lists/{id}")
+    /*@DeleteMapping("/order-lists/{id}")
     @Timed
     public ResponseEntity<Void> deleteOrderList(@PathVariable Long id) {
         log.debug("REST request to delete OrderList : {}", id);
 
         orderListRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
+    }*/
 
 
 }
