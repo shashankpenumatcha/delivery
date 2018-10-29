@@ -16,31 +16,42 @@ import { Title } from '@angular/platform-browser';
     animations: [
         trigger('routerAnimation', [
           transition('* => listing, user-cart => user-orders, my-account => user-orders, my-account => user-cart, * => dashboard', [
+           // Initial state of old route
+           query(':leave',
+           style({
+             position: 'absolute',
+             width: '100%',
+             transform: 'translateX(100%)',
+             height: '100vh'
+           }),
+           {optional: true}),
             // Initial state of new route
             query(':enter',
               style({
+              //  opacity: 0,
                 position: 'absolute',
                 width: '100%',
                 transform: 'translateX(-100%)',
-                height: 'calc(100vh)'
+                height: '100vh'
               }),
               {optional: true}),
 
             // move page off screen right on leave
             query(':leave',
-              animate('100ms ease-in-out',
+              animate('160ms ease',
                 style({
+                  opacity: 0,
                   position: 'absolute',
                   width: '100%',
                   transform: 'translateX(100%)',
-                  height: 'calc(100vh)'
+                  height: '100vh'
                 })
               ),
             {optional: true}),
 
             // move page in screen from left to right
             query(':enter',
-              animate('100ms ease-in-out',
+              animate('160ms ease',
                 style({
                   opacity: 1,
                   transform: 'translateX(0%)'
@@ -48,35 +59,47 @@ import { Title } from '@angular/platform-browser';
               ),
             {optional: true}),
           ]),   transition('* => my-account, listing => user-cart, user-orders => user-cart, listing => user-orders, dashboard => dashboard-products', [
+            // Initial state of old route
+            query(':leave',
+              style({
+                  opacity: 0,
+                position: 'absolute',
+                width: '200%',
+                transform: 'translateX(-100%)',
+                height: '100vh'
+              }),
+              {optional: true}),
             // Initial state of new route
             query(':enter',
               style({
+                //  opacity: 0,
                 position: 'absolute',
                 width: '200%',
                 transform: 'translateX(100%)',
-                height: 'calc(100vh)'
+                height: '100vh'
               }),
               {optional: true}),
 
             // move page off screen right on leave
             query(':leave',
-              animate('100ms ease-in-out',
+              animate('160ms ease',
                 style({
+                    opacity: 0,
                   position: 'absolute',
                   width: '100%',
                   transform: 'translateX(-100%)',
-                  height: 'calc(100vh)'
+                  height: '100vh'
                 })
               ),
             {optional: true}),
 
             // move page in screen from left to right
             query(':enter',
-              animate('100ms ease-in-out',
+              animate('160ms ease',
                 style({
                   opacity: 1,
                   transform: 'translateX(0%)',
-                  height: 'calc(100vh)'
+                  height: '100vh'
                 })
               ),
             {optional: true}),

@@ -30,6 +30,8 @@ import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { AngularFireModule } from '@angular/fire';
 import {environment } from './shared/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {StickyModule} from 'ng2-sticky-kit';
+import { OrdersModule } from './pages/admin/orders/orders.module';
 
 @NgModule({
     imports: [
@@ -49,6 +51,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         DashboardModule,
         ProductsModule,
         AngularFireMessagingModule,
+        StickyModule,
+        OrdersModule,
         AngularFireModule.initializeApp(environment.firebase),
         NgbModule
         // jhipster-needle-angular-add-module JHipster will add new module here
