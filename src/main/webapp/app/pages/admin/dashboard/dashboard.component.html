@@ -2,7 +2,7 @@
 <div  style="padding-top:50px">
     <div class="container" style="font-size: 12px">
         <div style="padding-bottom: 100px;" class="row">
-            <div style="padding:15px" class="col-md-4">
+            <div style="padding:15px;cursor: pointer;" class="col-md-4">
                 <div [routerLink]="['/dashboard/orders']" style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
                         <h3>Orders</h3>
                         <p *ngIf="activeCount!=undefined && activeCount!=null ">{{activeCount}} Active Orders </p>

@@ -7,33 +7,33 @@
 <div  >
     <div class="container" style="font-size: 12px">
         <div style="padding-bottom:100px;" class="row">
-            <div style="padding:15px" class="col-md-4">
+            <div  [routerLink]="['/dashboard/orders/received']" style="padding:15px;cursor: pointer;" class="col-md-4">
                 <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
                         <h3>Received</h3>
                 </div>
 
             </div>
-            <div style="outline:none;cursor:pointer;padding:15px" [routerLink]="['/dashboard/products']"  class="col-md-4">
+            <div style="outline:none;cursor:pointer;padding:15px" [routerLink]="['/dashboard/orders/confirmed']"  class="col-md-4">
                     <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
                             <h3>Confirmed</h3>
                     </div>
 
             </div>
-            <div style="padding:15px" class="col-md-4">
+            <div  [routerLink]="['/dashboard/orders/dispatched']" style="padding:15px;cursor: pointer;" class="col-md-4">
                     <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
                             <h3>Dispatched</h3>
                     </div>
 
             </div>
-            <div style="padding:15px" class="col-md-4">
+            <div  [routerLink]="['/dashboard/orders/delivered']" style="padding:15px;cursor: pointer;" class="col-md-4">
                 <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
                         <h3>Delivered</h3>
                 </div>
 
         </div>
-        <div style="padding:15px" class="col-md-4">
-            <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
-                    <h3>Canceled</h3>
+        <div  [routerLink]="['/dashboard/orders/cancelled']" style="padding:15px;cursor: pointer;" class="col-md-4">
+            <div style="border: 1px solid rgb(5, 4, 4);height: 150px;text-align: center;padding: 45px 0px;">
+                    <h3>Cancelled</h3>
             </div>
 
     </div>

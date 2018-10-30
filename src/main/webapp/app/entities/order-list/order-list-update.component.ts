@@ -12,6 +12,7 @@ import { IOrderStatus } from 'app/shared/model/order-status.model';
 import { OrderStatusService } from 'app/entities/order-status';
 import { IUserProfile } from 'app/shared/model/user-profile.model';
 import { UserProfileService } from 'app/entities/user-profile';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
     selector: 'jhi-order-list-update',
@@ -42,15 +43,30 @@ export class OrderListUpdateComponent implements OnInit {
         this.orderStatusService.query().subscribe(
             (res: HttpResponse<IOrderStatus[]>) => {
                 this.orderstatuses = res.body;
+                this.orderstatuses = this.orderstatuses.filter( o => {
+                    if (this.orderList.orderStatus.name !== 'CANCELLED') {
+                        if (o.name === 'CANCELLED') {
+                            return o;
+                        }
+                        if (this.orderList.orderStatus.name === 'RECEIVED') {
+                            if (o.name === 'DISPATCHED') {
+                             return o;
+                            }
+                        }
+                        if (this.orderList.orderStatus.name === 'DISPATCHED') {
+                            if (o.name === 'DELIVERED') {
+                             return o;
+                            }
+                        }
+                        if (o.name === this.orderList.orderStatus.name) {
+                            return o;
+                        }
+                    }
+                });
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
-        this.userProfileService.query().subscribe(
-            (res: HttpResponse<IUserProfile[]>) => {
-                this.userprofiles = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+
     }
 
     previousState() {

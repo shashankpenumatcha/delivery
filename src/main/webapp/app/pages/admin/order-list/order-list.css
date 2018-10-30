@@ -1,0 +1,20 @@
+p{
+    margin-bottom:0px;
+    font-size: 14px;
+}
+.product{
+    padding:15px;margin-top:15px;border:1px solid #cbcbcb;
+}
+.active{
+    color:green;
+    font-weight:bold;
+}
+.inactive{
+    color:#cbcbcb;
+    font-weight: bold;
+
+}
+
+.product-id{
+    color:#000;
+}
