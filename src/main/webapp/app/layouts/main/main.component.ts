@@ -15,7 +15,7 @@ import { Title } from '@angular/platform-browser';
     templateUrl: './main.component.html',
     animations: [
         trigger('routerAnimation', [
-          transition('* => listing, user-cart => user-orders, my-account => user-orders, my-account => user-cart, * => dashboard', [
+          transition('* => listing, user-cart => user-orders, my-account => user-orders, my-account => user-cart, * => dashboard, dashboard-order-list => dashboard-orders, order-tracker => user-orders, order-tracker => dashboard-order-list', [
            // Initial state of old route
            query(':leave',
            style({
@@ -58,7 +58,8 @@ import { Title } from '@angular/platform-browser';
                 })
               ),
             {optional: true}),
-          ]),   transition('* => my-account, listing => user-cart, user-orders => user-cart, listing => user-orders, dashboard => dashboard-products', [
+          ]), transition('* => my-account, listing => user-cart, user-orders => user-cart, listing => user-orders, dashboard => dashboard-products, dashboard => dashboard-orders,dashboard-orders => dashboard-order-list, dashboard => inventory-logs, user-orders => order-tracker, dashboard-order-list => order-tracker', [
+
             // Initial state of old route
             query(':leave',
               style({

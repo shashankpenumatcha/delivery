@@ -49,9 +49,16 @@ export class OrderListUpdateComponent implements OnInit {
                             return o;
                         }
                         if (this.orderList.orderStatus.name === 'RECEIVED') {
+
+                            if (o.name === 'CONFIRMED') {
+                                return o;
+                            }
+                        }
+                        if (this.orderList.orderStatus.name === 'CONFIRMED') {
                             if (o.name === 'DISPATCHED') {
                              return o;
                             }
+
                         }
                         if (this.orderList.orderStatus.name === 'DISPATCHED') {
                             if (o.name === 'DELIVERED') {

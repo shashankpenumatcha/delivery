@@ -2,6 +2,8 @@ package io.shashank.penumatcha.delivery.web.rest;
 
 import io.shashank.penumatcha.delivery.config.Constants;
 import io.shashank.penumatcha.delivery.domain.User;
+import io.shashank.penumatcha.delivery.domain.UserProfile;
+import io.shashank.penumatcha.delivery.repository.UserProfileRepository;
 import io.shashank.penumatcha.delivery.repository.UserRepository;
 import io.shashank.penumatcha.delivery.security.AuthoritiesConstants;
 import io.shashank.penumatcha.delivery.service.MailService;
@@ -66,11 +68,16 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    private final UserProfileRepository userProfileRepository;
+
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService,
+    UserProfileRepository userProfileRepository
+    ) {
 
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.userProfileRepository =userProfileRepository;
     }
 
     /**

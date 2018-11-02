@@ -9,31 +9,31 @@
         <div style="padding-bottom:100px;" class="row">
             <div  [routerLink]="['/dashboard/orders/received']" style="padding:15px;cursor: pointer;" class="col-md-4">
                 <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
-                        <h3>Received</h3>
+                        <h3>Received <span *ngIf="orderCount!==undefined && orderCount!==null">({{orderCount.received}})</span></h3>
                 </div>
 
             </div>
             <div style="outline:none;cursor:pointer;padding:15px" [routerLink]="['/dashboard/orders/confirmed']"  class="col-md-4">
                     <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
-                            <h3>Confirmed</h3>
+                            <h3>Confirmed <span *ngIf="orderCount!==undefined && orderCount!==null">({{orderCount.confirmed}})</span></h3>
                     </div>
 
             </div>
             <div  [routerLink]="['/dashboard/orders/dispatched']" style="padding:15px;cursor: pointer;" class="col-md-4">
                     <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
-                            <h3>Dispatched</h3>
+                            <h3>Dispatched <span *ngIf="orderCount!==undefined && orderCount!==null">({{orderCount.dispatched}})</span></h3>
                     </div>
 
             </div>
             <div  [routerLink]="['/dashboard/orders/delivered']" style="padding:15px;cursor: pointer;" class="col-md-4">
                 <div style="border: 1px solid black;height: 150px;text-align: center;padding: 45px 0px;">
-                        <h3>Delivered</h3>
+                        <h3>Delivered <span *ngIf="orderCount!==undefined && orderCount!==null">({{orderCount.delivered}})</span></h3>
                 </div>
 
         </div>
         <div  [routerLink]="['/dashboard/orders/cancelled']" style="padding:15px;cursor: pointer;" class="col-md-4">
             <div style="border: 1px solid rgb(5, 4, 4);height: 150px;text-align: center;padding: 45px 0px;">
-                    <h3>Cancelled</h3>
+                    <h3>Cancelled <span *ngIf="orderCount!==undefined && orderCount!==null">({{orderCount.cancelled}})</span></h3>
             </div>
 
     </div>

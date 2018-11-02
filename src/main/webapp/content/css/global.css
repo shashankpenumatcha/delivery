@@ -1,26 +1,59 @@
 
 
 
-
-
-
-@media (max-width: 575px) {
+@media (min-width: 75px) {
     .hidden-mobile{
         display:none!important;
     }
+
  }
 
-@media (max-width: 767px) {
+
+
+@media (min-width: 575px) {
     .hidden-mobile{
+        display:none!important;
+    }
+    .hidden-desktop{
+        display:block!important;
+    }
+ }
+
+@media (min-width: 767px) {
+    .hidden-mobile{
+        display:none!important;
+    }
+    .hidden-desktop{
+        display:block!important;
+    }
+
+}
+
+
+@media (min-width: 991px) {
+    .hidden-mobile{
+        display:block!important;
+    }
+    .hidden-desktop{
+        display:none!important;
+    }
+    .tracker{
+        position: relative;
+        top:-30px;
+    }
+}
+
+
+@media (min-width: 1199px) {
+    .hidden-mobile{
+        display:block!important;
+    }
+    .hidden-desktop{
         display:none!important;
     }
 }
 
 
-@media (max-width: 991px) {  }
-
-
-@media (max-width: 1199px) {  }
 
 
 

@@ -16,8 +16,8 @@
     </div>
     <div [routerLink]="['/user-orders']" style="outline:none;cursor:pointer;width:24%;display: inline-block;text-align: center">
         <div>
-            <img *ngIf="router.url==='/user-orders'" src="../../../content/images/png/o.png"/>
-            <img *ngIf="router.url!=='/user-orders'" src="../../../content/images/png/ob.png"/>
+            <img *ngIf="router.url==='/user-orders' || router.url.indexOf('order-tracker')>=0" src="../../../content/images/png/o.png"/>
+            <img *ngIf="router.url!=='/user-orders' && router.url.indexOf('order-tracker')==-1" src="../../../content/images/png/ob.png"/>
 
         </div>
             <div style="font-size: 12px;">

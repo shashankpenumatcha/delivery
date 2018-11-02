@@ -25,8 +25,8 @@ public interface OrderListRepository extends PagingAndSortingRepository<OrderLis
         "join OrderItems oi on ol.id = oi.orderList.id " +
         "join UserProfile up on up.id = ol.userProfile.id " +
         "where os.id in (:orderStatuses) and ol.userProfile.id= :userProfileId " +
-        "group by ol.id order by os.id asc")
-    Page<OrderList> getActiveOrdersForUser(Pageable pageRequest,@Param("userProfileId") Long userProfileId,
+        "group by ol.id")
+    Page<OrderList> getActiveOrPastOrdersForUser(Pageable pageRequest,@Param("userProfileId") Long userProfileId,
                                            @Param("orderStatuses") List<Long> orderStatuses);
 
     @Query(value="select count(ol.id) from OrderList ol join OrderStatus os on os.id = ol.orderStatus.id" +
@@ -37,5 +37,11 @@ public interface OrderListRepository extends PagingAndSortingRepository<OrderLis
     @Query("select ol from OrderList ol join ol.orderStatus os on os.id = ol.orderStatus.id " +
         " where os.id = :type")
     Page<OrderList> getOrdersByType(Pageable pageRequest, @Param("type") Long type);
+
+
+
+    @Query(value="select count(ol.id) from OrderList ol join OrderStatus os on os.id = ol.orderStatus.id" +
+        " where os.name = :orderStatus")
+    Long getOrdersCount(@Param("orderStatus") String orderStatus );
 
 }

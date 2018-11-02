@@ -6,7 +6,7 @@
     </button>
 
  <div style="padding:0px;"  class="container">
-        <div *ngFor="let order of orders" style="margin:0px;border-bottom: 1px solid #cbcbcb;
+        <div  *ngFor="let order of orders" style="margin:0px;border-bottom: 1px solid #cbcbcb;
         padding: 15px;"  class="row">
                 <div class="col-12" style="font-size: 14px;padding: 0px;line-height: 22px;">
                         <button *ngIf="order.orderStatus.name!=='CANCELLED'" style="float:right" type="submit" [routerLink]="['/order-list', order.id, 'edit']" class="btn btn-primary btn-sm ">
@@ -16,7 +16,7 @@
                         <p style="color:#585858;font-weight:bold;margin-bottom: 0px;font-size:14px;">Order# {{order.id}}</p>
                         <p style="color:#7b7b7b;margin-bottom:0px;font-size:12px;">{{order.createdDate | date:'medium'}}</p>
                         <p style="float:right;color:#7b7b7b">Total : &#8377;{{getTotal(order)}} </p>
-                        <span style="display: inline-block;padding: 0px 10px;background: #34455be3;color: #fff;font-size: 12px;margin-top: 10px">Status</span>
+                        <span [routerLink]="['/order-tracker/' + order.id]" style="display: inline-block;padding: 0px 10px;background: #34455be3;color: rgb(255, 255, 255);font-size: 12px;margin-top: 10px">Status</span>
                         <span style="color:#7b7b7b;letter-spacing:2px;font-size: 12px;margin-left: 10px;margin-top: 10px;">{{order.orderStatus.name}}</span>
                     <div style=" margin-top:15px;background:#cbcbcb2b;padding: 15px">
                         <span *ngFor="let item of order.orderItems" style=" color:#7b7b7b;display:inline-block;font-size:12px; margin-right:10px;">

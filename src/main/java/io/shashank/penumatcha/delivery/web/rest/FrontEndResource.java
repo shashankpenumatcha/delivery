@@ -64,15 +64,16 @@ public class FrontEndResource {
 
     private final OrderTrackerRepository orderTrackerRepository;
 
-
-
+    private  final UserAddressRepository userAddressRepository;
 
 
     public FrontEndResource(CartItemsRepository cartItemsRepository,
                             UserService userService, UserProfileRepository userProfileRepository,
                             CartRepository cartRepository, ProductRepository productRepository, FrontEndService frontEndService,
                             InventoryLogRepository inventoryLogRepository, OrderStatusRepository orderStatusRepository, OrderListRepository orderRepository,
-                            OrderItemsRepository orderItemsRepository, OrderTrackerRepository orderTrackerRepository) {
+                            OrderItemsRepository orderItemsRepository,OrderTrackerRepository orderTrackerRepository,
+                            UserAddressRepository userAddressRepository
+                            ) {
         this.cartItemsRepository = cartItemsRepository;
         this.userService = userService;
         this.userProfileRepository = userProfileRepository;
@@ -84,6 +85,7 @@ public class FrontEndResource {
         this.orderRepository = orderRepository;
         this.orderItemsRepository = orderItemsRepository;
         this.orderTrackerRepository = orderTrackerRepository;
+        this.userAddressRepository=userAddressRepository;
     }
 
     /**
@@ -340,15 +342,24 @@ public class FrontEndResource {
     @Transactional
     @PostMapping("/placeOrder")
     @Timed
-    public ResponseEntity<String> placeOrder() {
+    public ResponseEntity<String> placeOrder(@RequestParam(value = "address") Long address) {
         final MultiValueMap<String, String> error = new HttpHeaders();
         log.debug("REST request to get  Cart for User");
+        if(address == null){
+            error.put("error", Collections.singletonList("order failed, please send an order ::"));
+            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        UserAddress userAddress = userAddressRepository.getOne(address);
+        if(userAddress == null){
+            error.put("error", Collections.singletonList("order failed, there was a problem with your address ::"));
+            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         UserProfile userProfile = frontEndService.getCurrentUserProfile();
         Cart cart = null;
         cart = cartItemsRepository.getCartForUser(userProfile.getId());
         if(cart==null){
             error.put("error", Collections.singletonList("error while updating the cart, exception is ::"));
-            return new ResponseEntity(null, HttpStatus.OK);
+            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if(cart.getCartItems()==null){
             error.put("error", Collections.singletonList("couldn't place order as cart is empty"));
@@ -389,6 +400,7 @@ public class FrontEndResource {
             orderItems.add(orderItem);
             }
             if(cart.getCartItems().size() == orderItems.size()) {
+                order.setUserAddress(userAddress.getAddress());
                 order.setLastUpdated(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
                 order.setOrderItems(orderItems);
                 order.setOrderStatus(orderStatusRepository.findOneByName("Received"));
@@ -463,13 +475,35 @@ public class FrontEndResource {
         orderStatuses.add(received.getId());
         orderStatuses.add(confirmed.getId());
         orderStatuses.add(dispatched.getId());
-        return orderRepository.getActiveOrdersForUser(pageRequest,userProfile.getId(),orderStatuses);
+        return orderRepository.getActiveOrPastOrdersForUser(pageRequest,userProfile.getId(),orderStatuses);
 
     }
 
 
     /**
-     * GET  /orders/active : get all the products.
+     * GET  /orders/previous : get all the products.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("/user/orders/previous")
+    @Timed
+    public Page<OrderList> getPreviousOrdersForUser(Pageable pageRequest) {
+        log.debug("REST request to get active orders");
+        UserProfile userProfile = frontEndService.getCurrentUserProfile();
+        List<Long> orderStatuses = new ArrayList<Long>();
+        OrderStatus cancelled = orderStatusRepository.findOneByName("Cancelled");
+        OrderStatus delivered = orderStatusRepository.findOneByName("Delivered");
+
+        orderStatuses.add(cancelled.getId());
+        orderStatuses.add(delivered.getId());
+
+        return orderRepository.getActiveOrPastOrdersForUser(pageRequest,userProfile.getId(),orderStatuses);
+
+    }
+
+
+    /**
+     * GET  dashboard/orders/filter : get all the products.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of products in body
      */
@@ -490,6 +524,8 @@ public class FrontEndResource {
         return new ResponseEntity(orderRepository.getOrdersByType(pageRequest,orderStatus.getId()), HttpStatus.OK);
 
     }
+
+
 
 
 
@@ -517,8 +553,101 @@ public class FrontEndResource {
 
 
 
+    /**
+     * GET  /dashboard/orders/count : get all the products.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("/dashboard/orders/count")
+    @Timed
+    public Map<String, Long> getOrdersCount() {
+        log.debug("REST request to get active orders count");
+        Map<String, Long> orderStatusMap = new HashMap<String, Long>();
+        orderStatusMap.put("received",orderRepository.getOrdersCount("RECEIVED"));
+        orderStatusMap.put("confirmed",orderRepository.getOrdersCount("CONFIRMED"));
+        orderStatusMap.put("dispatched",orderRepository.getOrdersCount("DISPATCHED"));
+        orderStatusMap.put("delivered",orderRepository.getOrdersCount("DELIVERED"));
+        orderStatusMap.put("cancelled",orderRepository.getOrdersCount("CANCELLED"));
+        return orderStatusMap;
 
 
+
+
+    }
+
+
+
+    /**
+     * GET  /dashboard/order/track : get all the products.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("/order/track/{id}")
+    @Timed
+    public ResponseEntity<List<OrderTracker>> trackOrder(@PathVariable(value="id") Long id) {
+        log.debug("REST request to track order");
+        final MultiValueMap<String, String> error = new HttpHeaders();
+        if(id == null){
+            error.put("error", Collections.singletonList("please send order id"));
+            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        List<OrderTracker> orderTrackers = orderTrackerRepository.trackOrder(id);
+        return new ResponseEntity<List<OrderTracker>>(orderTrackers,HttpStatus.OK);
+
+    }
+
+
+
+
+
+    @PostMapping("/user-address")
+    @Timed
+    public ResponseEntity<UserAddress> createUserAddress(@RequestBody UserAddress userAddress) throws URISyntaxException {
+        log.debug("REST request to save userAddress : {}", userAddress);
+        if (userAddress.getId() != null) {
+            throw new BadRequestAlertException("A new orderStatus cannot already have an ID", "user address", "idexists");
+        }
+        UserProfile userProfile = frontEndService.getCurrentUserProfile();
+        userAddress.setUserProfile(userProfile);
+        UserAddress result = userAddressRepository.save(userAddress);
+        return ResponseEntity.created(new URI("/api/order-statuses/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("user address", result.getId().toString()))
+            .body(result);
+    }
+
+
+    @PutMapping("/user-address")
+    @Timed
+    public ResponseEntity<UserAddress> updateUseraddress(@RequestBody UserAddress userAddress) throws URISyntaxException {
+        log.debug("REST request to update userAddress : {}", userAddress);
+        if (userAddress.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", "user address", "idnull");
+        }
+        UserProfile userProfile = frontEndService.getCurrentUserProfile();
+        userAddress.setUserProfile(userProfile);
+        UserAddress result = userAddressRepository.save(userAddress);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("user address", result.getId().toString()))
+            .body(result);
+    }
+
+
+    @GetMapping("/user/addresses")
+    @Timed
+    public List<UserAddress> getAllUserAddresses() {
+        log.debug("REST request to get all Useraddresses");
+        UserProfile userProfile = frontEndService.getCurrentUserProfile();
+        return userAddressRepository.findAllByUserProfile(userProfile.getId());
+    }
+
+
+    @DeleteMapping("/user-address/{id}")
+    @Timed
+    public ResponseEntity<Void> deleteUserAddress(@PathVariable Long id) {
+        log.debug("REST request to delete UserAddress : {}", id);
+        userAddressRepository.deleteById(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("user address", id.toString())).build();
+    }
 
 
 }

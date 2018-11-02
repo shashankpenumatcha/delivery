@@ -1,0 +1,47 @@
+
+<button id="jh-create-entity" class="btn btn-default jh-create-entity create-product" (click)="back()">
+    <span >
+    Back
+    </span>
+</button>
+
+<div *ngIf="orderId!=undefined && orderId!=null" class="container">
+    <div style="padding-bottom:0px!important" class="row">
+        <div style="padding:0px" class="col-12">
+            <h3 style="padding:15px 0px;margin-bottom:0px;font-weight:bold;font-size:16px!important">Order# {{orderId}}</h3>
+        </div>
+    </div>
+    <div class="row">
+            <div style="background:#cbcbcb2b;display:block;height:15px;" class="col-md-8"></div>
+    </div>
+    <div class="row">
+        <div  class="col-md-8">
+            <div  style="background:#cbcbcb2b;padding: 10px;font-size: 12px;" *ngFor="let orderItem of order.orderItems; let i = index" class="row">
+                <div class="col-2">{{i+1}}</div>
+                <div class="col-4">{{orderItem.product.name}}</div>
+                <div class="col-2">X</div>
+                <div class="col-2"> {{orderItem.quantity}} {{orderItem.product.unit.name}}</div>
+                <div class="col-2">&#8377;{{orderItem.quantity*orderItem.price}}</div>
+            </div>
+            <div style="padding-bottom:15px;background:#cbcbcb2b;padding-top:15px;border-top:1px solid #00000017;font-weight:bold;font-size:14px;" class="row">
+                <div class="col-10" style="text-align:right;">Total:</div>
+                <div class="col-2">&#8377;{{total}}</div>
+            </div>
+        </div>
+        <div style="padding:15px 40px;font-size:12px;" class="col-md-4 tracker">
+            <div *ngFor="let ot of orderTrackers" class="row">
+
+                <div style="padding-top:5px;border-left:2px solid green;" class="col-12">
+                        <div style="border:2px solid green;background: #fff;width: 10px;height:10px;border-radius: 100px;position: absolute;left:-6px;top:35px;">
+
+                        </div>
+                            <span style="margin-right:10px;margin-bottom:15px;display: inline-block;padding: 0px 10px;background: #34455be3;color: rgb(255, 255, 255);font-size: 12px;margin-top: 10px">Status</span>
+                            <span style="margin-top:10px;margin-bottom:0px;font-weight:bold">{{ot.orderStatus.name}}</span>
+                    <p>{{ot.dateTime | date:'medium'}}</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -3,11 +3,12 @@
     <router-outlet  name="navbar"></router-outlet>
 </div>
 <div [@routerAnimation]="getRouteAnimation(o)" class="container-fluid" style="padding:0px">
-    <div>
-        <router-outlet #o="outlet"></router-outlet>
-        <router-outlet name="popup"></router-outlet>
-    </div>
+
+        <div>
+            <router-outlet #o="outlet"></router-outlet>
+            <router-outlet name="popup"></router-outlet>
+        </div>
 </div>
-<div>
+<div class="hidden-desktop">
     <router-outlet name="menu" *jhiHasAnyAuthority="['ROLE_USER']"></router-outlet>
 </div>

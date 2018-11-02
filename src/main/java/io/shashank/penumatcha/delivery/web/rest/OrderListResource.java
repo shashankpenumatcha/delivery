@@ -97,34 +97,26 @@ public class OrderListResource {
             throw new BadRequestAlertException("Invalid userprofile", ENTITY_NAME, "user proflile doesnt exist");
 
         }
+
         OrderList oldOrder = orderListRepository.findById(orderList.getId()).get();
+        Long oldOrderStatus = oldOrder.getOrderStatus().getId();
         OrderList result = orderListRepository.save(orderList);
-        if(oldOrder!=null && oldOrder.getOrderStatus()!=null && oldOrder.getOrderStatus().getId() != orderList.getOrderStatus().getId()){
+
+
+        if(oldOrder!=null && oldOrderStatus!=null && oldOrderStatus != orderList.getOrderStatus().getId()){
             OrderTracker orderTracker = new OrderTracker();
             orderTracker.setUserProfile(userProfile);
             orderTracker.setOrderStatus(orderList.getOrderStatus());
             orderTracker.setOrderList(orderList);
             orderTracker.setDateTime(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
             orderTracker =  orderTrackerRepository.save(orderTracker);
-            log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
         }
         for (OrderItems orderItem : orderList.getOrderItems()){
-            log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj2"+orderItem.getProduct().toString());
-
             Product oldProduct = productRepository.getOne(orderItem.getProduct().getId());
            if(oldProduct!=null) {
-               log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj3"+oldProduct.toString());
                oldProduct.setQuantity(oldProduct.getQuantity() + orderItem.getQuantity());
-               log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj3"+oldProduct.toString());
-
                oldProduct = productRepository.save(oldProduct);
-
-
-               log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj4");
-
                if (oldProduct != null) {
-                   log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj5");
-
                    InventoryLog inventoryLog = new InventoryLog();
                    inventoryLog.setAdded(true);
                    inventoryLog.setDate(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
@@ -132,9 +124,6 @@ public class OrderListResource {
                    inventoryLog.setQuantity(orderItem.getQuantity().floatValue());
                    inventoryLog.setUserProfile(userProfile);
                    inventoryLog = inventoryLogRepository.save(inventoryLog);
-                   log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj6");
-
-
                }
            }
         }

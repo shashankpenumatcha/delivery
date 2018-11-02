@@ -28,10 +28,12 @@ public class UserProfile implements Serializable {
     @Column(name = "customer")
     private Boolean customer;
 
+    @Column(name = "fcm_token")
+    private String fcmToken;
+
     @OneToOne    @JoinColumn(unique = true)
     @JsonIgnoreProperties({"id","password","langKey","activated","resetDate"})
     private User user;
-
 
     @OneToMany(mappedBy = "userProfile",fetch= LAZY) @JsonIgnoreProperties("userProfile")
     private Set<OrderList> orderLists = new HashSet<>();
@@ -41,6 +43,9 @@ public class UserProfile implements Serializable {
     private Set<OrderTracker> orderTrackers = new HashSet<>();
     @OneToOne(mappedBy = "userProfile",fetch= LAZY)   @JsonIgnoreProperties("userProfile")
     private Cart cart;
+
+    @OneToMany(mappedBy = "userProfile",fetch= LAZY) @JsonIgnoreProperties("userProfile")
+    private Set<UserAddress> userAddresses = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -164,7 +169,23 @@ public class UserProfile implements Serializable {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    public Set<UserAddress> getUserAddresses() {
+        return userAddresses;
+    }
+
+    public void setUserAddresses(Set<UserAddress> userAddresses) {
+        this.userAddresses = userAddresses;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

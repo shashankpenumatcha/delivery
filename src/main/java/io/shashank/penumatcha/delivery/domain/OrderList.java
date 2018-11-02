@@ -27,6 +27,9 @@ public class OrderList implements Serializable {
     @Column(name = "last_updated")
     private ZonedDateTime lastUpdated;
 
+    @Column(name = "user_address")
+    private String userAddress;
+
     @OneToMany(mappedBy = "orderList",fetch = FetchType.EAGER)
     @JsonIgnoreProperties("orderLists")
     private Set<OrderItems> orderItems = new HashSet<>();
@@ -150,6 +153,15 @@ public class OrderList implements Serializable {
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
     }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

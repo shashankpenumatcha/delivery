@@ -3,6 +3,8 @@ package io.shashank.penumatcha.delivery.web.rest;
 import com.codahale.metrics.annotation.Timed;
 
 import io.shashank.penumatcha.delivery.domain.User;
+import io.shashank.penumatcha.delivery.domain.UserProfile;
+import io.shashank.penumatcha.delivery.repository.UserProfileRepository;
 import io.shashank.penumatcha.delivery.repository.UserRepository;
 import io.shashank.penumatcha.delivery.security.SecurityUtils;
 import io.shashank.penumatcha.delivery.service.MailService;
@@ -39,11 +41,15 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private  final UserProfileRepository userProfileRepository;
+
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService,
+                           UserProfileRepository userProfileRepository) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.userProfileRepository = userProfileRepository;
     }
 
     /**
@@ -62,6 +68,11 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        UserProfile userProfile = new UserProfile();
+        userProfile.setUser(user);
+        userProfile.setCustomer(true);
+        userProfile=userProfileRepository.save(userProfile);
+
         mailService.sendActivationEmail(user);
     }
 

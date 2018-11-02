@@ -31,7 +31,8 @@ export const inventoryLogRoute: Routes = [
         component: InventoryLogComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'InventoryLogs'
+            pageTitle: 'InventoryLogs',
+            animation: 'inventory-logs'
         },
         canActivate: [UserRouteAccessService]
     },

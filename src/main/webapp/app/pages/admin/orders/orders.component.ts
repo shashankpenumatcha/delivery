@@ -8,9 +8,13 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
     styleUrls: ['orders.css']
 })
 export class OrdersComponent implements AfterViewInit {
-
+    orderCount: any;
     constructor(private http: HttpClient, private router: Router) {}
     ngAfterViewInit() {
-
+        this.http.get('api/dashboard/orders/count').subscribe(
+            res => {
+                this.orderCount = res;
+            }
+        );
     }
 }

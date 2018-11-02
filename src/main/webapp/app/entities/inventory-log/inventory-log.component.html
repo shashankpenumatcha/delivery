@@ -1,12 +1,12 @@
-<div>
+<div style="padding-bottom:100px">
+    <button id="jh-create-entity" class="btn btn-default jh-create-entity create-product" [routerLink]="['/dashboard']">
+        <span >
+        Back
+        </span>
+    </button>
     <h2 id="page-heading">
         <span>Inventory Logs</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-inventory-log" [routerLink]="['/inventory-log/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
-            Create new Inventory Log
-            </span>
-        </button>
+
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
@@ -16,20 +16,18 @@
             <tr>
             <th><span>ID</span></th>
             <th><span>Date</span></th>
-            <th><span>Added</span></th>
-            <th><span>Removed</span></th>
+            <th><span>Action</span></th>
             <th><span>Quantity</span></th>
             <th><span>Product</span></th>
             <th><span>User Profile</span></th>
-            <th></th>
-            </tr>
+<!--             <th></th>
+ -->            </tr>
             </thead>
             <tbody>
             <tr *ngFor="let inventoryLog of inventoryLogs ;trackBy: trackId">
                 <td><a [routerLink]="['/inventory-log', inventoryLog.id, 'view' ]">{{inventoryLog.id}}</a></td>
                 <td>{{inventoryLog.date | date:'medium'}}</td>
-                <td>{{inventoryLog.added}}</td>
-                <td>{{inventoryLog.removed}}</td>
+                <td><span *ngIf="inventoryLog.added">Added</span><span *ngIf="inventoryLog.removed">Removed</span></td>
                 <td>{{inventoryLog.quantity}}</td>
                 <td>
                     <div *ngIf="inventoryLog.product">
@@ -41,7 +39,7 @@
                         <a [routerLink]="['../user-profile', inventoryLog.userProfile?.id, 'view' ]" >{{inventoryLog.userProfile?.user?.login}}</a>
                     </div>
                 </td>
-                <td class="text-right">
+               <!--  <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['/inventory-log', inventoryLog.id, 'view' ]"
@@ -64,7 +62,7 @@
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>
-                </td>
+                </td> -->
             </tr>
             </tbody>
         </table>

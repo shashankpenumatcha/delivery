@@ -10,6 +10,7 @@ import { IOrderList, OrderList } from 'app/shared/model/order-list.model';
 })
 export class UserOrdersComponent implements AfterViewInit {
     activeOrders: IOrderList[];
+    previousOrders: IOrderList[];
     loading = true;
     constructor(private http: HttpClient, private router: Router) {}
     ngAfterViewInit() {
@@ -18,6 +19,16 @@ export class UserOrdersComponent implements AfterViewInit {
             res => {
                 this.loading = false;
                 this.activeOrders = res.content;
+            },
+            res => {
+                this.loading = false;
+            }
+        );
+
+        this.http.get<any>('api/user/orders/previous?sort=createdDate,desc').subscribe(
+            res => {
+                this.loading = false;
+                this.previousOrders = res.content;
             },
             res => {
                 this.loading = false;
