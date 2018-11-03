@@ -1,7 +1,14 @@
 <div style="padding-top:15px">
-<div *ngIf="account==undefined" style="width:40%;height:39px;display: block" class="animated-background"></div>
-<h2 *ngIf="account!=undefined">{{account.firstName}}</h2>
-<p style="color:#7c7c7cc4;font-weight: bold;;font-size: 14px"><span (click)='logout()' style="cursor:pointer;text-decoration: underline">Log Out</span>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div *ngIf="account==undefined" style="width:40%;height:39px;display: block" class="animated-background"></div>
+                <h5 *ngIf="account!=undefined">{{account.firstName}}</h5>
+                <p  [routerLink]="['/dashboard']" style="color:#7c7c7cc4; padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b; margin-bottom:0px;cursor:pointer;font-weight: bold" *jhiHasAnyAuthority="'ROLE_ADMIN'">  Admin Dashboard</p>
+                <p style="color:#7c7c7cc4;;margin-bottom:0px;padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b;font-weight:bold">Manage Addresses</p>
+                <p style="color:#7c7c7cc4; padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b;margin-bottom:0px;color:#7c7c7cc4;font-weight: bold;font-size: 14px"><span (click)='logout()' style="cursor:pointer;">Log Out</span>
 
-<span [routerLink]="['/dashboard']" style="cursor:pointer;text-decoration: underline" *jhiHasAnyAuthority="'ROLE_ADMIN'"> | Admin Dashboard</span></p>
+            </div>
+        </div>
+    </div>
 </div>

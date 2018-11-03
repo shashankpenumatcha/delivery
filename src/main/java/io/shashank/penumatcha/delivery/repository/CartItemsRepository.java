@@ -17,8 +17,10 @@ import java.util.Set;
 @SuppressWarnings("unused")
 @Repository
 public interface CartItemsRepository extends JpaRepository<CartItems, Long> {
-    @Query("select ci from CartItems ci where ci.product.id=:productId")
-    CartItems getProductInCart(@Param(value="productId") Long productId);
+    @Query("select ci from CartItems ci join ci.cart c on c.id = ci.cart.id " +
+        "join c.userProfile up on up.id = c.userProfile.id where ci.product.id=:productId" +
+        " and up.id = :userProfileId")
+    CartItems getProductInCart(@Param(value="productId") Long productId, @Param(value="userProfileId") Long userProfileId);
 
     @Query("select c from Cart c join c.cartItems ci where c.userProfile.id=:id")
     Cart getCartForUser(@Param(value="id") Long id);

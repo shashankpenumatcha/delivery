@@ -12,6 +12,7 @@ export interface IUserProfile {
     inventoryLogs?: IInventoryLog[];
     orderTrackers?: IOrderTracker[];
     cart?: ICart;
+    fmcToken?: string;
 }
 
 export class UserProfile implements IUserProfile {
@@ -22,7 +23,8 @@ export class UserProfile implements IUserProfile {
         public orderLists?: IOrderList[],
         public inventoryLogs?: IInventoryLog[],
         public orderTrackers?: IOrderTracker[],
-        public cart?: ICart
+        public cart?: ICart,
+        public fcmToken?: string
     ) {
         this.customer = this.customer || false;
     }

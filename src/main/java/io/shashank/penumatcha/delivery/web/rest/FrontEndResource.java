@@ -132,7 +132,7 @@ public class FrontEndResource {
             error.put("error", Collections.singletonList("please send quantity"));
             return new ResponseEntity(cart, error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        CartItems existingCartItem = cartItemsRepository.getProductInCart(product.getId());
+        CartItems existingCartItem = cartItemsRepository.getProductInCart(product.getId(),userProfile.getId());
         Map<String, Object> productValid = null;
         if(null!=existingCartItem){
            cartItem=existingCartItem;

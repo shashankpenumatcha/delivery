@@ -46,24 +46,30 @@
             <ng-container *ngIf="!loading&&products.length>0">
 
                 <div class="noPadding container">
+                    <div class="row">
+                        <div class="col-lg-8 col-12" style="padding:0px 25px!important">
+                                <p *ngIf="products.length>0" style="margin-top:15px;margin-bottom:-10px;">{{products.length}} items</p>
+                                <div *ngFor="let product of products" style="max-height:100px;" class="timeline-item  noPadding">
+                                    <div class="row ">
+                                        <div class="col-12 ">
+                                        <div *ngIf="product.name==='Tomatoes'" style="background: url(content/images/tomatoes.jpg);height: 30vw;
+                                        width: 30vw;max-height:100px;max-width:100px;display: inline-block;background-position: center;background-size: cover;background-repeat: no-repeat;vertical-align: top"></div>
+                                        <div *ngIf="product.name!='Tomatoes'" style="height: 30vw;width: 30vw;max-height:100px;max-width:100px;display:inline-block;vertical-align: top" class="animated-background"></div>
 
-                    <p *ngIf="products.length>0" style="margin-top:15px;margin-bottom:-10px;">{{products.length}} items</p>
-                    <div *ngFor="let product of products" style="max-height:100px;" class="timeline-item  noPadding">
-                        <div class="row ">
-                            <div class="col-12 ">
-                            <div *ngIf="product.name==='Tomatoes'" style="background: url(content/images/tomatoes.jpg);height: 30vw;
-                            width: 30vw;max-height:100px;max-width:100px;display: inline-block;background-position: center;background-size: cover;background-repeat: no-repeat;vertical-align: top"></div>
-                            <div *ngIf="product.name!='Tomatoes'" style="height: 30vw;width: 30vw;max-height:100px;max-width:100px;display:inline-block;vertical-align: top" class="animated-background"></div>
-
-                            <div style="padding:5px 0px 5px 15px;display:inline-block;width: calc(100% - 108px);vertical-align: top">
-                                <p style="font-weight:bold;margin: 0px;font-size: 14px">{{product.name}}</p>
-                                <p style="margin:0px;font-size:12px;"><span>&#8377;</span>{{product.pricePerUnit}}/{{product.unit.name}}</p>
-                                <div style="border-top: 1px solid #82838261;margin-top: 10px">
-                                    <p style="font-weight:bold;margin-top:15px;font-size:60%;display: inline-block;width:45%;color:#4b4b4b75">Mininum {{product.minimumQuantity}} {{product.unit.name}}s</p>
-                                    <jhi-add-to-cart (passCart)="passCart($event)" [product]='product' [cartLoading]='cartLoading'></jhi-add-to-cart>
+                                        <div style="padding:5px 0px 5px 15px;display:inline-block;width: calc(100% - 108px);vertical-align: top">
+                                            <p style="font-weight:bold;margin: 0px;font-size: 14px">{{product.name}}</p>
+                                            <p style="margin:0px;font-size:12px;"><span>&#8377;</span>{{product.pricePerUnit}}/{{product.unit.name}}</p>
+                                            <div style="border-top: 1px solid #82838261;margin-top: 10px">
+                                                <p style="font-weight:bold;margin-top:15px;font-size:60%;display: inline-block;width:45%;color:#4b4b4b75">Mininum {{product.minimumQuantity}} {{product.unit.name}}s</p>
+                                                <jhi-add-to-cart (passCart)="passCart($event)" [product]='product' [cartLoading]='cartLoading'></jhi-add-to-cart>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            </div>
+                        </div>
+                        <div class="col-lg-4 hidden-mobile">
+                            <jhi-user-cart></jhi-user-cart>
                         </div>
                     </div>
                 </div>

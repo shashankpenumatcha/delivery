@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IProduct, Product } from 'app/shared/model//product.model';
@@ -11,7 +11,7 @@ import { MessagingService } from 'app/shared/service/messaging.service';
     templateUrl: './listing.component.html',
     styleUrls: ['listing.css']
 })
-export class ListingComponent implements OnInit {
+export class ListingComponent implements  AfterViewInit {
     _products?: IProduct[];
     products?: Product[];
     subscribed?: boolean;
@@ -19,7 +19,7 @@ export class ListingComponent implements OnInit {
     cartLoading = false;
     constructor(private http: HttpClient, private cartService: UserCartService, private messagingService: MessagingService) {}
 
-    ngOnInit() {
+    ngAfterViewInit() {
 
         this.messagingService.requestPermission();
         this.messagingService.receiveMessage();

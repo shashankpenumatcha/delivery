@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
@@ -13,7 +13,7 @@ import { ICart } from 'app/shared/model/cart.model';
     templateUrl: './menu.component.html',
     styleUrls: ['menu.css']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements AfterViewInit {
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
@@ -34,7 +34,7 @@ export class MenuComponent implements OnInit {
         this.isNavbarCollapsed = true;
     }
 
-    ngOnInit() {
+    ngAfterViewInit() {
         this.profileService.getProfileInfo().then(profileInfo => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
@@ -46,6 +46,8 @@ export class MenuComponent implements OnInit {
             }
             if (c !== undefined && c !== null && c.cartItems !== undefined) {
                 this.cartCount = c.cartItems.length;
+            } else {
+             this.cartCount = 0;
             }
         });
     }

@@ -7,6 +7,7 @@ import { USER_CART_ROUTE, UserCartComponent } from './';
 @NgModule({
     imports: [DeliverySharedModule, RouterModule.forChild([USER_CART_ROUTE])],
     declarations: [UserCartComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    exports: [UserCartComponent]
 })
 export class UserCartModule {}

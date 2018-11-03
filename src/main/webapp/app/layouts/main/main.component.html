@@ -1,6 +1,6 @@
 
 <div  >
-    <router-outlet  name="navbar"></router-outlet>
+    <router-outlet  *jhiHasAnyAuthority="['ROLE_USER']" name="navbar"></router-outlet>
 </div>
 <div [@routerAnimation]="getRouteAnimation(o)" class="container-fluid" style="padding:0px">
 

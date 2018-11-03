@@ -5,60 +5,85 @@
 
 <div *ngIf="loading"  style="padding-top:0px">
         <div class="container" style="font-size: 12px">
-            <div  *ngFor="let x of [1,2]" style="margin-top: 15px" class="row" >
-                <div  style="text-align: center" class="col-12">
-                  <p class= "animated-background" style="display:block;height: 30px; width: 100%"> </p>
+            <div class="row hidden-mobile">
+                <h5 style="margin:25px 0px">Cart</h5>
+            </div>
+            <div class="row">
+                <div  *ngFor="let x of [1,2]" style="margin-top: 15px" class="col-md-12" >
+                    <div  style="text-align: center" class="col-12">
+                      <p class= "animated-background" style="display:block;height: 30px; width: 100%"> </p>
+                    </div>
                 </div>
             </div>
-            <div style="font-size:14px;margin-top: 25px;border-top: 1px solid #c7c7ca;padding-top: 15px;"class="row">
-                <div class="col-9">
-                    <p style="text-align: right;font-weight: bold"></p>
+            <div class="row">
+                <div style="font-size:14px;margin-top: 25px;border-top: 1px solid #c7c7ca;padding-top: 15px;"class="col-md-8">
+                  <div class="row">
+                    <div class="col-9">
+                        <p style="text-align: right;font-weight: bold"></p>
+                    </div>
+                    <div class="col-3">
+                        <p style="display:block;height:30px;width:100%;" class="animated-background"> </p>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-3">
-                    <p style="display:block;height:30px;width:100%;" class="animated-background"> </p>
+            </div>
+            <div class="row">
+                <div style="padding-top:50px" class="col-md-12">
+                    <div style="outline:none;width: 100%;max-width: 100%;border: none;height: 40px;font-size: 14px;margin: 0 auto;display: block;border-radius: 0px!important" class="animated-background"> </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div style="padding-top:50px" class="col-12">
-                <div style="outline:none;width: 80%;max-width: 400px;border: none;height: 40px;font-size: 14px;margin: 0 auto;display: block;border-radius: 0px!important" class="animated-background"> </div>
-            </div>
-        </div>
+
 </div>
 
 <div *ngIf="!loading && (cart != undefined && cart !== null && cart.cartItems.length>0)" style="padding-top:0px">
     <div class="container" style="font-size: 12px;padding:15px 25px;">
-        <div>
-            <div style="margin-top: 15px;background: #cbcbcb2b;padding-top: 15px;padding-right: 25px;" class="row" *ngFor="let ci of cart.cartItems; let i = index">
-                <div style="text-align: center" class="col-2">
-                    <p> {{i+1}} </p>
-                </div>
-                <div class="col-4">
-                    <p> {{ci.product.name}} </p>
-                </div>
-                <div class="col-4">
-                    <div style="margin-top:-15px;font-size:14px;">
-                            <jhi-add-to-cart  [product]='ci.product' [cartLoading]='false'></jhi-add-to-cart>
+        <div class="row hidden-mobile">
+            <h5 style="margin:0px 0px">Cart</h5>
+        </div>
+        <div class="row">
+            <div style="margin-top: 15px;background: #cbcbcb2b;padding-top: 15px;padding-right: 25px;" class="col-md-12" *ngFor="let ci of cart.cartItems; let i = index">
+                <div class="row">
+                    <div style="text-align: center" class="col-2">
+                        <p> {{i+1}} </p>
+                    </div>
+                    <div class="col-4">
+                        <p> {{ci.product.name}} </p>
+                    </div>
+                    <div class="col-4">
+                        <div style="margin-top:-15px;font-size:14px;">
+                                <jhi-add-to-cart  [product]='ci.product' [cartLoading]='false'></jhi-add-to-cart>
+                        </div>
+                    </div>
+                    <div style="text-align: left" class="col-2">
+                        <p>  &#8377;{{ci.product.pricePerUnit * ci.quantity}} </p>
                     </div>
                 </div>
-                <div style="text-align: left" class="col-2">
-                    <p>  &#8377;{{ci.product.pricePerUnit * ci.quantity}} </p>
+            </div>
+        </div>
+        <div class="row">
+            <div style="font-size:14px;margin-top: 25px;border-top: 1px solid #c7c7ca;padding-top: 15px;" *ngIf="cart.cartItems.length>0" class="col-12">
+               <div class="row">
+                <div class="col-10">
+                    <p style="text-align: right;font-weight: bold">Total:</p>
                 </div>
+                <div class="col-2">
+                    <p>&#8377;{{total}}</p>
+                </div>
+               </div>
             </div>
         </div>
 
-        <div style="font-size:14px;margin-top: 25px;border-top: 1px solid #c7c7ca;padding-top: 15px;" *ngIf="cart.cartItems.length>0" class="row">
-            <div class="col-10">
-                <p style="text-align: right;font-weight: bold">Total:</p>
-            </div>
-            <div class="col-2">
-                <p>&#8377;{{total}}</p>
+        <div *ngIf="!loading" class="row">
+            <div style="padding:50px 0px 0px 0px" class="col-12  hidden-mobile">
+                <button (click)="placeOrder()" style="height:50px;outline:none;background: #198c19;width: 100%;border: none;font-size: 16px;margin: 0 auto;display: block;border-radius: 0px!important" class="btn btn-primary"> Place Order </button>
             </div>
         </div>
+
     </div>
 
-    <div *ngIf="!loading" class="row">
-        <div style="padding-top:50px" class="col-12">
+    <div *ngIf="!loading" class="row hidden-desktop">
+        <div style="padding-top:50px;" class="col-12 col-md-12">
             <button (click)="placeOrder()" style="position:fixed;bottom:50px;left:0px;height:50px;outline:none;background: #198c19;width: 100vw;border: none;font-size: 16px;margin: 0 auto;display: block;border-radius: 0px!important" class="btn btn-primary"> Place Order </button>
         </div>
     </div>

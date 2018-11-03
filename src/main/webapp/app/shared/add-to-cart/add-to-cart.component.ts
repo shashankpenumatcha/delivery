@@ -13,7 +13,7 @@ export class AddToCartComponent implements AfterViewInit {
     @Input() product: Product;
     @Input() cartLoading: boolean;
     @Output() passCart = new EventEmitter();
-    quantity = 0;
+   // quantity =   0;
     cartItems: ICartItems[];
 
     constructor(private http: HttpClient, private userCartService: UserCartService) {}
@@ -65,6 +65,6 @@ export class AddToCartComponent implements AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.quantity = this.product.minimumQuantity;
+       // this.quantity = this.product.minimumQuantity;
     }
 }
