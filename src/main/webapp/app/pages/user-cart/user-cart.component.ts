@@ -25,8 +25,6 @@ export class UserCartComponent implements AfterViewInit {
         this.http.get('api/getCartForUser').subscribe(
             res => {
                 this.loading = false;
-
-                if (res !== null) {
                     this.cartService.setCart(res);
                     this.cartService.data.subscribe(cart => {
                         if (cart !== undefined) {
@@ -36,7 +34,6 @@ export class UserCartComponent implements AfterViewInit {
                             }
                         }
                     });
-                }
             },
             err => {
                 this.loading = false;

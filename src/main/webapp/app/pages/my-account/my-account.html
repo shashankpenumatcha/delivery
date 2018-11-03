@@ -1,13 +1,31 @@
 <div style="padding-top:15px">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-lg-8">
                 <div *ngIf="account==undefined" style="width:40%;height:39px;display: block" class="animated-background"></div>
                 <h5 *ngIf="account!=undefined">{{account.firstName}}</h5>
-                <p  [routerLink]="['/dashboard']" style="color:#7c7c7cc4; padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b; margin-bottom:0px;cursor:pointer;font-weight: bold" *jhiHasAnyAuthority="'ROLE_ADMIN'">  Admin Dashboard</p>
-                <p style="color:#7c7c7cc4;;margin-bottom:0px;padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b;font-weight:bold">Manage Addresses</p>
-                <p style="color:#7c7c7cc4; padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b;margin-bottom:0px;color:#7c7c7cc4;font-weight: bold;font-size: 14px"><span (click)='logout()' style="cursor:pointer;">Log Out</span>
+                <p  [routerLink]="['/dashboard']" style="font-size:12px;color:#7c7c7cc4; padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b; margin-bottom:0px;cursor:pointer;font-weight: bold" *jhiHasAnyAuthority="'ROLE_ADMIN'">  Admin Dashboard</p>
+                <p (click)="showAddress=!showAddress" style="font-size:12px;cursor:pointer;color:#7c7c7cc4;;margin-bottom:0px;padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b;font-weight:bold">Manage Addresses</p>
+                <div class="row">
+                    <div *ngIf="showAddress" class="col-12">
+                        <ng-container *ngIf="userAddresses!=undefined && userAddresses!=null && userAddresses.length>0">
 
+                        </ng-container>
+                        <div style="margin:15px 0px;padding: 10px 10px;font-size: 12px;border: 1px solid #cbcbcb;color:#9e9a9e" *ngFor="let userAddress of userAddresses">
+                           <p style="display:inline-block;width:50%;margin-bottom:0px!important;font-size:12px;">
+                            {{userAddress.address | address}}
+                           </p>
+                           <span style="position: absolute;right:25px;">
+                                <span style="cursor:pointer;color: #198c19;font-weight: bold;" (click)="delete(userAddress.id)">DELETE</span>
+                           </span>
+                        </div>
+                        <h5 (click)="openAddAddress()" style="cursor:pointer;font-size: 14px;color: #3b5e8cbf;border: 2px dashed #3b5e8cbf;text-align: center;
+                        padding: 15px;font-weight: bold;margin: 15px 0px;">
+                            Add A New Address
+                        </h5>
+                    </div>
+                </div>
+                <p (click)='logout()' style="font-size:12px;cursor:pointer;color:#7c7c7cc4; padding: 10px 10px;border: 1px solid #cbcbcb;background: #cbcbcb2b;margin-bottom:0px;color:#7c7c7cc4;font-weight: bold;"><span >Log Out</span>
             </div>
         </div>
     </div>

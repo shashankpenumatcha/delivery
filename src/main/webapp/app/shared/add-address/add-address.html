@@ -1,0 +1,35 @@
+<div class="modal-header">
+   <span style="font-weight:bold"> Add Address</span>
+    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')"><span aria-hidden="true">x</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form class="form" role="form" (ngSubmit)="add()">
+                <div class="form-group">
+                    <input style="padding:0px;border-radius: 0px;border: none;border-bottom: 1px solid #3b5e8cbf;" type="text" class="form-control" name="address1" id="address1" placeholder="Address line 1"
+                    [(ngModel)]="address1">
+                </div>
+                <div class="form-group">
+                    <input style="padding:0px;border-radius: 0px;border: none;border-bottom: 1px solid #3b5e8cbf;" type="text" class="form-control" name="address2" id="address2" placeholder="Address line 2"
+                    [(ngModel)]="address2">
+                </div>
+                <div class="form-group">
+                    <input style="padding:0px;border-radius: 0px;border: none;border-bottom: 1px solid #3b5e8cbf;" type="text" class="form-control" name="address3" id="address3" placeholder="Address line 3"
+                    [(ngModel)]="address3">
+                </div>
+                <div class="form-group">
+                    <input style="padding:0px;border-radius: 0px;border: none;border-bottom: 1px solid #3b5e8cbf;" type="text" class="form-control" name="address4" id="address4" placeholder="Address line 4"
+                    [(ngModel)]="address4">
+                </div>
+
+
+                <button [disabled]='address1===undefined&&address2===undefined&&address3==undefined&&address4==undefined' style="background:#198C19;width:100%;margin-top:15px;" type="submit" class="btn btn-primary">Add</button>
+            </form>
+            <p></p>
+
+
+        </div>
+    </div>
+</div>

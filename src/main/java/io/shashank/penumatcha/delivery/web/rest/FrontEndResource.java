@@ -610,7 +610,7 @@ public class FrontEndResource {
         UserProfile userProfile = frontEndService.getCurrentUserProfile();
         userAddress.setUserProfile(userProfile);
         UserAddress result = userAddressRepository.save(userAddress);
-        return ResponseEntity.created(new URI("/api/order-statuses/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/user-address/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("user address", result.getId().toString()))
             .body(result);
     }

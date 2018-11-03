@@ -14,3 +14,5 @@ export * from './add-to-cart/add-to-cart.component';
 export * from './service/userCart.service';
 export * from './service/messaging.service';
 export * from './environment';
+export * from './add-address/add-address.component';
+export * from './service/userAddressService';

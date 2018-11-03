@@ -69,6 +69,13 @@ Bootstrap tweaks
     }
 }
 
+
+textarea:focus, input:focus{
+    outline: none!important;
+}
+*:focus {
+    outline: none!important;
+}
 .animated-background {
     animation-duration: 1s;
     animation-fill-mode: forwards;

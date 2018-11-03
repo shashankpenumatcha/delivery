@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserCartService } from 'app/shared/service/userCart.service';
+import { UserAddressService } from '../../shared/service/userAddressService';
 
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-jwt.service';
@@ -13,7 +14,8 @@ export class LoginService {
         private principal: Principal,
         private trackerService: JhiTrackerService,
         private authServerProvider: AuthServerProvider,
-        private cartService: UserCartService
+        private cartService: UserCartService,
+        private userAddressService: UserAddressService
     ) {}
 
     login(credentials, callback?) {
@@ -23,6 +25,7 @@ export class LoginService {
             this.authServerProvider.login(credentials).subscribe(
                 data => {
                     this.cartService.setCart(null);
+                    this.userAddressService.setUserAddresses(null);
                     this.principal.identity(true).then(account => {
                         this.trackerService.sendActivity();
                         resolve(data);
