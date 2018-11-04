@@ -1,10 +1,11 @@
 import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
 import { LoginModalService } from 'app/core';
 import { Register } from './register.service';
+import { VerifyPhoneComponent } from '../../shared/verify-phone/verify-phone.component';
 
 @Component({
     selector: 'jhi-register',
@@ -19,12 +20,14 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     registerAccount: any;
     success: boolean;
     modalRef: NgbModalRef;
+    verified = false;
 
     constructor(
         private loginModalService: LoginModalService,
         private registerService: Register,
         private elementRef: ElementRef,
-        private renderer: Renderer
+        private renderer: Renderer,
+        private modalService: NgbModal
     ) {}
 
     ngOnInit() {
@@ -34,6 +37,21 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#login'), 'focus', []);
+    }
+
+    verify() {
+        const modalRef = this.modalService.open(VerifyPhoneComponent);
+        modalRef.componentInstance.number = this.registerAccount.phoneNumber;
+
+        modalRef.result.then(result => {
+
+          },
+          reason => {
+              if (reason === true) {
+                this.verified = true;
+              }
+          }
+          );
     }
 
     register() {

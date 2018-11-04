@@ -16,3 +16,4 @@ export * from './service/messaging.service';
 export * from './environment';
 export * from './add-address/add-address.component';
 export * from './service/userAddressService';
+export * from '../shared/verify-phone/verify-phone.component';

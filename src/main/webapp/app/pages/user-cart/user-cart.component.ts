@@ -4,7 +4,24 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ICart } from 'app/shared/model/cart.model';
 import { UserCartService } from 'app/shared/service/userCart.service';
 import { CartItems } from 'app/shared/model/cart-items.model';
+import { UserAddressService } from '../../shared/service/userAddressService';
+import { AddAddressComponent } from '../../shared/add-address/add-address.component';
+import { Pipe, PipeTransform } from '@angular/core';
+import { IUserAddress, UserAddress } from '../../shared/model/user-address.module';
+import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+@Pipe({
+  name: 'address'
+})
+export class AddressPipe implements PipeTransform {
+  transform(value: string): string {
+    let trans = value;
+    trans = trans.replace(new RegExp(';', 'g'), ', ');
+    trans = trans.replace(new RegExp(', -', 'g'), '');
+
+    return trans;
+  }
+}
 @Component({
     selector: 'jhi-user-cart',
     templateUrl: './user-cart.component.html',
@@ -15,8 +32,11 @@ export class UserCartComponent implements AfterViewInit {
     total: number;
     cartLoading = false;
     loading = true;
+    userAddresses: IUserAddress[];
+    address: number;
 
-    constructor(private http: HttpClient, private router: Router, private cartService: UserCartService) {}
+    constructor(private http: HttpClient, private router: Router, private cartService: UserCartService,
+         private userAddressService: UserAddressService, private modalService: NgbModal) {}
     ngAfterViewInit() {
         this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
@@ -39,6 +59,16 @@ export class UserCartComponent implements AfterViewInit {
                 this.loading = false;
             }
         );
+
+        this.userAddressService.userAddresses.subscribe( res => {
+            this.userAddresses = res;
+        });
+
+        this.userAddressService.loadUserAddresses().subscribe(
+            res => {
+                this.userAddressService.setUserAddresses(res);
+            }
+        );
     }
 
     setInCartFromCart(cart: ICart) {
@@ -54,7 +84,7 @@ export class UserCartComponent implements AfterViewInit {
 
     placeOrder() {
         this.cartService.setLoading(true);
-        this.http.post('api/placeOrder', {}).subscribe(
+        this.http.post('api/placeOrder?address=' + this.address, {}).subscribe(
             res => {
                 alert('order placed');
                 this.cartService.setCart(null);
@@ -64,5 +94,16 @@ export class UserCartComponent implements AfterViewInit {
                 this.cartService.setLoading(false);
             }
         );
+    }
+
+    selectAddress(address: any) {
+        this.address = address.id;
+        console.log(this.address);
+    }
+
+    openAddAddress() {
+
+        const modalRef = this.modalService.open(AddAddressComponent,  { centered: true, size: 'lg' });
+
     }
 }

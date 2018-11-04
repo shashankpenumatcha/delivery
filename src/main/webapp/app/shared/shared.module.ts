@@ -5,13 +5,14 @@ import { NgbDateMomentAdapter } from './util/datepicker-adapter';
 import { DeliverySharedLibsModule, DeliverySharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective } from './';
 import { AddToCartComponent } from './add-to-cart/add-to-cart.component';
 import { AddAddressComponent } from './add-address/add-address.component';
+import { VerifyPhoneComponent } from './verify-phone/verify-phone.component';
 
 @NgModule({
     imports: [DeliverySharedLibsModule, DeliverySharedCommonModule],
-    declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective, AddToCartComponent, AddAddressComponent],
+    declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective, AddToCartComponent, AddAddressComponent, VerifyPhoneComponent],
     providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }],
-    entryComponents: [JhiLoginModalComponent, AddAddressComponent],
-    exports: [DeliverySharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective, AddToCartComponent, AddAddressComponent],
+    entryComponents: [JhiLoginModalComponent, AddAddressComponent, VerifyPhoneComponent],
+    exports: [DeliverySharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective, AddToCartComponent, AddAddressComponent, VerifyPhoneComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })

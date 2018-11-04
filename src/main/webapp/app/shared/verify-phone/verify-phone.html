@@ -1,0 +1,16 @@
+<div class="modal-header">
+   <span style="font-weight:bold"> Verify Phone Number</span>
+    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')"><span aria-hidden="true">x</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div *ngIf="!sent" id="recaptcha-container"></div>
+            <div  *ngIf="sent" >
+                <input type="text" [(ngModel)]='verification'/>
+                <button [disabled]="verification==undefined || (verification!==undefined && verification.length<=0)" (click)="verify()">Enter OTP</button>
+            </div>
+        </div>
+    </div>
+</div>

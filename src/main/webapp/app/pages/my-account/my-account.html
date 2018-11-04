@@ -9,16 +9,16 @@
                 <div class="row">
                     <div *ngIf="showAddress" class="col-12">
                         <ng-container *ngIf="userAddresses!=undefined && userAddresses!=null && userAddresses.length>0">
-
+                            <div style="margin:15px 0px;padding: 10px 10px;font-size: 12px;border: 1px solid #cbcbcb;color:#9e9a9e" *ngFor="let userAddress of userAddresses">
+                                <p style="display:inline-block;width:50%;margin-bottom:0px!important;font-size:12px;">
+                                 {{userAddress.address | address}}
+                                </p>
+                                <span style="position: absolute;right:25px;">
+                                     <span style="cursor:pointer;color: #198c19;font-weight: bold;" (click)="delete(userAddress.id)">DELETE</span>
+                                </span>
+                             </div>
                         </ng-container>
-                        <div style="margin:15px 0px;padding: 10px 10px;font-size: 12px;border: 1px solid #cbcbcb;color:#9e9a9e" *ngFor="let userAddress of userAddresses">
-                           <p style="display:inline-block;width:50%;margin-bottom:0px!important;font-size:12px;">
-                            {{userAddress.address | address}}
-                           </p>
-                           <span style="position: absolute;right:25px;">
-                                <span style="cursor:pointer;color: #198c19;font-weight: bold;" (click)="delete(userAddress.id)">DELETE</span>
-                           </span>
-                        </div>
+
                         <h5 (click)="openAddAddress()" style="cursor:pointer;font-size: 14px;color: #3b5e8cbf;border: 2px dashed #3b5e8cbf;text-align: center;
                         padding: 15px;font-weight: bold;margin: 15px 0px;">
                             Add A New Address

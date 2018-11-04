@@ -70,6 +70,11 @@ Bootstrap tweaks
 }
 
 
+.selectedAddress{
+    border:1px solid #198c19!important;
+    color:#198c19!important;
+}
+
 textarea:focus, input:focus{
     outline: none!important;
 }

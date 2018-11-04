@@ -13,6 +13,7 @@ export interface IUserProfile {
     orderTrackers?: IOrderTracker[];
     cart?: ICart;
     fmcToken?: string;
+    phoneNumber?: string;
 }
 
 export class UserProfile implements IUserProfile {
@@ -24,7 +25,8 @@ export class UserProfile implements IUserProfile {
         public inventoryLogs?: IInventoryLog[],
         public orderTrackers?: IOrderTracker[],
         public cart?: ICart,
-        public fcmToken?: string
+        public fcmToken?: string,
+        public phoneNumber?: string
     ) {
         this.customer = this.customer || false;
     }

@@ -31,6 +31,9 @@ public class UserProfile implements Serializable {
     @Column(name = "fcm_token")
     private String fcmToken;
 
+    @Column(name="phone_number")
+    private String phoneNumber;
+
     @OneToOne    @JoinColumn(unique = true)
     @JsonIgnoreProperties({"id","password","langKey","activated","resetDate"})
     private User user;
@@ -176,6 +179,14 @@ public class UserProfile implements Serializable {
 
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Set<UserAddress> getUserAddresses() {
