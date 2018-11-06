@@ -33,7 +33,7 @@ public class OrderTracker implements Serializable {
     private OrderStatus orderStatus;
 
     @ManyToOne
-    @JsonIgnoreProperties("orderTrackers, cart")
+    @JsonIgnoreProperties("orderTrackers, cart, fcmTokens")
     private UserProfile userProfile;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

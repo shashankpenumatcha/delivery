@@ -50,6 +50,9 @@ public class UserProfile implements Serializable {
     @OneToMany(mappedBy = "userProfile",fetch= LAZY) @JsonIgnoreProperties("userProfile")
     private Set<UserAddress> userAddresses = new HashSet<>();
 
+    @OneToMany(mappedBy = "userProfile",fetch= LAZY) @JsonIgnoreProperties("userProfile")
+    private Set<FcmToken> fcmTokens = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -196,7 +199,16 @@ public class UserProfile implements Serializable {
     public void setUserAddresses(Set<UserAddress> userAddresses) {
         this.userAddresses = userAddresses;
     }
-// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Set<FcmToken> getFcmTokens() {
+        return fcmTokens;
+    }
+
+    public void setFcmTokens(Set<FcmToken> fcmTokens) {
+        this.fcmTokens = fcmTokens;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

@@ -650,4 +650,20 @@ public class FrontEndResource {
     }
 
 
+    @Transactional
+    @PostMapping("/fcmToken/update")
+    @Timed
+    public ResponseEntity<Map<String,String>> updateToken(@RequestParam(value = "token") String token) {
+        String result = frontEndService.updateFcmToken(token);
+        Map<String,String> response =  new HashMap<String,String>();
+        if(result == null){
+            response.put("error","error updating token, please check logs");
+            return new ResponseEntity<Map<String,String>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("success","token updated");
+
+        return new ResponseEntity<Map<String,String>>(response,HttpStatus.OK);
+    }
+
+
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFireMessaging } from '@angular/fire/messaging';
+ import { AngularFireMessaging } from '@angular/fire/messaging';
 import { BehaviorSubject } from 'rxjs';
+import * as firebase from 'firebase';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +11,7 @@ export class MessagingService {
 
   currentMessage = new BehaviorSubject(null);
 
-  constructor(private angularFireMessaging: AngularFireMessaging) {
+  constructor(private angularFireMessaging: AngularFireMessaging, private http: HttpClient) {
     this.angularFireMessaging.messaging.subscribe(
       _messaging => {
         _messaging.onMessage = _messaging.onMessage.bind(_messaging);
@@ -20,8 +22,13 @@ export class MessagingService {
 
   updateToken( token) {
     // we can change this function to request our backend service
-        localStorage.setItem('fcm', token);
+        this.http.post('api/fcmToken/update?token=' + token, {}).subscribe (res => {
+            localStorage.setItem('fcm', token);
+            console.log('companyyyyyyyyyyyyyyyyyyyyyyyyfloooooooooooooooooooow');
+        }, reason => {
+            console.log('companyyyyyyyyyyyyyyyyyyyyyyyyfloooooooooooooooooooow');
 
+        });
   }
 
   requestPermission() {

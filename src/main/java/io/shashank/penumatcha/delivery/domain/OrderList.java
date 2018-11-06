@@ -42,7 +42,7 @@ public class OrderList implements Serializable {
     private OrderStatus orderStatus;
 
     @ManyToOne
-    @JsonIgnoreProperties({"orderLists","inventoryLogs","orderTrackers","cart"})
+    @JsonIgnoreProperties({"orderLists","inventoryLogs","orderTrackers","cart", "fcmTokens"})
     private UserProfile userProfile;
 
     @Column(name="created_date")

@@ -27,6 +27,7 @@ export class ListingComponent implements  AfterViewInit {
             r => {
                 console.log('rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
                                 console.log(r);
+
             }
         );
 
