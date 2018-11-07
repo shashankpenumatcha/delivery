@@ -6,6 +6,7 @@ import { UserAddressService } from '../../shared/service/userAddressService';
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-jwt.service';
 import { JhiTrackerService } from '../tracker/tracker.service';
+import { MessagingService } from 'app/shared/service/messaging.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
@@ -15,7 +16,8 @@ export class LoginService {
         private trackerService: JhiTrackerService,
         private authServerProvider: AuthServerProvider,
         private cartService: UserCartService,
-        private userAddressService: UserAddressService
+        private userAddressService: UserAddressService,
+        private messagingService: MessagingService
     ) {}
 
     login(credentials, callback?) {
@@ -26,6 +28,11 @@ export class LoginService {
                 data => {
                     this.cartService.setCart(null);
                     this.userAddressService.setUserAddresses(null);
+                    try {
+                        this.messagingService.init();
+                    } catch (err) {
+                        console.log(err);
+                    }
                     this.principal.identity(true).then(account => {
                         this.trackerService.sendActivity();
                         resolve(data);
@@ -46,6 +53,7 @@ export class LoginService {
     }
 
     logout() {
+        this.messagingService.deleteToken();
         this.authServerProvider.logout().subscribe();
         this.principal.authenticate(null);
     }

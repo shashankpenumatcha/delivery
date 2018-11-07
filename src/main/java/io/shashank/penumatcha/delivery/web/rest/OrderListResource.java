@@ -1,6 +1,7 @@
 package io.shashank.penumatcha.delivery.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import io.github.jhipster.config.JHipsterDefaults;
 import io.shashank.penumatcha.delivery.domain.*;
 import io.shashank.penumatcha.delivery.repository.InventoryLogRepository;
 import io.shashank.penumatcha.delivery.repository.OrderListRepository;
@@ -12,6 +13,7 @@ import io.shashank.penumatcha.delivery.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -110,23 +112,41 @@ public class OrderListResource {
             orderTracker.setOrderList(orderList);
             orderTracker.setDateTime(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
             orderTracker =  orderTrackerRepository.save(orderTracker);
+            if(orderTracker.getOrderStatus().getName()=="CANCELLED"){
+                for (OrderItems orderItem : orderList.getOrderItems()){
+                    Product oldProduct = productRepository.getOne(orderItem.getProduct().getId());
+                    if(oldProduct!=null) {
+                        oldProduct.setQuantity(oldProduct.getQuantity() + orderItem.getQuantity());
+                        oldProduct = productRepository.save(oldProduct);
+                        if (oldProduct != null) {
+                            InventoryLog inventoryLog = new InventoryLog();
+                            inventoryLog.setAdded(true);
+                            inventoryLog.setDate(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+                            inventoryLog.setProduct(oldProduct);
+                            inventoryLog.setQuantity(orderItem.getQuantity().floatValue());
+                            inventoryLog.setUserProfile(userProfile);
+                            inventoryLog = inventoryLogRepository.save(inventoryLog);
+                        }
+                    }
+                }
+            }
+
+            try {
+
+                HttpHeaders headers = this.frontEndService.makeHeaders(true);
+                String notificationKey = this.frontEndService.getFcmGroupToken(headers,oldOrder.getUserProfile().getId());
+                if(notificationKey!=null){
+                    this.frontEndService.sendFCM("Order# "+ orderList.getId().toString(),
+                        "your order is " + orderList.getOrderStatus().getName().toLowerCase(),
+                        notificationKey);
+
+                }
+            }catch(Error e){
+                log.debug(">>>>>>>>>>>>>>>. error while sending notification");
+            }
+
         }
-        for (OrderItems orderItem : orderList.getOrderItems()){
-            Product oldProduct = productRepository.getOne(orderItem.getProduct().getId());
-           if(oldProduct!=null) {
-               oldProduct.setQuantity(oldProduct.getQuantity() + orderItem.getQuantity());
-               oldProduct = productRepository.save(oldProduct);
-               if (oldProduct != null) {
-                   InventoryLog inventoryLog = new InventoryLog();
-                   inventoryLog.setAdded(true);
-                   inventoryLog.setDate(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
-                   inventoryLog.setProduct(oldProduct);
-                   inventoryLog.setQuantity(orderItem.getQuantity().floatValue());
-                   inventoryLog.setUserProfile(userProfile);
-                   inventoryLog = inventoryLogRepository.save(inventoryLog);
-               }
-           }
-        }
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderList.getId().toString()))
             .body(result);

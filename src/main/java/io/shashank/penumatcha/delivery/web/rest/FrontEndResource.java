@@ -324,6 +324,7 @@ public class FrontEndResource {
         log.debug("REST request to get  Cart for User");
         UserProfile userProfile = frontEndService.getCurrentUserProfile();
         Cart cart = null;
+        log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjj>>>>>>>>>>>>>>>>>..jjjjjjjj"+userProfile.toString());
         cart = cartItemsRepository.getCartForUser(userProfile.getId());
         if(cart==null){
             final MultiValueMap<String, String> error = new HttpHeaders();
@@ -449,6 +450,20 @@ public class FrontEndResource {
                     error.put("error", Collections.singletonList("error while saving order tracker"));
                     return new ResponseEntity(null, error, HttpStatus.INTERNAL_SERVER_ERROR);
                 }
+                try {
+
+                    HttpHeaders headers = this.frontEndService.makeHeaders(true);
+                    String notificationKey = this.frontEndService.getFcmGroupToken(headers,order.getUserProfile().getId());
+                    if(notificationKey!=null){
+                        this.frontEndService.sendFCM("Order# "+ order.getId().toString(),
+                            "your order is " + order.getOrderStatus().getName().toLowerCase(),
+                            notificationKey);
+
+                    }
+                }catch(Error e){
+                    log.debug(">>>>>>>>>>>>>>>. error while sending notification");
+                }
+
                 cartRepository.delete(cart);
             }
         error.put("message", Collections.singletonList("order Placed succesfully"));
@@ -662,6 +677,20 @@ public class FrontEndResource {
         }
         response.put("success","token updated");
 
+        return new ResponseEntity<Map<String,String>>(response,HttpStatus.OK);
+    }
+
+    @Transactional
+    @DeleteMapping("/fcmToken/delete")
+    @Timed
+    public ResponseEntity<Map<String,String>> removeToken(@RequestParam(value = "token") String token) {
+        String result = frontEndService.deleteToken(token);
+        Map<String,String> response =  new HashMap<String,String>();
+        if(result == null){
+            response.put("error","error while deleting token, please check logs");
+            return new ResponseEntity<Map<String,String>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("success","token deleted");
         return new ResponseEntity<Map<String,String>>(response,HttpStatus.OK);
     }
 

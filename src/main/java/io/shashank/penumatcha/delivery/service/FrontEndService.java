@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing users.
@@ -107,32 +108,26 @@ public class FrontEndService {
     }
 
 
-    public void sendFCM () {
+    public void sendFCM (String title, String body, String to) {
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization","key=AAAAZPImt-w:APA91bHAsCOE6SLk6idkGOm_QhTrXdE9SlVczLRgn6waMk3-P2Z_juXeqhFFyiiw6RE7qP5c7f3Mcn6fHORfU1S414zMLjAvGu_Wg5TBOfjd9AO-9ZR43kFGL_H49iIUjXFbiWSvAMaC");
-            headers.add("Content-Type", "application/json");
+            HttpHeaders headers = this.makeHeaders(false);
             final String uri = "https://fcm.googleapis.com/fcm/send";
 
             RestTemplate restTemplate = new RestTemplate();
-            Map<String,Object> body = new HashMap<String,Object>();
+            Map<String,Object> payload = new HashMap<String,Object>();
             Map<String,String> notification = new HashMap<String,String>();
 
-            notification.put("title","hi");
-            notification.put("body","how are you");
-            body.put("notification",notification);
-            body.put("to","ffTq9cO2vSY:APA91bEPDlYmtHtlIu_8a6lq7kLTDtgbnue1LpeOPo-1RlGFrUEXxBbfOCjBjEiUAiTt1LLO8MTYy6HklY16eHgPblXRRFiy6XWRcSz-zVIn0GnClpTaBhxCvMM4BBvJV8RkY5hqhMC2");
-
-            HttpEntity<Object> request = new HttpEntity<Object>(body,headers);
+            notification.put("title",title);
+            notification.put("body", body);
+            payload.put("notification",notification);
+            payload.put("to",to);
+            HttpEntity<Object> request = new HttpEntity<Object>(payload,headers);
 
                 ResponseEntity<String>  result = restTemplate.postForEntity(uri,request, String.class);
 
         JsonParser jsonParser = new BasicJsonParser();
         Map<String, Object> jsonMap = null;
         jsonMap = jsonParser.parseMap(result.getBody());
-
-            log.debug("rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"+jsonMap.get("success"));
-
     }
 
     public HttpHeaders makeHeaders(boolean withProjectId){
@@ -177,13 +172,15 @@ public class FrontEndService {
             RestTemplate restTemplate = new RestTemplate();
             Map<String, Object> body = new HashMap<String, Object>();
             if(operation=="add" || operation=="remove"){
-                body.put("registration_ids", ids);
                 body.put("notification_key", key);
             }
+            body.put("registration_ids", ids);
             body.put("operation", operation);
             body.put("notification_key_name", userProfileId.toString());
             HttpEntity<Object> request = new HttpEntity<Object>(body, headers);
             log.debug(">>>>>>>>>>>>>>>>>> sending http request to "+operation+" from  group");
+            log.debug(">>>>>>>>>>>>>>>>>> sending http request to "+ body.toString());
+
             ResponseEntity<String> result = restTemplate.postForEntity(uri, request, String.class);
             log.debug(">>>>>>>>>>>>>>>>>>  http result for "+operation+" group>>>>>>>>>>>>>> " + result);
             Map<String, Object> jsonMap = null;
@@ -198,7 +195,7 @@ public class FrontEndService {
             notificationKey = jsonMap.get("notification_key").toString();
 
             }catch (Exception e){
-                log.debug(">>>>>>>>>>>>>>>>>>group notification key not found for user "+ userProfileId);
+                log.debug(">>>>>>>>>>>>>>>>>>group notification key not found for user "+ userProfileId + operation);
             }finally{
                 return notificationKey;
             }
@@ -239,7 +236,7 @@ public class FrontEndService {
                     }
                 }
             }catch (Exception e){
-                log.debug(">>>>>>>>>>>>>>>>>>>>>>> no token found for previous user");
+                log.debug(">>>>>>>>>>>>>>>>>>>>>>> no token found for previous user" );
             }
             log.debug(">>>>>>>>>>>>>>>>>> deleted fcm token for another user");
         }
@@ -282,5 +279,48 @@ public class FrontEndService {
         return null;
     }
 
+    public String deleteToken(String token) {
+        log.debug(">>>>>>>>>>>>>>>>>> request to delete fcm token for current user");
+        if(token == null ){
+            return null;
+        }
+        UserProfile userProfile = this.getCurrentUserProfile();
+        if(userProfile==null){
+            return null;
+        }
+        FcmToken fcmToken = fcmTokenRepository.findOneByToken(token);
+        if(fcmToken==null){
+            log.debug(">>>>>>>>>>>>>>>>>> token not found in db");
+            return null;
+        }
+        if(fcmToken.getUserProfile().getId()!=userProfile.getId()){
+            log.debug(">>>>>>>>>>>>>>>>>> token found for other user");
+            return null;
+        }
+        HttpHeaders headers = this.makeHeaders(true);
+        String notificationKey = this.getFcmGroupToken(headers,userProfile.getId());
+        if(notificationKey==null){
+            return null;
+        }
+        List<String> registrationIds = new ArrayList<String>();
+        registrationIds.add(token);
+        notificationKey = this.updateGroupToken(headers,userProfile.getId(),"remove",notificationKey,registrationIds);
+        if(notificationKey==null) {
+            log.debug(">>>>>>>>>>>>>>>>>> error while deleting token from group");
+            return null;
+        }
+        try{
+            this.fcmTokenRepository.delete(fcmToken);
+            List<FcmToken> tokens = this.fcmTokenRepository.findAllForUser(userProfile.getId());
+            if(tokens==null || (tokens!=null && tokens.isEmpty())){
+                userProfile.setFcmToken(null);
+                this.userProfileRepository.save(userProfile);
+            }
+        }catch (Exception e){
+            log.debug(">>>>>>>>>>>>>>>>>> error while deleting token from db");
+            return null;
+        }
+        return "success";
+    }
 
 }

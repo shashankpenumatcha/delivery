@@ -20,17 +20,6 @@ export class ListingComponent implements  AfterViewInit {
     constructor(private http: HttpClient, private cartService: UserCartService, private messagingService: MessagingService) {}
 
     ngAfterViewInit() {
-
-        this.messagingService.requestPermission();
-        this.messagingService.receiveMessage();
-        this.messagingService.currentMessage.subscribe(
-            r => {
-                console.log('rtjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
-                                console.log(r);
-
-            }
-        );
-
         this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
         });

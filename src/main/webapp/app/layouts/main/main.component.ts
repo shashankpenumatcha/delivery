@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
+import { MessagingService } from '../../shared/service/messaging.service';
+import { Principal } from '../../core/auth/principal.service';
 import {
     trigger,
     state,
@@ -109,7 +111,7 @@ import { Title } from '@angular/platform-browser';
       ]
 })
 export class JhiMainComponent implements OnInit {
-    constructor(private titleService: Title, private router: Router) {}
+    constructor(private principal: Principal, private messagingService: MessagingService, private titleService: Title, private router: Router) {}
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
         let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'deliveryApp';
@@ -120,6 +122,9 @@ export class JhiMainComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.principal.identity(true).then(account => {
+            this.messagingService.init();
+        });
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 this.titleService.setTitle(this.getPageTitle(this.router.routerState.snapshot.root));
