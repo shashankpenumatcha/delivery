@@ -2,6 +2,8 @@ package io.shashank.penumatcha.delivery.web.websocket;
 
 import static io.shashank.penumatcha.delivery.config.WebsocketConfiguration.IP_ADDRESS;
 
+import io.shashank.penumatcha.delivery.domain.OrderList;
+import io.shashank.penumatcha.delivery.domain.OrderStatus;
 import io.shashank.penumatcha.delivery.web.websocket.dto.ActivityDTO;
 
 import java.security.Principal;
@@ -9,9 +11,11 @@ import java.time.Instant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
@@ -38,11 +42,26 @@ public class ActivityService implements ApplicationListener<SessionDisconnectEve
         return activityDTO;
     }
 
-    @Override
+
+
+
+    // the business logic can call this to update all connected clients
+    public void sendNewOrder(OrderList order) {
+        log.debug("Sending new order notification from java {}", order);
+        messagingTemplate.convertAndSend("/topic/orders", order);
+    }
+
+    public void sendStatus( Long id, OrderList orderList) {
+        log.debug("Sending order status notification {}", id);
+        messagingTemplate.convertAndSend("/topic/orders/"+ id.toString(), orderList);
+    }
+
+
+   @Override
     public void onApplicationEvent(SessionDisconnectEvent event) {
-        ActivityDTO activityDTO = new ActivityDTO();
+        /*ActivityDTO activityDTO = new ActivityDTO();
         activityDTO.setSessionId(event.getSessionId());
         activityDTO.setPage("logout");
-        messagingTemplate.convertAndSend("/topic/tracker", activityDTO);
+        messagingTemplate.convertAndSend("/topic/tracker", activityDTO);*/
     }
 }

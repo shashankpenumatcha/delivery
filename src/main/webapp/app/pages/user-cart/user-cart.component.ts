@@ -86,7 +86,7 @@ export class UserCartComponent implements AfterViewInit {
         this.cartService.setLoading(true);
         this.http.post('api/placeOrder?address=' + this.address, {}).subscribe(
             res => {
-                alert('order placed');
+                // alert('order placed');
                 this.cartService.setCart(null);
                 this.cartService.setLoading(false);
             },

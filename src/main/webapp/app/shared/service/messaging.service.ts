@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import * as firebase from 'firebase';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import {  JhiAlertService } from 'ng-jhipster';
+import { JhiTrackerService } from 'app/core';
 
 @Injectable({
     providedIn: 'root'
@@ -12,9 +13,9 @@ export class MessagingService {
 
   currentMessage = new BehaviorSubject(null);
   fcmToken: string;
+  subscribed = false;
 
-  constructor(private angularFireMessaging: AngularFireMessaging, private http: HttpClient, private jhiAlertService: JhiAlertService,
-    ) {
+  constructor( private angularFireMessaging: AngularFireMessaging, private http: HttpClient, private jhiAlertService: JhiAlertService    ) {
     this.angularFireMessaging.messaging.subscribe(
       _messaging => {
         _messaging.onMessage = _messaging.onMessage.bind(_messaging);
@@ -45,21 +46,25 @@ export class MessagingService {
   }
 
   receiveMessage() {
+    if ( !this.subscribed) {
     this.angularFireMessaging.messages.subscribe(
       payload => {
        let not: any;
        not = payload;
-       if (not.notification.body !== undefined) {
+      /*  if (not.notification.body !== undefined) {
             alert(not.notification.body);
-       }
-
+       } */
+       this.subscribed = true;
         console.log('new message received. ', not);
         this.currentMessage.next(not.notification);
       });
+    }
   }
   init() {
     this.requestPermission();
     this.receiveMessage();
+    // this.initWebSockets();
+
   }
 
   deleteToken() {

@@ -11,6 +11,7 @@ import io.shashank.penumatcha.delivery.service.FrontEndService;
 import io.shashank.penumatcha.delivery.web.rest.errors.BadRequestAlertException;
 import io.shashank.penumatcha.delivery.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.shashank.penumatcha.delivery.web.websocket.ActivityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -47,14 +48,17 @@ public class OrderListResource {
 
     private  final InventoryLogRepository inventoryLogRepository;
 
+    private  final ActivityService activityService;
+
     public OrderListResource(OrderListRepository orderListRepository,FrontEndService frontEndService,
                              OrderTrackerRepository orderTrackerRepository, ProductRepository productRepository,
-                             InventoryLogRepository inventoryLogRepository) {
+                             InventoryLogRepository inventoryLogRepository, ActivityService activityService) {
         this.orderListRepository = orderListRepository;
         this.frontEndService = frontEndService;
         this.orderTrackerRepository = orderTrackerRepository;
         this.productRepository = productRepository;
         this.inventoryLogRepository = inventoryLogRepository;
+        this.activityService =activityService;
     }
 
     /**
@@ -141,6 +145,7 @@ public class OrderListResource {
                         notificationKey);
 
                 }
+                this.activityService.sendStatus(oldOrder.getUserProfile().getId(),orderList);
             }catch(Error e){
                 log.debug(">>>>>>>>>>>>>>>. error while sending notification");
             }

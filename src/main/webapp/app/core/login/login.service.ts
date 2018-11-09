@@ -33,8 +33,19 @@ export class LoginService {
                     } catch (err) {
                         console.log(err);
                     }
+                    this.trackerService.disconnect();
+                    this.trackerService.connect();
+                    this.trackerService.receive().subscribe(res => {
+                        console.log(res);
+                        alert('received a new order');
+                    });
+                    this.trackerService.subscribeOrder();
+
                     this.principal.identity(true).then(account => {
-                        this.trackerService.sendActivity();
+                       // this.trackerService.sendActivity();
+                       if (account !== null && account.authorities !== null && account !== undefined && account.authorities.indexOf('ROLE_ADMIN') !== -1) {
+                        this.trackerService.subscribe();
+                        }
                         resolve(data);
                     });
                     return cb();
@@ -56,5 +67,6 @@ export class LoginService {
         this.messagingService.deleteToken();
         this.authServerProvider.logout().subscribe();
         this.principal.authenticate(null);
+        this.trackerService.disconnect();
     }
 }

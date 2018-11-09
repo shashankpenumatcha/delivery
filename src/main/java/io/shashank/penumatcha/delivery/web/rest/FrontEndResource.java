@@ -9,6 +9,7 @@ import io.shashank.penumatcha.delivery.web.rest.dto.CartItemDTO;
 import io.shashank.penumatcha.delivery.web.rest.errors.BadRequestAlertException;
 import io.shashank.penumatcha.delivery.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.shashank.penumatcha.delivery.web.websocket.ActivityService;
 import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,13 +67,15 @@ public class FrontEndResource {
 
     private  final UserAddressRepository userAddressRepository;
 
+    private  final ActivityService activityService;
+
 
     public FrontEndResource(CartItemsRepository cartItemsRepository,
                             UserService userService, UserProfileRepository userProfileRepository,
                             CartRepository cartRepository, ProductRepository productRepository, FrontEndService frontEndService,
                             InventoryLogRepository inventoryLogRepository, OrderStatusRepository orderStatusRepository, OrderListRepository orderRepository,
                             OrderItemsRepository orderItemsRepository,OrderTrackerRepository orderTrackerRepository,
-                            UserAddressRepository userAddressRepository
+                            UserAddressRepository userAddressRepository, ActivityService activityService
                             ) {
         this.cartItemsRepository = cartItemsRepository;
         this.userService = userService;
@@ -86,6 +89,7 @@ public class FrontEndResource {
         this.orderItemsRepository = orderItemsRepository;
         this.orderTrackerRepository = orderTrackerRepository;
         this.userAddressRepository=userAddressRepository;
+        this.activityService = activityService;
     }
 
     /**
@@ -466,6 +470,10 @@ public class FrontEndResource {
 
                 cartRepository.delete(cart);
             }
+
+            this.activityService.sendNewOrder(order);
+            this.activityService.sendStatus(userProfile.getId(),order);
+
         error.put("message", Collections.singletonList("order Placed succesfully"));
         return new ResponseEntity(error, HttpStatus.OK);
     }
@@ -692,6 +700,14 @@ public class FrontEndResource {
         }
         response.put("success","token deleted");
         return new ResponseEntity<Map<String,String>>(response,HttpStatus.OK);
+    }
+
+    @Transactional
+    @GetMapping("/userProfile/current")
+    @Timed
+    public ResponseEntity<UserProfile> getCurrentUser(){
+        UserProfile userProfile = this.frontEndService.getCurrentUserProfile();
+        return new ResponseEntity<UserProfile>(userProfile,HttpStatus.OK);
     }
 
 

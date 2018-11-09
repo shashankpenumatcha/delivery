@@ -70,7 +70,7 @@ export class Principal {
                 if (account) {
                     this.userIdentity = account;
                     this.authenticated = true;
-                    this.trackerService.connect();
+                   //   this.trackerService.connect();
                 } else {
                     this.userIdentity = null;
                     this.authenticated = false;
@@ -80,7 +80,7 @@ export class Principal {
             })
             .catch(err => {
                 if (this.trackerService.stompClient && this.trackerService.stompClient.connected) {
-                    this.trackerService.disconnect();
+               //     this.trackerService.disconnect();
                 }
                 this.userIdentity = null;
                 this.authenticated = false;

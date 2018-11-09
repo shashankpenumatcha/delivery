@@ -17,7 +17,7 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute, menuRoute];
                     loadChildren: './admin/admin.module#DeliveryAdminModule'
                 }
             ],
-            { useHash: true, enableTracing: DEBUG_INFO_ENABLED }
+            { useHash: true, enableTracing: false }
         )
     ],
     exports: [RouterModule]

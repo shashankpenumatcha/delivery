@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { MessagingService } from '../../shared/service/messaging.service';
 import { Principal } from '../../core/auth/principal.service';
+import { JhiTrackerService } from 'app/core';
 import {
     trigger,
     state,
@@ -111,7 +112,7 @@ import { Title } from '@angular/platform-browser';
       ]
 })
 export class JhiMainComponent implements OnInit {
-    constructor(private principal: Principal, private messagingService: MessagingService, private titleService: Title, private router: Router) {}
+    constructor(private trackerService: JhiTrackerService,private principal: Principal, private messagingService: MessagingService, private titleService: Title, private router: Router) {}
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
         let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'deliveryApp';
@@ -124,7 +125,17 @@ export class JhiMainComponent implements OnInit {
     ngOnInit() {
         this.principal.identity(true).then(account => {
             this.messagingService.init();
+            this.trackerService.connect();
+            this.trackerService.receive().subscribe(res => {
+                alert('new order received - main');
+
+            });
+             this.trackerService.subscribeOrder();
+            if (account !== null && account.authorities !== null && account.authorities.indexOf('ROLE_ADMIN') !== -1) {
+                this.trackerService.subscribe();
+            }
         });
+
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 this.titleService.setTitle(this.getPageTitle(this.router.routerState.snapshot.root));
