@@ -1,4 +1,5 @@
 package io.shashank.penumatcha.delivery.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +22,11 @@ public class UserAddress implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserProfile userProfile;
+
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private Vendor vendor;
+
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -48,6 +54,18 @@ public class UserAddress implements Serializable {
         this.userProfile = userProfile;
     }
 
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public UserAddress vendor(Vendor vendor){
+        this.vendor = vendor;
+        return this;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

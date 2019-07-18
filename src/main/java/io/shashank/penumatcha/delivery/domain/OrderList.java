@@ -30,6 +30,9 @@ public class OrderList implements Serializable {
     @Column(name = "user_address")
     private String userAddress;
 
+    @Column(name = "total")
+    private Float total;
+
     @OneToMany(mappedBy = "orderList",fetch = FetchType.EAGER)
     @JsonIgnoreProperties("orderLists")
     private Set<OrderItems> orderItems = new HashSet<>();
@@ -47,6 +50,37 @@ public class OrderList implements Serializable {
 
     @Column(name="created_date")
     private ZonedDateTime createdDate;
+
+
+    @OneToMany(mappedBy = "orderList", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("orderLists")
+    @JsonIgnore
+    private Set<InventoryLog> inventoryLogs = new HashSet<>();
+
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JsonIgnoreProperties("orderLists")
+    private Vendor vendor;
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+    public OrderList vendor(Vendor vendor){
+        this.vendor = vendor;
+        return this;
+    }
+
+    public Set<InventoryLog> getInventoryLogs() {
+        return inventoryLogs;
+    }
+
+    public void setInventoryLogs(Set<InventoryLog> inventoryLogs) {
+        this.inventoryLogs = inventoryLogs;
+    }
 
     public ZonedDateTime getCreatedDate() {
         return createdDate;
@@ -162,7 +196,14 @@ public class OrderList implements Serializable {
         this.userAddress = userAddress;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    public Float getTotal() {
+        return total;
+    }
+
+    public void setTotal(Float total) {
+        this.total = total;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

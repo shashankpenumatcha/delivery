@@ -129,6 +129,9 @@ public class OrderListResource {
                             inventoryLog.setProduct(oldProduct);
                             inventoryLog.setQuantity(orderItem.getQuantity().floatValue());
                             inventoryLog.setUserProfile(userProfile);
+                            inventoryLog.setCurrentTotal(oldProduct.getQuantity());
+                            inventoryLog.setOrderList(result);
+                            inventoryLog.setRemark("order cancelled");
                             inventoryLog = inventoryLogRepository.save(inventoryLog);
                         }
                     }

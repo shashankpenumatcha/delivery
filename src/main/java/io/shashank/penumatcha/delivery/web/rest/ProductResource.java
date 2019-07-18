@@ -67,6 +67,7 @@ public class ProductResource {
             inventoryLog.setDate(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
             inventoryLog.setProduct(product);
             inventoryLog.setQuantity(product.getQuantity());
+            inventoryLog.setCurrentTotal(product.getQuantity());
             String login = getCurrentUserLogin();
             UserProfile userProfile = userProfileRepository.findUserProfileByLogin(login);
             if(userProfile!=null){
@@ -124,9 +125,12 @@ public class ProductResource {
             if(Float.compare(product.getQuantity(),oldQuantity)>0){
                 inventoryLog.setAdded(true);
                 inventoryLog.setQuantity(product.getQuantity()-oldQuantity);
+                inventoryLog.setCurrentTotal(inventoryLog.getQuantity());
             }else if(Float.compare(product.getQuantity(),oldQuantity)<0){
                 inventoryLog.setRemoved(true);
                 inventoryLog.setQuantity(oldQuantity-product.getQuantity());
+                inventoryLog.setCurrentTotal(inventoryLog.getQuantity());
+
             }
 
             inventoryLogRepository.save(inventoryLog);

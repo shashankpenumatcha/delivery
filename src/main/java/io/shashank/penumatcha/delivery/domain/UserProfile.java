@@ -53,6 +53,10 @@ public class UserProfile implements Serializable {
     @OneToMany(mappedBy = "userProfile",fetch= LAZY) @JsonIgnoreProperties("userProfile")
     private Set<FcmToken> fcmTokens = new HashSet<>();
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JsonIgnoreProperties("userProfile")
+    private Vendor vendor;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -71,6 +75,18 @@ public class UserProfile implements Serializable {
         return this;
     }
 
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public UserProfile vendor(Vendor vendor){
+        this.vendor = vendor;
+        return this;
+    }
     public void setCustomer(Boolean customer) {
         this.customer = customer;
     }

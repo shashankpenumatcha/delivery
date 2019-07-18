@@ -1,12 +1,14 @@
 package io.shashank.penumatcha.delivery.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
 
 /**
  * A InventoryLog.
@@ -33,6 +35,16 @@ public class InventoryLog implements Serializable {
     @Column(name = "quantity")
     private Float quantity;
 
+    @Column(name = "current_total")
+    private Float currentTotal;
+
+    @Column(name = "remark")
+    private String remark;
+
+    @ManyToOne
+    @JsonIgnoreProperties("inventoryLogs")
+    private OrderList orderList;
+
     @ManyToOne
     @JsonIgnoreProperties("inventoryLogs")
     private Product product;
@@ -41,7 +53,56 @@ public class InventoryLog implements Serializable {
     @JsonIgnoreProperties("inventoryLogs")
     private UserProfile userProfile;
 
+    @OneToOne
+    @JsonIgnoreProperties("inventoryLog")
+    @JoinColumn(unique = true)
+    private Backlog backlog;
+
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JsonIgnoreProperties("inventoryLogs")
+    private Vendor vendor;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public InventoryLog vendor(Vendor vendor){
+        this.vendor = vendor;
+        return this;
+    }
+
+    public Float getCurrentTotal() {
+        return currentTotal;
+    }
+
+    public void setCurrentTotal(Float currentTotal) {
+        this.currentTotal = currentTotal;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public OrderList getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(OrderList orderList) {
+        this.orderList = orderList;
+    }
+
     public Long getId() {
         return id;
     }
@@ -121,6 +182,19 @@ public class InventoryLog implements Serializable {
 
     public InventoryLog userProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
+        return this;
+    }
+
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
+    }
+
+    public InventoryLog backlog(Backlog backlog){
+        this.backlog=backlog;
         return this;
     }
 

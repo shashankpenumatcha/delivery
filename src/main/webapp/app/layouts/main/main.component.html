@@ -1,6 +1,12 @@
 
+
 <div  >
     <router-outlet  *jhiHasAnyAuthority="['ROLE_USER']" name="navbar"></router-outlet>
+</div>
+<div style="position:fixed;top: 10px;width: 100%;;margin:0 auto;">
+    <div style="width:400px;margin: 0 auto;display: block;text-align:center;">    <lib-ngx-notification></lib-ngx-notification>
+    </div>
+
 </div>
 <div [@routerAnimation]="getRouteAnimation(o)" class="container-fluid" style="padding:0px">
 

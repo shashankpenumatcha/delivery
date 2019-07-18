@@ -31,6 +31,7 @@
     "ng6-toastr-notifications": "^1.0.4",
     "ngx-cookie": "2.0.1",
     "ngx-infinite-scroll": "0.5.1",
+    "ngx-notification": "^1.0.5",
     "ngx-webstorage": "2.0.1",
     "reflect-metadata": "0.1.12",
     "rxjs": "6.1.0",

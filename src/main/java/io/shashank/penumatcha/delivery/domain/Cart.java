@@ -38,6 +38,24 @@ public class Cart implements Serializable {
     @OneToMany(mappedBy = "cart",cascade=CascadeType.REMOVE, fetch=FetchType.EAGER)
     @JsonIgnoreProperties("cart")
     private Set<CartItems> cartItems = new HashSet<>();
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JsonIgnoreProperties("carts")
+    private Vendor vendor;
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    Cart vendor (Vendor vendor){
+        this.vendor = vendor;
+        return this;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;

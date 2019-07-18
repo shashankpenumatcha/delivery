@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserCartService } from 'app/shared/service/userCart.service';
 import { UserAddressService } from '../../shared/service/userAddressService';
@@ -7,9 +7,11 @@ import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-jwt.service';
 import { JhiTrackerService } from '../tracker/tracker.service';
 import { MessagingService } from 'app/shared/service/messaging.service';
+import { NgxNotificationService } from 'ngx-notification';
 
 @Injectable({ providedIn: 'root' })
-export class LoginService {
+export class LoginService implements OnDestroy {
+    notification: any;
     constructor(
         private router: Router,
         private principal: Principal,
@@ -17,9 +19,15 @@ export class LoginService {
         private authServerProvider: AuthServerProvider,
         private cartService: UserCartService,
         private userAddressService: UserAddressService,
-        private messagingService: MessagingService
+        private messagingService: MessagingService,
+        private ngxNotificationService: NgxNotificationService
     ) {}
-
+    playAudio() {
+        const audio = new Audio();
+        audio.src = '../../../content/bell.wav';
+        audio.load();
+        audio.play();
+      }
     login(credentials, callback?) {
         const cb = callback || function() {};
 
@@ -35,9 +43,9 @@ export class LoginService {
                     }
                     this.trackerService.disconnect();
                     this.trackerService.connect();
-                    this.trackerService.receive().subscribe(res => {
-                        console.log(res);
-                        alert('received a new order');
+                    this.notification = this.trackerService.receive().subscribe(res => {
+                        this.ngxNotificationService.sendMessage('New Order Received - Order#' + res.id , 'dark', 'top-center');
+                        this.playAudio();
                     });
                     this.trackerService.subscribeOrder();
 
@@ -68,5 +76,9 @@ export class LoginService {
         this.authServerProvider.logout().subscribe();
         this.principal.authenticate(null);
         this.trackerService.disconnect();
+    }
+
+    ngOnDestroy() {
+        this.notification.unsubscribe();
     }
 }

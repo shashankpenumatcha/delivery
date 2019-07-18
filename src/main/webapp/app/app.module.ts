@@ -33,7 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrdersModule } from './pages/admin/orders/orders.module';
 import { OrderListModule } from './pages/admin/order-list/order-list.module';
 import { OrderTrackerModule } from './pages/order-tracker/order-tracker.module';
-
+import { NgxNotificationModule } from 'ngx-notification';
 @NgModule({
     imports: [
         BrowserModule,
@@ -55,11 +55,12 @@ import { OrderTrackerModule } from './pages/order-tracker/order-tracker.module';
         OrdersModule,
         OrderListModule,
         OrderTrackerModule,
+        NgxNotificationModule,
         AngularFireModule.initializeApp(environment.firebase),
         NgbModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
-    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, MenuComponent],
+    declarations: [ JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, MenuComponent],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

@@ -62,6 +62,9 @@ export class UserCartComponent implements AfterViewInit {
 
         this.userAddressService.userAddresses.subscribe( res => {
             this.userAddresses = res;
+            if (this.userAddresses !== undefined && this.userAddresses !== null && this.userAddresses.length > 0 ) {
+                this.selectAddress(this.userAddresses[0]);
+            }
         });
 
         this.userAddressService.loadUserAddresses().subscribe(
@@ -84,7 +87,7 @@ export class UserCartComponent implements AfterViewInit {
 
     placeOrder() {
         this.cartService.setLoading(true);
-        this.http.post('api/placeOrder?address=' + this.address, {}).subscribe(
+        this.http.post('api/order?address=' + this.address, {}).subscribe(
             res => {
                 // alert('order placed');
                 this.cartService.setCart(null);

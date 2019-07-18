@@ -6,7 +6,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { CSRFService } from '../auth/csrf.service';
 import { WindowRef } from './window.service';
 import { AuthServerProvider } from '../auth/auth-jwt.service';
-
+import { NgxNotificationService } from 'ngx-notification';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'webstomp-client';
 import { IUserProfile } from 'app/shared/model/user-profile.model';
@@ -31,7 +31,8 @@ export class JhiTrackerService {
         private authServerProvider: AuthServerProvider,
         private $window: WindowRef,
         // tslint:disable-next-line: no-unused-variable
-        private csrfService: CSRFService
+        private csrfService: CSRFService,
+        private ngxNotificationService: NgxNotificationService
     ) {
         this.connection = this.createConnection();
         this.listener = this.createListener();
@@ -120,7 +121,9 @@ export class JhiTrackerService {
                        // this.listenerObserver.next(JSON.parse(data.body));
                        const order = JSON.parse(data.body);
                        if (order !== undefined && order.orderStatus !== undefined) {
-                            alert('Your order# ' +  order.id + ' is ' + order.orderStatus.name);
+                           this.playAudio();
+                            this.ngxNotificationService.sendMessage('Your order# ' +  order.id + ' is ' + order.orderStatus.name, 'dark', 'top-center');
+
                        }
                     });
                 });
@@ -128,6 +131,13 @@ export class JhiTrackerService {
         });
 
     }
+
+    playAudio() {
+        const audio = new Audio();
+        audio.src = '../../../content/bell.wav';
+        audio.load();
+        audio.play();
+      }
 
     unsubscribe() {
         if (this.subscriber !== null) {

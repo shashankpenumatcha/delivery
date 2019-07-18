@@ -83,7 +83,7 @@ public class InventoryLogResource {
      */
     @GetMapping("/inventory-logs")
     @Timed
-    public List<InventoryLog> getAllInventoryLogs() {
+    public Iterable<InventoryLog> getAllInventoryLogs() {
         log.debug("REST request to get all InventoryLogs");
         return inventoryLogRepository.findAll();
     }

@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { MessagingService } from '../../shared/service/messaging.service';
 import { Principal } from '../../core/auth/principal.service';
 import { JhiTrackerService } from 'app/core';
+import { NgxNotificationService } from 'ngx-notification';
+
 import {
     trigger,
     state,
@@ -111,8 +113,9 @@ import { Title } from '@angular/platform-browser';
         ])
       ]
 })
-export class JhiMainComponent implements OnInit {
-    constructor(private trackerService: JhiTrackerService,private principal: Principal, private messagingService: MessagingService, private titleService: Title, private router: Router) {}
+export class JhiMainComponent implements OnInit, OnDestroy {
+    notification: any;
+    constructor(private ngxNotificationService: NgxNotificationService, private trackerService: JhiTrackerService,private principal: Principal, private messagingService: MessagingService, private titleService: Title, private router: Router) {}
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
         let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'deliveryApp';
@@ -126,9 +129,9 @@ export class JhiMainComponent implements OnInit {
         this.principal.identity(true).then(account => {
             this.messagingService.init();
             this.trackerService.connect();
-            this.trackerService.receive().subscribe(res => {
-                alert('new order received - main');
-
+            this.notification = this.trackerService.receive().subscribe(res => {
+                this.playAudio();
+                this.ngxNotificationService.sendMessage('New Order Received - Order#' + res.id , 'dark', 'top-center');
             });
              this.trackerService.subscribeOrder();
             if (account !== null && account.authorities !== null && account.authorities.indexOf('ROLE_ADMIN') !== -1) {
@@ -142,8 +145,18 @@ export class JhiMainComponent implements OnInit {
             }
         });
     }
-
+    playAudio() {
+        const audio = new Audio();
+        audio.src = "../../../content/bell.wav";
+        audio.load();
+        audio.play();
+      }
     getRouteAnimation(outlet) {
         return outlet.activatedRouteData.animation;
       }
+
+      ngOnDestroy() {
+        this.notification.unsubscribe();
+    }
+
 }

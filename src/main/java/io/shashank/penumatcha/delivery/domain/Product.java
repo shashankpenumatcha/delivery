@@ -51,6 +51,10 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product",fetch=FetchType.LAZY)
     @JsonIgnore
     private Set<OrderItems> orderItems = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnoreProperties({"products","phoneNumber","inventoryLogs","orderLists","carts,userProfiles"})
+    private Vendor vendor;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -212,7 +216,20 @@ public class Product implements Serializable {
     public void setOrderItems(Set<OrderItems> orderItems) {
         this.orderItems = orderItems;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public Product vendor(Vendor vendor){
+        this.vendor = vendor;
+        return this;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

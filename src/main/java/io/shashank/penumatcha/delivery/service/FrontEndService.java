@@ -27,6 +27,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -321,6 +322,55 @@ public class FrontEndService {
             return null;
         }
         return "success";
+    }
+
+    public String subscribeToOrders(boolean add, String token) {
+        UserProfile userProfile = this.getCurrentUserProfile();
+       // List<FcmToken> fcmTokens = this.fcmTokenRepository.findAllForUser(userProfile.getId());
+
+        if(token==null){
+            log.debug(">>>>>>>>>>>>>>>>>>>>.no fcm tokens found for user");
+            return null;
+        }
+        FcmToken fcmToken = this.fcmTokenRepository.findOneByToken(token);
+        if(fcmToken==null || (fcmToken!=null && fcmToken.getUserProfile().getId()!=userProfile.getId())){
+            return null;
+        }
+        List<FcmToken> fcmTokens = new ArrayList<FcmToken>();
+        fcmTokens.add(fcmToken);
+        HttpHeaders headers = this.makeHeaders(false);
+        JsonParser jsonParser = new BasicJsonParser();
+        try {
+
+            String uri = "https://iid.googleapis.com/iid/v1/"+fcmToken.getToken()+"/rel/topics/orders";
+
+            RestTemplate restTemplate = new RestTemplate();
+            Map<String, Object> body = new HashMap<String, Object>();
+            //body.put("registration_tokens", fcmTokens);
+           // body.put("to", "/topics/orders");
+            HttpEntity<Object> request = new HttpEntity<>(body,headers);
+
+            if(add){
+                ResponseEntity<String> result = restTemplate.postForEntity(uri, request, String.class);
+                log.debug(result.toString());
+
+            }else {
+                log.debug(request.toString());
+                 request = new HttpEntity<>(headers);
+
+                restTemplate.exchange(uri,HttpMethod.DELETE,request,String.class);
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            log.debug(">>>>>>>>>>>>>>>>>>topic subscription error");
+            return null;
+        }
+
+        return "Success";
+
+
     }
 
 }
