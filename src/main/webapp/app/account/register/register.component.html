@@ -74,7 +74,7 @@
 
                 <p style="margin-bottom: 15px" class="btn btn-primary" *ngIf="!verifyClicked&&registerAccount.phoneNumber!=undefined&&registerAccount.phoneNumber.length>=10" (click)="verify()">Verify</p>
 
-                <jhi-verify-phone (valueChange)='submitOTP($event)' *ngIf="verifyClicked" [number]="registerAccount.phoneNumber"></jhi-verify-phone>
+                <jhi-verify-phone (valueChange)='submitOTP($event)' *ngIf="verifyClicked&&!verified" [number]="registerAccount.phoneNumber"></jhi-verify-phone>
 
                 <div class="form-group">
                     <label class="form-control-label" for="email">Email</label>

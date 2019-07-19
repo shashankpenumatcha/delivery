@@ -9,7 +9,7 @@
             <div *ngIf="!sent" id="recaptcha-container"></div>
             <div  *ngIf="sent" >
                 <input type="text" [(ngModel)]='verification'/>
-                <button [disabled]="verification==undefined || (verification!==undefined && verification.length<=0)" (click)="verify()">Enter OTP</button>
+                <button type="button" [disabled]="verification==undefined || (verification!==undefined && verification.length<=0)" (click)="verify()">Enter OTP</button>
             </div>
         </div>
     </div>
