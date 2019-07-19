@@ -21,8 +21,8 @@ export class ListingComponent implements  AfterViewInit {
 
     ngAfterViewInit() {
 
-        this.http.get('api/dashboard/report').subscribe(res => {});
-        this.cartService.loading.subscribe(l => {
+/*         this.http.get('api/dashboard/report').subscribe(res => {});
+ */        this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
         });
 

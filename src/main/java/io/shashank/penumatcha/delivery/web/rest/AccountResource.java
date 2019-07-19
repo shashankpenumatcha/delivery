@@ -78,7 +78,8 @@ public class AccountResource {
         userProfile.setCustomer(true);
         userProfile=userProfileRepository.save(userProfile);
 
-        mailService.sendActivationEmail(user);
+       // mailService.sendActivationEmail(user);
+       this.activateAccount(user.getActivationKey());
     }
 
     /**

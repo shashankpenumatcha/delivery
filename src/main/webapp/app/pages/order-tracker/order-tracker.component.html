@@ -1,14 +1,9 @@
 
-<button id="jh-create-entity" class="btn btn-default jh-create-entity create-product" (click)="back()">
-    <span >
-    Back
-    </span>
-</button>
 
 <div *ngIf="orderId!=undefined && orderId!=null" class="container">
     <div style="padding-bottom:0px!important" class="row">
         <div style="padding:0px" class="col-12">
-            <h3 style="padding:15px 0px;margin-bottom:0px;font-weight:bold;font-size:16px!important">Order# {{orderId}}</h3>
+            <h3 style="padding:15px;margin-bottom:0px;font-weight:bold;font-size:16px!important">Order# {{orderId}}</h3>
         </div>
     </div>
     <div class="row">
@@ -45,3 +40,8 @@
 
     </div>
 </div>
+<button style="min-width: 200px; border-radius: 0px;max-width: 20%;background: #198c19;color: white;margin: 0 auto;display: block;margin-top: 30px;" id="jh-create-entity" class="btn btn-default jh-create-entity create-product" (click)="back()">
+    <span >
+    Back
+    </span>
+</button>

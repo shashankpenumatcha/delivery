@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
+/* import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+ */import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import * as firebase from 'firebase';
@@ -17,8 +17,8 @@ export class VerifyPhoneComponent implements AfterViewInit {
     verification: string;
     constructor(
         private router: Router,
-        public activeModal: NgbActiveModal,
-        private http: HttpClient
+/*         public activeModal: NgbActiveModal,
+ */        private http: HttpClient
     ) {
 
         const firebaseConfig = {
@@ -37,19 +37,21 @@ export class VerifyPhoneComponent implements AfterViewInit {
     }
 
     onSubmit() {
+
         const appVerifier = this.recaptchaVerifier;
         const phoneNumberString = '+91' + this.number.toString();
         firebase.auth().signInWithPhoneNumber(phoneNumberString, appVerifier)
           .then( confirmationResult => {
             this.sent = true;
             this.confirmationResult = confirmationResult;
+            console.log(confirmationResult)
           })
           .catch(err => {
             console.log('sms not sent', err);
           });
       }
 
-      verify() {
+     /*  verify() {
         this.confirmationResult.confirm(this.verification)
           .then(good => {
             this.activeModal.dismiss(true);
@@ -58,9 +60,9 @@ export class VerifyPhoneComponent implements AfterViewInit {
           .catch(bad => {
             // code verification was bad.
           });
-      }
+      } */
 
-    cancel() {
+/*     cancel() {
         this.activeModal.dismiss(false);
-    }
+    } */
 }
