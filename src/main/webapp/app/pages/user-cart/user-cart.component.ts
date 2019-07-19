@@ -11,16 +11,16 @@ import { IUserAddress, UserAddress } from '../../shared/model/user-address.modul
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Pipe({
-  name: 'address'
+    name: 'address'
 })
 export class AddressPipe implements PipeTransform {
-  transform(value: string): string {
-    let trans = value;
-    trans = trans.replace(new RegExp(';', 'g'), ', ');
-    trans = trans.replace(new RegExp(', -', 'g'), '');
+    transform(value: string): string {
+        let trans = value;
+        trans = trans.replace(new RegExp(';', 'g'), ', ');
+        trans = trans.replace(new RegExp(', -', 'g'), '');
 
-    return trans;
-  }
+        return trans;
+    }
 }
 @Component({
     selector: 'jhi-user-cart',
@@ -35,8 +35,13 @@ export class UserCartComponent implements AfterViewInit {
     userAddresses: IUserAddress[];
     address: number;
 
-    constructor(private http: HttpClient, private router: Router, private cartService: UserCartService,
-         private userAddressService: UserAddressService, private modalService: NgbModal) {}
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private cartService: UserCartService,
+        private userAddressService: UserAddressService,
+        private modalService: NgbModal
+    ) {}
     ngAfterViewInit() {
         this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
@@ -45,33 +50,31 @@ export class UserCartComponent implements AfterViewInit {
         this.http.get('api/getCartForUser').subscribe(
             res => {
                 this.loading = false;
-                    this.cartService.setCart(res);
-                    this.cartService.data.subscribe(cart => {
-                        if (cart !== undefined) {
-                            this.cart = cart;
-                            if (this.cart !== null) {
-                                this.setInCartFromCart(this.cart);
-                            }
+                this.cartService.setCart(res);
+                this.cartService.data.subscribe(cart => {
+                    if (cart !== undefined) {
+                        this.cart = cart;
+                        if (this.cart !== null) {
+                            this.setInCartFromCart(this.cart);
                         }
-                    });
+                    }
+                });
             },
             err => {
                 this.loading = false;
             }
         );
 
-        this.userAddressService.userAddresses.subscribe( res => {
+        this.userAddressService.userAddresses.subscribe(res => {
             this.userAddresses = res;
-            if (this.userAddresses !== undefined && this.userAddresses !== null && this.userAddresses.length > 0 ) {
+            if (this.userAddresses !== undefined && this.userAddresses !== null && this.userAddresses.length > 0) {
                 this.selectAddress(this.userAddresses[0]);
             }
         });
 
-        this.userAddressService.loadUserAddresses().subscribe(
-            res => {
-                this.userAddressService.setUserAddresses(res);
-            }
-        );
+        this.userAddressService.loadUserAddresses().subscribe(res => {
+            this.userAddressService.setUserAddresses(res);
+        });
     }
 
     setInCartFromCart(cart: ICart) {
@@ -87,7 +90,7 @@ export class UserCartComponent implements AfterViewInit {
 
     placeOrder() {
         this.cartService.setLoading(true);
-        this.http.post('api/order?address=' + this.address, {}).subscribe(
+        this.http.post('api/placeOrder?address=' + this.address, {}).subscribe(
             res => {
                 // alert('order placed');
                 this.cartService.setCart(null);
@@ -105,8 +108,6 @@ export class UserCartComponent implements AfterViewInit {
     }
 
     openAddAddress() {
-
-        const modalRef = this.modalService.open(AddAddressComponent,  { centered: true, size: 'lg' });
-
+        const modalRef = this.modalService.open(AddAddressComponent, { centered: true, size: 'lg' });
     }
 }
