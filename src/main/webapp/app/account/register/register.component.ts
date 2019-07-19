@@ -61,6 +61,14 @@ export class RegisterComponent implements OnInit, AfterViewInit {
           ); */
     }
 
+    submitOTP(res: any) {
+        let verified = res;
+        if (res === undefined || res === null) {
+            verified = false;
+        }
+        this.verified = verified;
+    }
+
     register() {
         if (this.registerAccount.password !== this.confirmPassword) {
             this.doNotMatch = 'ERROR';

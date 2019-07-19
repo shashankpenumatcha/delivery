@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input } from '@angular/core';
+import { Component, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 /* import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
  */import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
@@ -11,6 +11,8 @@ import * as firebase from 'firebase';
 })
 export class VerifyPhoneComponent implements AfterViewInit {
     @Input() number;
+    @Output() valueChange = new EventEmitter();
+
     sent = false;
     confirmationResult: any;
     public recaptchaVerifier: firebase.auth.RecaptchaVerifier;
@@ -51,16 +53,17 @@ export class VerifyPhoneComponent implements AfterViewInit {
           });
       }
 
-     /*  verify() {
+       verify() {
         this.confirmationResult.confirm(this.verification)
           .then(good => {
-            this.activeModal.dismiss(true);
-
+/*             this.activeModal.dismiss(true);
+ */
+            this.valueChange.emit(true);
           })
           .catch(bad => {
             // code verification was bad.
           });
-      } */
+      }
 
 /*     cancel() {
         this.activeModal.dismiss(false);
