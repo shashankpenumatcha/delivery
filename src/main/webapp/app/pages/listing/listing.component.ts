@@ -11,7 +11,7 @@ import { MessagingService } from 'app/shared/service/messaging.service';
     templateUrl: './listing.component.html',
     styleUrls: ['listing.css']
 })
-export class ListingComponent implements  AfterViewInit {
+export class ListingComponent implements AfterViewInit {
     _products?: IProduct[];
     products?: Product[];
     subscribed?: boolean;
@@ -20,9 +20,8 @@ export class ListingComponent implements  AfterViewInit {
     constructor(private http: HttpClient, private cartService: UserCartService, private messagingService: MessagingService) {}
 
     ngAfterViewInit() {
-
-        this.http.get('api/dashboard/report').subscribe(res => {});
-        this.cartService.loading.subscribe(l => {
+        /*         this.http.get('api/dashboard/report').subscribe(res => {});
+ */ this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
         });
 

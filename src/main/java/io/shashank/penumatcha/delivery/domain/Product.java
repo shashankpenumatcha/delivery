@@ -53,7 +53,7 @@ public class Product implements Serializable {
     private Set<OrderItems> orderItems = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties({"products","phoneNumber","inventoryLogs","orderLists","carts,userProfiles"})
+    @JsonIgnoreProperties(value={"products","phoneNumber","inventoryLogs","orderLists","carts,userProfiles"}, allowSetters = true)
     private Vendor vendor;
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

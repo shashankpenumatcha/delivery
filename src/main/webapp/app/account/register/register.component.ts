@@ -1,11 +1,13 @@
 import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
 import { LoginModalService } from 'app/core';
 import { Register } from './register.service';
-import { VerifyPhoneComponent } from '../../shared/verify-phone/verify-phone.component';
+/* import { VerifyPhoneComponent } from '../../shared/verify-phone/verify-phone.component';
+ */ import { LoginService } from 'app/core/login/login.service';
 
 @Component({
     selector: 'jhi-register',
@@ -21,13 +23,16 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     success: boolean;
     modalRef: NgbModalRef;
     verified = false;
+    verifyClicked = false;
 
     constructor(
         private loginModalService: LoginModalService,
         private registerService: Register,
         private elementRef: ElementRef,
         private renderer: Renderer,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private router: Router,
+        private loginService: LoginService
     ) {}
 
     ngOnInit() {
@@ -40,7 +45,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }
 
     verify() {
-        const modalRef = this.modalService.open(VerifyPhoneComponent);
+        this.verifyClicked = true;
+        /*  const modalRef = this.modalService.open(VerifyPhoneComponent);
         modalRef.componentInstance.number = this.registerAccount.phoneNumber;
 
         modalRef.result.then(result => {
@@ -51,7 +57,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
                 this.verified = true;
               }
           }
-          );
+          ); */
+    }
+
+    submitOTP(res: any) {
+        let verified = res;
+        if (res === undefined || res === null) {
+            verified = false;
+        }
+        this.verified = verified;
     }
 
     register() {
@@ -65,7 +79,18 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             this.registerAccount.langKey = 'en';
             this.registerService.save(this.registerAccount).subscribe(
                 () => {
-                    this.success = true;
+                    this.loginService
+                        .login({
+                            username: this.registerAccount.login,
+                            password: this.registerAccount.password,
+                            rememberMe: true
+                        })
+                        .then(() => {
+                            this.router.navigate(['/']);
+                        })
+                        .catch(() => {
+                            this.success = true;
+                        });
                 },
                 response => this.processError(response)
             );
