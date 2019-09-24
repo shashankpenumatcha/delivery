@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ICart } from 'app/shared/model/cart.model';
@@ -9,6 +9,7 @@ import { AddAddressComponent } from '../../shared/add-address/add-address.compon
 import { Pipe, PipeTransform } from '@angular/core';
 import { IUserAddress, UserAddress } from '../../shared/model/user-address.module';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 
 @Pipe({
     name: 'address'
@@ -27,13 +28,16 @@ export class AddressPipe implements PipeTransform {
     templateUrl: './user-cart.component.html',
     styleUrls: ['user-cart.css']
 })
-export class UserCartComponent implements AfterViewInit {
+export class UserCartComponent implements AfterViewInit,OnDestroy {
     cart: ICart;
     total: number;
     cartLoading = false;
     loading = true;
     userAddresses: IUserAddress[];
     address: number;
+    loadingSubscription: Subscription;
+    userAddressSubscription: Subscription;
+    dataSubscription:Subscription;
 
     constructor(
         private http: HttpClient,
@@ -42,8 +46,27 @@ export class UserCartComponent implements AfterViewInit {
         private userAddressService: UserAddressService,
         private modalService: NgbModal
     ) {}
+
+    ngOnDestroy(){
+        this.kill(this.loadingSubscription);
+        this.kill(this.userAddressSubscription);
+        this.kill(this.dataSubscription);
+    }
+
+    valid(o:any){
+        if(o==undefined||o==null){
+            return false
+        }
+        return true
+    }
+
+    kill(s:Subscription){
+        if(this.valid(s)){
+            s.unsubscribe();
+        }
+    }
     ngAfterViewInit() {
-        this.cartService.loading.subscribe(l => {
+        this.loadingSubscription=this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
         });
         this.loading = true;
@@ -51,7 +74,7 @@ export class UserCartComponent implements AfterViewInit {
             res => {
                 this.loading = false;
                 this.cartService.setCart(res);
-                this.cartService.data.subscribe(cart => {
+               this.dataSubscription= this.cartService.data.subscribe(cart => {
                     if (cart !== undefined) {
                         this.cart = cart;
                         if (this.cart !== null) {
@@ -65,7 +88,7 @@ export class UserCartComponent implements AfterViewInit {
             }
         );
 
-        this.userAddressService.userAddresses.subscribe(res => {
+      this.userAddressSubscription =  this.userAddressService.userAddresses.subscribe(res => {
             this.userAddresses = res;
             if (this.userAddresses !== undefined && this.userAddresses !== null && this.userAddresses.length > 0) {
                 this.selectAddress(this.userAddresses[0]);

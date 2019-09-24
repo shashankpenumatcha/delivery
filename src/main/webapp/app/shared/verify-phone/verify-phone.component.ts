@@ -29,9 +29,14 @@ export class VerifyPhoneComponent implements AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+        this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('verify-btn',{
+            'size':'invisible',
+            'callback': function(response){
+            }
+        });
         this.onSubmit();
     }
+
 
     onSubmit() {
         const appVerifier = this.recaptchaVerifier;

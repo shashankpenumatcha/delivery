@@ -1,31 +1,53 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit ,OnDestroy} from '@angular/core';
 
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IProduct, Product } from 'app/shared/model//product.model';
 import { UserCartService } from 'app/shared/service/userCart.service';
 import { ICart, Cart } from 'app/shared/model/cart.model';
 import { MessagingService } from 'app/shared/service/messaging.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'jhi-listing',
     templateUrl: './listing.component.html',
     styleUrls: ['listing.css']
 })
-export class ListingComponent implements AfterViewInit {
+export class ListingComponent implements AfterViewInit, OnDestroy {
     _products?: IProduct[];
     products?: Product[];
     subscribed?: boolean;
     loading = true;
     cartLoading = false;
+    dataSubscription:Subscription;
+    dataSubscriptionOne:Subscription;
+    loadingSubscription:Subscription;
     constructor(private http: HttpClient, private cartService: UserCartService, private messagingService: MessagingService) {}
 
+    ngOnDestroy(){
+        this.kill(this.loadingSubscription);
+        this.kill(this.dataSubscriptionOne);
+        this.kill(this.dataSubscription);
+    }
+
+    valid(o:any){
+        if(o==undefined||o==null){
+            return false
+        }
+        return true
+    }
+
+    kill(s:Subscription){
+        if(this.valid(s)){
+            s.unsubscribe();
+        }
+    }
     ngAfterViewInit() {
         /*         this.http.get('api/dashboard/report').subscribe(res => {});
- */ this.cartService.loading.subscribe(l => {
+ */ this.loadingSubscription=this.cartService.loading.subscribe(l => {
             this.cartLoading = l;
         });
 
-        this.cartService.data.subscribe(cart => {
+      this.dataSubscription=  this.cartService.data.subscribe(cart => {
             if (cart === undefined || cart === null) {
                 this.cartService.loadCart().subscribe(res => {
                     this.getProducts().subscribe(
@@ -69,7 +91,7 @@ export class ListingComponent implements AfterViewInit {
         if (!this.subscribed) {
             this.cartService.setCart($event);
             this.setInCartFromCart(this.cartService.getCart(), this.products);
-            this.cartService.data.subscribe(c => {
+          this.dataSubscriptionOne=  this.cartService.data.subscribe(c => {
                 this.subscribed = true;
                 this.setInCartFromCart(this.cartService.getCart(), this.products);
             });
@@ -81,6 +103,7 @@ export class ListingComponent implements AfterViewInit {
     }
 
     getProducts() {
+        console.log(11111111111111111111111111111111111)
         return this.http.get<IProduct[]>('api/activeProducts', { observe: 'response' });
     }
 

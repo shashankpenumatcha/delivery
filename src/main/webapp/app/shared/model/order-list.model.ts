@@ -12,7 +12,7 @@ export interface IOrderList {
     orderStatus?: IOrderStatus;
     userProfile?: IUserProfile;
     createdDate?: Moment;
-    address?: string;
+    userAddress?: string;
 }
 
 export class OrderList implements IOrderList {
@@ -24,6 +24,6 @@ export class OrderList implements IOrderList {
         public orderStatus?: IOrderStatus,
         public userProfile?: IUserProfile,
         public createdDate?: Moment,
-        public address?: string
+        public userAddress?: string
     ) {}
 }
