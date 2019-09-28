@@ -1,0 +1,38 @@
+input, input:active, input:hover {
+
+    border:none!important;
+    outline: none!important;
+    border-bottom:1px solid #198C19!important;
+    max-width: 90%!important;
+    margin: 0 auto;
+}
+
+label {
+    display:none;
+}
+
+#strength{
+max-width: 90%;
+margin:0 auto;
+
+}
+
+h1{
+    text-align: center;
+    margin: 25px 0px;
+    font-size: 24px;
+    color: #198C19!important;
+}
+
+
+.green-btn{
+    width: 50%;
+    max-width: 250px;
+    margin: 0 auto;
+    display: block;
+    margin-top: 50px;
+    background: #198C19!important;
+}
+ .form-group{
+     margin-bottom:25px;
+ }

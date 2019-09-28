@@ -68,9 +68,10 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         if (managedUserVM.getPhoneNumber() == null) {
-            throw new BadRequestAlertException("error","bot able to create user","please send valid phone number");
+            throw new BadRequestAlertException("error","not able to create user","please send valid phone number");
 
         }
+        managedUserVM.setLogin(managedUserVM.getPhoneNumber());
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         UserProfile userProfile = new UserProfile();
         userProfile.setPhoneNumber(managedUserVM.getPhoneNumber());

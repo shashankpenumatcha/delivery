@@ -1,8 +1,8 @@
-import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
+import {Input, Directive, Component, OnInit, AfterViewInit, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-
+import {Validator,AbstractControl,ValidatorFn,NgForm,NG_VALIDATORS} from '@angular/forms';
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
 import { LoginModalService } from 'app/core';
 import { Register } from './register.service';
@@ -11,9 +11,11 @@ import { Register } from './register.service';
 
 @Component({
     selector: 'jhi-register',
-    templateUrl: './register.component.html'
+    templateUrl: './register.component.html',
+    styleUrls: ['register.css']
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
+
     confirmPassword: string;
     doNotMatch: string;
     error: string;
@@ -46,18 +48,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     verify() {
         this.verifyClicked = true;
-        /*  const modalRef = this.modalService.open(VerifyPhoneComponent);
-        modalRef.componentInstance.number = this.registerAccount.phoneNumber;
+    }
 
-        modalRef.result.then(result => {
-
-          },
-          reason => {
-              if (reason === true) {
-                this.verified = true;
-              }
-          }
-          ); */
+    onMobileNumber(){
+        this.verified = false;
+        this.verifyClicked = false;
     }
 
     submitOTP(res: any) {
@@ -77,7 +72,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             this.errorUserExists = null;
             this.errorEmailExists = null;
             this.registerAccount.langKey = 'en';
-            this.registerAccount.login=this.registerAccount.email;
+            this.registerAccount.login = this.registerAccount.phoneNumber;
             this.registerService.save(this.registerAccount).subscribe(
                 () => {
                     this.loginService

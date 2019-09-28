@@ -18,7 +18,7 @@ import { Title } from '@angular/platform-browser';
 @Component({
     selector: 'jhi-main',
     templateUrl: './main.component.html',
-    animations: [
+   /*  animations: [
         trigger('routerAnimation', [
           transition('* => listing, user-cart => user-orders, my-account => user-orders, my-account => user-cart, * => dashboard, dashboard-order-list => dashboard-orders, order-tracker => user-orders, order-tracker => dashboard-order-list', [
            // Initial state of old route
@@ -111,7 +111,7 @@ import { Title } from '@angular/platform-browser';
             {optional: true}),
           ])
         ])
-      ]
+      ] */
 })
 export class JhiMainComponent implements OnInit, OnDestroy {
     notification: any;

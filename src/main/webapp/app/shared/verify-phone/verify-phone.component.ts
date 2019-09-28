@@ -17,8 +17,7 @@ export class VerifyPhoneComponent implements AfterViewInit {
     confirmationResult: any;
     public recaptchaVerifier: firebase.auth.RecaptchaVerifier;
     verification: string;
-    constructor(private router: Router, /*         public activeModal: NgbActiveModal,
- */ private http: HttpClient) {
+    constructor(private router: Router,private http: HttpClient) {
         const firebaseConfig = {
             apiKey: 'AIzaSyDwesaV0Z7pUnqQqVSVOwN3pzpPPB2ZMlM',
             projectId: 'drgreens-6888a'
@@ -58,8 +57,6 @@ export class VerifyPhoneComponent implements AfterViewInit {
         this.confirmationResult
             .confirm(this.verification)
             .then(good => {
-                /*             this.activeModal.dismiss(true);
- */
                 this.valueChange.emit(true);
             })
             .catch(bad => {
@@ -67,7 +64,5 @@ export class VerifyPhoneComponent implements AfterViewInit {
             });
     }
 
-    /*     cancel() {
-        this.activeModal.dismiss(false);
-    } */
+
 }
