@@ -9,8 +9,8 @@ Navbar
 .jh-navbar {
     background-color: transparent;
     padding: 0.2em 1em;
-    box-shadow: 5px 1px 19px -2px #8888886e;
-}
+/*     box-shadow: 5px 1px 19px -2px #8888886e;
+ */}
 
 .jh-navbar .profile-image {
     margin: -10px 0px;
