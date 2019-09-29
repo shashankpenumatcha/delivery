@@ -30,7 +30,7 @@ export class AddressPipe implements PipeTransform {
 })
 export class MyAccountComponent implements AfterViewInit {
     account: any;
-    showAddress = false;
+    showAddress = true;
     userAddresses: IUserAddress[];
     private isOpen = false;
     constructor(

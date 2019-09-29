@@ -7,7 +7,7 @@
 
     <div *ngIf="loading" style="padding:0px;"  class="container">
             <div class="row animated-background" style="padding: 10px 0px 0px 0px;font-size: 12px!important;
-            color:#fff;height:30px;display: block;width:100vw"></div>
+            color:#fff;height:30px;display: block;width:100%"></div>
             <div *ngFor="let x of [1,2,3]" style="margin:0px;border-bottom: 1px solid #cbcbcb;padding: 15px;box-shadow: 0px 1px 0px 0px #88888866;"  class="row">
                     <div class="col-12" style="font-size: 12px;padding: 0px;line-height: 22px;">
                             <p class= "animated-background" style="font-weight:bold;margin-bottom: 10px;display: block;height:14px;width: 30%;"></p>
@@ -24,30 +24,30 @@
 
 <div class="container">
     <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                     <div *ngIf="!loading && (activeOrders==null || activeOrders.length==0 ) && (previousOrders==null || previousOrders.length==0)" style="padding-top:50px">
                             <p style="color:#198c19;text-align: center;font-size:18px;font-weight: bold;margin-top: 10vh">No orders found</p>
                     </div>
                     <div style="padding:0px;" *ngIf="!loading && (activeOrders!==undefined && activeOrders!==null && activeOrders.length>0)" class="container">
-                            <div  class="row shadow" style="margin-top:0px;padding: 0px 0px;font-size: 14px!important;
-                            color:#000;margin: 15px 0px;background: #469223;">
+                            <div  class="row box-shadow" style="padding: 0px 0px;font-size: 14px!important;
+                            color:#000;margin: 15px 0px;background: #469223;margin-top:0px;">
                                 <div style="background: #cbcbcb2b;
                                 text-align: center;
-                                padding: 30px 0px;
+                                padding: 30px 15px;
                                 font-size: 14px!important;
                                 color: #000;" class="col-12">
                                      <h5 style="letter-spacing: 1px;
                                      font-size: 18px;
                                      font-weight: bold;
                                      text-align: left;
-                                     margin-left: 15px;
+                                     margin-left: 0px 0px 15px 0px;
                                      position: absolute;
                                      bottom: 2px;
                                      color: #fff;">ACTIVE ORDERS</h5>
                                 </div>
                             </div>
                             <div [routerLink]="['/order-tracker/' + order.id]"  *ngFor="let order of activeOrders" style="cursor:pointer;margin:15px 0px;border: 1px solid #cbcbcb;
-                            padding: 15px;"  class="row shadow">
+                            padding: 15px;"  class="row box-shadow">
                                     <div class="col-12" style="font-size: 14px;padding: 0px;line-height: 22px;">
                                             <p style="color:#585858;font-weight:bold;margin-bottom: 0px;font-size:14px;">Order# {{order.id}}</p>
                                             <p style="color:#7b7b7b;margin-bottom:0px;font-size:12px;">{{order.createdDate | date:'medium'}}</p>
@@ -66,14 +66,14 @@
                             </div>
                         </div>
 
-                        <div style="padding:20px 0px;margin-top:0px;" *ngIf="!loading && (previousOrders!==undefined && previousOrders!==null && previousOrders.length>0)" class="container">
-                            <div  class="row" style="margin: 15px 0px;background: #eaa71f;;padding: 0px 0px 0px 0px;font-size: 14px!important;
+                        <div style="padding:0px 0px 20px 0px;margin-top:0px;" *ngIf="!loading && (previousOrders!==undefined && previousOrders!==null && previousOrders.length>0)" class="container">
+                            <div  class="row" style="margin: 15px 0px;background: #eaa71f;padding: 0px 0px 0px 0px;font-size: 14px!important;
                             color:#000;">
                                 <div style="background: #cbcbcb2b;
                                 text-align: center;
                                 padding:30px 0px;
                                 font-size: 14px!important;
-                                color: #000;" class="col-12 shadow">
+                                color: #000;" class="col-12 box-shadow">
                                      <h5 style="letter-spacing: 1px;
                                      font-size: 18px;
                                      font-weight: bold;
@@ -81,11 +81,11 @@
                                      margin-left: 15px;
                                      position: absolute;
                                      bottom: 2px;
-                                     color: #fff;">PREVIOUS ORDERS</h5>
+                                     color: #fff;margin-top:0px">PREVIOUS ORDERS</h5>
                                 </div>
                             </div>
                             <div [routerLink]="['/order-tracker/' + order.id]" *ngFor="let order of previousOrders" style="cursor:pointer;margin:15px 0px;border: 1px solid #cbcbcb;
-                            padding: 15px;"  class="row shadow">
+                            padding: 15px;"  class="row box-shadow">
                                     <div class="col-12" style="font-size: 14px;padding: 0px;line-height: 22px;">
                                             <p style="color:#585858;font-weight:bold;margin-bottom: 0px;font-size:14px;">Order# {{order.id}}</p>
                                             <p style="color:#7b7b7b;margin-bottom:0px;font-size:12px;">{{order.createdDate | date:'medium'}}</p>
@@ -105,12 +105,12 @@
                         </div>
             </div>
 
-            <div style="margin-top:15px" *ngIf="!loading" class="hidden-mobile col-lg-4">
+            <!-- <div style="margin-top:15px" *ngIf="!loading" class="hidden-mobile col-lg-4">
                 <div class="shadow">
                     <jhi-user-cart></jhi-user-cart>
 
                 </div>
-            </div>
+            </div> -->
     </div>
 </div>
 

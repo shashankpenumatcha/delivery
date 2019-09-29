@@ -5,7 +5,9 @@
     .hidden-mobile{
         display:none!important;
     }
-
+    .move-up{
+        margin-top:-15px!important;
+    }
  }
 
 
@@ -13,6 +15,9 @@
 @media (min-width: 575px) {
     .hidden-mobile{
         display:none!important;
+    }
+    .move-up{
+        margin-top:-15px!important;
     }
     .hidden-desktop{
         display:block!important;
@@ -22,6 +27,9 @@
 @media (min-width: 767px) {
     .hidden-mobile{
         display:none!important;
+    }
+    .move-up{
+        margin-top:-15px!important;
     }
     .hidden-desktop{
         display:block!important;
@@ -41,6 +49,9 @@
         position: relative;
         top:-30px;
     }
+    .move-up{
+        margin-top:0px!important;
+    }
 }
 
 
@@ -50,6 +61,9 @@
     }
     .hidden-desktop{
         display:none!important;
+    }
+    .move-up{
+        margin-top:0px!important;
     }
 }
 
@@ -325,6 +339,12 @@ ui bootstrap tweaks
 /* jhipster-needle-css-add-main JHipster will add new css style */
 
 
-.shadow{
+.box-shadow{
     box-shadow: 0px 2px 3px 0px #8888886e!important;
+}
+
+
+.clear-fix::after{
+    content:'';
+    display:block;
 }

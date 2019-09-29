@@ -1,6 +1,6 @@
 
 
-<div  >
+<div>
     <router-outlet  *jhiHasAnyAuthority="['ROLE_USER']" name="navbar"></router-outlet>
 </div>
 <div style="position:fixed;top: 10px;width: 100%;;margin:0 auto;">
@@ -8,10 +8,21 @@
     </div>
 
 </div>
-<div [@routerAnimation]="getRouteAnimation(o)" class="container-fluid" style="padding:0px">
+<div [@routerAnimation]="getRouteAnimation(o)" class="container" style="padding:0px">
 
         <div>
-            <router-outlet #o="outlet"></router-outlet>
+            <div class="row">
+                <div style="padding-top:15px" class="col-lg-8">
+                        <router-outlet #o="outlet"></router-outlet>
+
+                </div>
+                <div  style="padding:15px" class="col-lg-4 hidden-mobile" *jhiHasAnyAuthority="['ROLE_USER']">
+                        <div  class="box-shadow">
+                                <jhi-user-cart></jhi-user-cart>
+
+                            </div>
+                </div>
+            </div>
             <router-outlet name="popup"></router-outlet>
         </div>
 </div>

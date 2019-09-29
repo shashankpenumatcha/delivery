@@ -41,3 +41,16 @@ button {
     background-size: 800px 104px;
     position: relative;
 }
+.account-item{
+    font-size: 12px;
+    color: #198c19;
+    padding: 10px 10px;
+    border: 1px solid #198c19;
+    background: transparent;
+    margin-bottom: 0px;
+    cursor: pointer;
+    font-weight: bold;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}

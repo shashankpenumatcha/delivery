@@ -92,6 +92,8 @@ export class UserCartComponent implements AfterViewInit,OnDestroy {
             this.userAddresses = res;
             if (this.userAddresses !== undefined && this.userAddresses !== null && this.userAddresses.length > 0) {
                 this.selectAddress(this.userAddresses[0]);
+            }else{
+                this.selectAddress(null);
             }
         });
 
@@ -126,6 +128,10 @@ export class UserCartComponent implements AfterViewInit,OnDestroy {
     }
 
     selectAddress(address: any) {
+        if (address == null) {
+            this.address = null;
+            return;
+        }
         this.address = address.id;
         console.log(this.address);
     }

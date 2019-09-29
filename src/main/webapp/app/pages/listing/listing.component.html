@@ -1,4 +1,4 @@
-<div style="padding:0px;min-height:100vh;">
+<div class="move-up" style="padding:0px;min-height:100vh;">
 
 
     <div *ngIf="cartLoading" style="display:block;background:#ffffff52;height:calc(100vh - 95px);position: absolute;z-index: 1;width:100%;">
@@ -22,11 +22,10 @@
         </div>
     </div>
     <div *ngIf="!loading&&products.length>0"  class="row " style="z-index:1;margin-bottom:100px;">
-            <div style=" display: block;width: 100%;height: 300px;    background:url(content/images/listing-bg.jpeg);
+            <div style=" display: block;width: 100%;height: 200px;display:flex;justify-content:center;align-items:center;background:url(content/images/listing-bg.jpeg);
             background-position: center;background-size: cover;">
         <h3 style="background: #11171fe3;padding: 15px;font-family: 'Krub', sans-serif!important;color: #fff;
-        text-align: center;margin-top: 115px;font-size: 30px;letter-spacing: 0px;width: 365px;margin-left: auto;
-        margin-right: auto;">Fresh Produce For You</h3>
+        text-align: center;font-size: 30px;letter-spacing: 0px;width: 365px;">Fresh Produce For You</h3>
             </div>
         <div  class="col-lg-12 ">
             <ng-container *ngFor="let x of [1,2,3]">
@@ -47,7 +46,7 @@
 
                 <div class="noPadding container">
                     <div class="row">
-                        <div class="col-lg-8 col-12" style="padding:0px 25px!important">
+                        <div class="col-lg-12 col-12" style="padding:0px 25px!important">
                                 <p *ngIf="products.length>0" style="margin-top:15px;margin-bottom:-10px;">{{products.length}} items</p>
                                 <div *ngFor="let product of products" style="max-height:100px;" class="timeline-item  noPadding">
                                     <div class="row ">
@@ -68,9 +67,9 @@
                                     </div>
                                 </div>
                         </div>
-                        <div style="position: relative;top: -30px;background: #fff;" class="col-lg-4 hidden-mobile shadow">
+                      <!--   <div style="position: relative;top: -30px;background: #fff;" class="col-lg-4 hidden-mobile shadow">
                             <jhi-user-cart></jhi-user-cart>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </ng-container>
